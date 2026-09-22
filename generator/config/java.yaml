@@ -1,0 +1,39 @@
+generatorName: java
+inputSpec: /workspace/openapi/spectestengine-public-v1.yaml
+outputDir: /workspace/clients/java
+apiPackage: software.ste.sdk.generated.api
+modelPackage: software.ste.sdk.generated.model
+invokerPackage: software.ste.sdk.generated
+artifactId: spectestengine-sdk-java
+groupId: software.ste
+artifactVersion: 0.1.0-SNAPSHOT
+library: native
+additionalProperties:
+  artifactDescription: Typed Java client for the SpecTestEngine public API
+  artifactUrl: https://github.com/SpecTestEngine/SpecTestEngine-SDK
+  dateLibrary: java8
+  disallowAdditionalPropertiesIfNotPresent: false
+  developerEmail: support@ste.software
+  developerName: SpecTestEngine
+  developerOrganization: SpecTestEngine
+  developerOrganizationUrl: https://ste.software
+  gitHost: github.com
+  gitRepoId: SpecTestEngine-SDK
+  gitUserId: SpecTestEngine
+  hideGenerationTimestamp: true
+  licenseName: Apache License 2.0
+  openApiNullable: false
+  serializationLibrary: jackson
+  useJakartaEe: true
+  useOneOfInterfaces: true
+  useRuntimeException: true
+  useSingleRequestParameter: true
+  useUuidForString: true
+  scmConnection: scm:git:git@github.com:SpecTestEngine/SpecTestEngine-SDK.git
+  scmDeveloperConnection: scm:git:git@github.com:SpecTestEngine/SpecTestEngine-SDK.git
+  scmUrl: https://github.com/SpecTestEngine/SpecTestEngine-SDK
+globalProperties:
+  apiDocs: true
+  apiTests: false
+  modelDocs: true
+  modelTests: false

@@ -1,0 +1,28 @@
+generatorName: csharp
+inputSpec: /workspace/openapi/spectestengine-public-v1.yaml
+outputDir: /workspace/clients/csharp
+packageName: SpecTestEngine.Sdk
+additionalProperties:
+  caseInsensitiveResponseHeaders: true
+  gitHost: github.com
+  gitRepoId: SpecTestEngine-SDK
+  gitUserId: SpecTestEngine
+  hideGenerationTimestamp: true
+  library: generichost
+  nullableReferenceTypes: true
+  packageGuid: "{C3ADD0DC-40C4-4556-B8EE-250F941D91A4}"
+  packageName: SpecTestEngine.Sdk
+  packageVersion: 0.1.0
+  targetFramework: net10.0
+  useDateTimeOffset: true
+  # The generator creates one serializer context per model. Complex nested
+  # option/enum shapes then collide on generated TypeInfo property names
+  # (SYSLIB1031), which can silently omit metadata. Reflection-backed
+  # System.Text.Json remains the supported transport for the public client.
+  useSourceGeneration: false
+  validatable: true
+globalProperties:
+  apiDocs: true
+  apiTests: false
+  modelDocs: true
+  modelTests: false

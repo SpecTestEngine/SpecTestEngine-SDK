@@ -1,0 +1,21 @@
+generatorName: typescript-fetch
+inputSpec: /workspace/openapi/spectestengine-public-v1.yaml
+outputDir: /workspace/clients/typescript
+additionalProperties:
+  gitHost: github.com
+  gitRepoId: SpecTestEngine-SDK
+  gitUserId: SpecTestEngine
+  hideGenerationTimestamp: true
+  npmName: "@spectestengine/sdk"
+  npmVersion: 0.1.0
+  npmRepository: https://registry.npmjs.org
+  supportsES6: true
+  typescriptThreePlus: true
+  useSingleRequestParameter: true
+  withInterfaces: true
+  withoutRuntimeChecks: false
+globalProperties:
+  apiDocs: true
+  apiTests: false
+  modelDocs: true
+  modelTests: false

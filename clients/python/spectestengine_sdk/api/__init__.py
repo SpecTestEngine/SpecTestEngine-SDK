@@ -1,0 +1,17 @@
+# flake8: noqa
+
+# import apis into api package
+from spectestengine_sdk.api.browser_visual_reviews_api import BrowserVisualReviewsApi
+from spectestengine_sdk.api.craftsman_api import CraftsmanApi
+from spectestengine_sdk.api.document_visual_diffs_api import DocumentVisualDiffsApi
+from spectestengine_sdk.api.flows_api import FlowsApi
+from spectestengine_sdk.api.fragments_api import FragmentsApi
+from spectestengine_sdk.api.generation_api import GenerationApi
+from spectestengine_sdk.api.graph_ql_specifications_api import GraphQLSpecificationsApi
+from spectestengine_sdk.api.rest_specifications_api import RESTSpecificationsApi
+from spectestengine_sdk.api.run_batches_api import RunBatchesApi
+from spectestengine_sdk.api.soap_specifications_api import SOAPSpecificationsApi
+from spectestengine_sdk.api.sentinel_api import SentinelApi
+from spectestengine_sdk.api.snapshots_api import SnapshotsApi
+from spectestengine_sdk.api.streaming_specifications_api import StreamingSpecificationsApi
+

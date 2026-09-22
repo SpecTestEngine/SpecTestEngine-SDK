@@ -1,0 +1,23 @@
+# SpecTestEngine.Sdk.Model.SnapshotItem
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**SnapshotFlowId** | **Guid** | A UUIDv7 identifier. Treat identifiers as opaque values. |
+**SourceBatchItemId** | **Guid** | A UUIDv7 identifier. Treat identifiers as opaque values. |
+**SubjectType** | **SnapshotSubjectType** |  |
+**SubjectId** | **Guid** | A UUIDv7 identifier. Treat identifiers as opaque values. |
+**SubjectKey** | **string** |  |
+**SubjectName** | **string** |  |
+**SourceRunType** | **SnapshotSourceRunType** |  |
+**SourceRunId** | **Guid** | A UUIDv7 identifier. Treat identifiers as opaque values. |
+**Status** | **string** |  |
+**CreatedAt** | **DateTimeOffset** |  |
+**DefinitionHash** | **string** |  | [optional]
+**BehaviorHash** | **string** |  | [optional]
+**DefinitionPayload** | **Object** | A JSON value whose shape depends on the captured test subject and step type. | [optional]
+**BehaviorPayload** | **Object** | A JSON value whose shape depends on the captured test subject and step type. | [optional]
+
+[[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
+

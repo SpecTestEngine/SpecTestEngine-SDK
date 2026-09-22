@@ -1,0 +1,21 @@
+generatorName: python
+inputSpec: /workspace/openapi/spectestengine-public-v1.yaml
+outputDir: /workspace/clients/python
+packageName: spectestengine_sdk
+additionalProperties:
+  generateSourceCodeOnly: false
+  library: urllib3
+  packageName: spectestengine_sdk
+  packageVersion: 0.1.0
+  projectName: spectestengine-sdk
+  gitHost: github.com
+  gitRepoId: SpecTestEngine-SDK
+  gitUserId: SpecTestEngine
+  hideGenerationTimestamp: true
+  pythonVersion: "3.11"
+  useOneOfDiscriminatorLookup: true
+globalProperties:
+  apiDocs: true
+  apiTests: false
+  modelDocs: true
+  modelTests: false

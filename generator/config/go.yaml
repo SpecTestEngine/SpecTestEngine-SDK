@@ -1,0 +1,21 @@
+generatorName: go
+inputSpec: /workspace/openapi/spectestengine-public-v1.yaml
+outputDir: /workspace/clients/go
+packageName: spectestengine
+additionalProperties:
+  enumClassPrefix: true
+  generateInterfaces: true
+  gitHost: github.com
+  gitRepoId: SpecTestEngine-SDK
+  gitUserId: SpecTestEngine
+  hideGenerationTimestamp: true
+  isGoSubmodule: true
+  packageName: spectestengine
+  packageVersion: 0.1.0
+  useOneOfDiscriminatorLookup: true
+  withGoMod: true
+globalProperties:
+  apiDocs: true
+  apiTests: false
+  modelDocs: true
+  modelTests: false

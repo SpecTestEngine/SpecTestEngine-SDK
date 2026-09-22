@@ -1,0 +1,100 @@
+name: Contract and SDK generation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23.x"
+      - name: Validate public contract
+        run: make validate
+      - name: Generate supported SDKs
+        run: make generate
+      - name: Compile Java SDK
+        working-directory: clients/java
+        run: ./gradlew test
+      - name: Compile TypeScript SDK
+        working-directory: clients/typescript
+        run: npm install --ignore-scripts --package-lock=false && npm run build
+      - name: Compile Python SDK
+        run: python3 -m compileall -q clients/python/spectestengine_sdk
+      - name: Compile C# SDK
+        run: dotnet build clients/csharp/SpecTestEngine.Sdk.sln --configuration Release --warnaserror
+      - name: Compile Go SDK
+        working-directory: clients/go
+        run: go test ./...
+      - name: Verify maintained workflow helpers
+        run: |
+          mkdir -p .sdk-build/java-facade-test
+          javac --release 17 -d .sdk-build/java-facade-test \
+            facades/java/src/main/java/software/ste/sdk/workflows/WorkflowSupport.java \
+            facades/java/src/test/java/software/ste/sdk/workflows/WorkflowSupportTest.java
+          java -cp .sdk-build/java-facade-test software.ste.sdk.workflows.WorkflowSupportTest
+          npm --prefix facades/typescript install --ignore-scripts --package-lock=false
+          npm --prefix facades/typescript test
+          PYTHONPATH=facades/python python3 -m unittest discover -s facades/python/tests -v
+          dotnet run --project facades/csharp/tests/SpecTestEngine.Sdk.Workflows.Tests.csproj --configuration Release
+          cd facades/go && go test ./...
+      - name: Verify deterministic output
+        run: git diff --exit-code -- clients
+
+  build-self-service-archives:
+    needs: validate-and-generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [java, typescript, python, csharp, go]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build deterministic SDK ZIP
+        run: python3 scripts/package-sdk.py --language "${{ matrix.language }}"
+      - name: Upload SDK ZIP and checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: spectestengine-sdk-${{ matrix.language }}
+          path: |
+            artifacts/**/*.zip
+            artifacts/**/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  verify-archive-determinism:
+    needs: validate-and-generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the same Java archive twice
+        run: |
+          python3 scripts/package-sdk.py --language java --output .sdk-build/archive-a
+          python3 scripts/package-sdk.py --language java --output .sdk-build/archive-b
+          archive_a=$(find .sdk-build/archive-a -name '*.zip' -print -quit)
+          archive_b=$(find .sdk-build/archive-b -name '*.zip' -print -quit)
+          cmp "$archive_a" "$archive_b"

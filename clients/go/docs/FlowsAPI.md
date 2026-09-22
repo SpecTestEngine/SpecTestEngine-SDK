@@ -1,0 +1,698 @@
+# \FlowsAPI
+
+All URIs are relative to *https://app.ste.software*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**CaptureFlowStepAttachmentVisualDiff**](FlowsAPI.md#CaptureFlowStepAttachmentVisualDiff) | **Post** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
+[**CreateFlow**](FlowsAPI.md#CreateFlow) | **Post** /test/flow/create | Create a test flow
+[**DeleteFlow**](FlowsAPI.md#DeleteFlow) | **Delete** /test/flow/by-id | Delete a test flow
+[**GetFlow**](FlowsAPI.md#GetFlow) | **Get** /test/flow/by-id/{flowId} | Get a test flow
+[**GetFlowRun**](FlowsAPI.md#GetFlowRun) | **Get** /test/flow/run/saved/{runId} | Get a saved flow run
+[**ListFlowRuns**](FlowsAPI.md#ListFlowRuns) | **Get** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow
+[**ListFlows**](FlowsAPI.md#ListFlows) | **Get** /test/flow/page | List test flows
+[**RunFlow**](FlowsAPI.md#RunFlow) | **Post** /test/flow/run/by-id/{flowId} | Run a saved flow
+[**RunFlowBatch**](FlowsAPI.md#RunFlowBatch) | **Post** /test/flow/run/batch | Run multiple saved flows
+[**UpdateFlow**](FlowsAPI.md#UpdateFlow) | **Put** /test/flow/by-id | Replace a test flow
+
+
+
+## CaptureFlowStepAttachmentVisualDiff
+
+> FlowRun CaptureFlowStepAttachmentVisualDiff(ctx, flowId).FlowDocumentVisualDiffCaptureRunRequest(flowDocumentVisualDiffCaptureRunRequest).Execute()
+
+Create a visual diff from a failed flow-step attachment assertion
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | UUIDv7 identifier of the saved test flow.
+	flowDocumentVisualDiffCaptureRunRequest := *openapiclient.NewFlowDocumentVisualDiffCaptureRunRequest(int32(123), "AttachmentId_example") // FlowDocumentVisualDiffCaptureRunRequest |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.CaptureFlowStepAttachmentVisualDiff(context.Background(), flowId).FlowDocumentVisualDiffCaptureRunRequest(flowDocumentVisualDiffCaptureRunRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CaptureFlowStepAttachmentVisualDiff``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CaptureFlowStepAttachmentVisualDiff`: FlowRun
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.CaptureFlowStepAttachmentVisualDiff`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**flowId** | **string** | UUIDv7 identifier of the saved test flow. |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCaptureFlowStepAttachmentVisualDiffRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **flowDocumentVisualDiffCaptureRunRequest** | [**FlowDocumentVisualDiffCaptureRunRequest**](FlowDocumentVisualDiffCaptureRunRequest.md) |  |
+
+### Return type
+
+[**FlowRun**](FlowRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CreateFlow
+
+> Flow CreateFlow(ctx).FlowInput(flowInput).Format(format).IdempotencyKey(idempotencyKey).Execute()
+
+Create a test flow
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowInput := *openapiclient.NewFlowInput("Name_example", []openapiclient.FlowStepInput{*openapiclient.NewFlowStepInput("StepType_example", int32(123))}) // FlowInput |
+	format := openapiclient.ContentFormat("JSON") // ContentFormat | Serialization format used for the returned specification source. (optional) (default to "JSON")
+	idempotencyKey := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | A caller-generated UUID retained for safe write retries where supported. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.CreateFlow(context.Background()).FlowInput(flowInput).Format(format).IdempotencyKey(idempotencyKey).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CreateFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateFlow`: Flow
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.CreateFlow`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateFlowRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowInput** | [**FlowInput**](FlowInput.md) |  |
+ **format** | [**ContentFormat**](ContentFormat.md) | Serialization format used for the returned specification source. | [default to &quot;JSON&quot;]
+ **idempotencyKey** | **string** | A caller-generated UUID retained for safe write retries where supported. |
+
+### Return type
+
+[**Flow**](Flow.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## DeleteFlow
+
+> DeleteFlow(ctx).FlowId(flowId).Execute()
+
+Delete a test flow
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.FlowsAPI.DeleteFlow(context.Background()).FlowId(flowId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.DeleteFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteFlowRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowId** | **string** |  |
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetFlow
+
+> Flow GetFlow(ctx, flowId).Execute()
+
+Get a test flow
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | UUIDv7 identifier of the saved test flow.
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.GetFlow(context.Background(), flowId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.GetFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetFlow`: Flow
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.GetFlow`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**flowId** | **string** | UUIDv7 identifier of the saved test flow. |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetFlowRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**Flow**](Flow.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetFlowRun
+
+> FlowRun GetFlowRun(ctx, runId).Execute()
+
+Get a saved flow run
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.GetFlowRun(context.Background(), runId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.GetFlowRun``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetFlowRun`: FlowRun
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.GetFlowRun`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetFlowRunRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**FlowRun**](FlowRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListFlowRuns
+
+> FlowRunPage ListFlowRuns(ctx, flowId).Page(page).Size(size).Execute()
+
+List saved runs for a flow
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | UUIDv7 identifier of the saved test flow.
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 | Maximum number of results returned in one page. (optional) (default to 20)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.ListFlowRuns(context.Background(), flowId).Page(page).Size(size).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.ListFlowRuns``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListFlowRuns`: FlowRunPage
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.ListFlowRuns`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**flowId** | **string** | UUIDv7 identifier of the saved test flow. |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListFlowRunsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** | Maximum number of results returned in one page. | [default to 20]
+
+### Return type
+
+[**FlowRunPage**](FlowRunPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListFlows
+
+> FlowPage ListFlows(ctx).Page(page).Size(size).Search(search).Execute()
+
+List test flows
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 | Maximum number of results returned in one page. (optional) (default to 20)
+	search := "search_example" // string | Case-insensitive server-side search within the active project. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.ListFlows(context.Background()).Page(page).Size(size).Search(search).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.ListFlows``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListFlows`: FlowPage
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.ListFlows`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListFlowsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** | Maximum number of results returned in one page. | [default to 20]
+ **search** | **string** | Case-insensitive server-side search within the active project. |
+
+### Return type
+
+[**FlowPage**](FlowPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RunFlow
+
+> FlowRun RunFlow(ctx, flowId).Watch(watch).Execute()
+
+Run a saved flow
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | UUIDv7 identifier of the saved test flow.
+	watch := true // bool | Create a browser watch token when the flow contains visible browser steps. (optional) (default to false)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.RunFlow(context.Background(), flowId).Watch(watch).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.RunFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RunFlow`: FlowRun
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.RunFlow`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**flowId** | **string** | UUIDv7 identifier of the saved test flow. |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRunFlowRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **watch** | **bool** | Create a browser watch token when the flow contains visible browser steps. | [default to false]
+
+### Return type
+
+[**FlowRun**](FlowRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RunFlowBatch
+
+> []FlowRun RunFlowBatch(ctx).RunFlowBatchRequest(runFlowBatchRequest).Execute()
+
+Run multiple saved flows
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runFlowBatchRequest := *openapiclient.NewRunFlowBatchRequest([]string{"0197f0ab-42e7-7a31-8a9c-591a8ee54c12"}) // RunFlowBatchRequest |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.RunFlowBatch(context.Background()).RunFlowBatchRequest(runFlowBatchRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.RunFlowBatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RunFlowBatch`: []FlowRun
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.RunFlowBatch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRunFlowBatchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **runFlowBatchRequest** | [**RunFlowBatchRequest**](RunFlowBatchRequest.md) |  |
+
+### Return type
+
+[**[]FlowRun**](FlowRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## UpdateFlow
+
+> Flow UpdateFlow(ctx).FlowId(flowId).FlowInput(flowInput).Format(format).Execute()
+
+Replace a test flow
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	flowId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	flowInput := *openapiclient.NewFlowInput("Name_example", []openapiclient.FlowStepInput{*openapiclient.NewFlowStepInput("StepType_example", int32(123))}) // FlowInput |
+	format := openapiclient.ContentFormat("JSON") // ContentFormat | Serialization format used for the returned specification source. (optional) (default to "JSON")
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.UpdateFlow(context.Background()).FlowId(flowId).FlowInput(flowInput).Format(format).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.UpdateFlow``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateFlow`: Flow
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.UpdateFlow`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateFlowRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **flowId** | **string** |  |
+ **flowInput** | [**FlowInput**](FlowInput.md) |  |
+ **format** | [**ContentFormat**](ContentFormat.md) | Serialization format used for the returned specification source. | [default to &quot;JSON&quot;]
+
+### Return type
+
+[**Flow**](Flow.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+

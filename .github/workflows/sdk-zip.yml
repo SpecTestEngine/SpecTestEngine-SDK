@@ -1,0 +1,44 @@
+name: Build one SDK ZIP
+
+on:
+  workflow_dispatch:
+    inputs:
+      language:
+        description: Supported SDK language
+        required: true
+        type: choice
+        options:
+          - java
+          - typescript
+          - python
+          - csharp
+          - go
+      contract_version:
+        description: Immutable version from openapi/versions.json
+        required: true
+        default: 1.0.0-alpha.5
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build selected SDK archive
+        run: >-
+          python3 scripts/package-sdk.py
+          --language "${{ inputs.language }}"
+          --contract-version "${{ inputs.contract_version }}"
+      - name: Upload archive and SHA-256
+        uses: actions/upload-artifact@v4
+        with:
+          name: spectestengine-sdk-${{ inputs.language }}-${{ inputs.contract_version }}
+          path: |
+            artifacts/**/*.zip
+            artifacts/**/*.sha256
+          if-no-files-found: error
+          retention-days: 14

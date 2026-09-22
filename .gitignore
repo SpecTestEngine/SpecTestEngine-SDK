@@ -1,0 +1,33 @@
+.idea/
+.DS_Store
+
+# Generator and package caches
+.openapi-generator/
+.gradle/
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.sdk-build/
+facades/typescript/dist/
+facades/typescript/package-lock.json
+facades/csharp/**/bin/
+facades/csharp/**/obj/
+
+# Generated build output
+clients/java/build/
+clients/java/.gradle/
+clients/typescript/dist/
+clients/typescript/coverage/
+clients/python/build/
+clients/python/dist/
+clients/python/*.egg-info/
+clients/csharp/**/bin/
+clients/csharp/**/obj/
+
+# Local release artifacts and logs
+artifacts/
+*.log
+*.jar
+*.zip
+*.tar.gz

@@ -1,0 +1,36 @@
+
+# FlowDocumentVisualDiffCaptureRunRequest
+
+
+## Properties
+
+Name | Type
+------------ | -------------
+`stepOrderIndex` | number
+`attachmentId` | string
+
+## Example
+
+```typescript
+import type { FlowDocumentVisualDiffCaptureRunRequest } from '@spectestengine/sdk'
+
+// TODO: Update the object below with actual values
+const example = {
+  "stepOrderIndex": null,
+  "attachmentId": null,
+} satisfies FlowDocumentVisualDiffCaptureRunRequest
+
+console.log(example)
+
+// Convert the instance to a JSON string
+const exampleJSON: string = JSON.stringify(example)
+console.log(exampleJSON)
+
+// Parse the JSON string back to an object
+const exampleParsed = JSON.parse(exampleJSON) as FlowDocumentVisualDiffCaptureRunRequest
+console.log(exampleParsed)
+```
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
