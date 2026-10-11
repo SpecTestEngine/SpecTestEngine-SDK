@@ -17,6 +17,3 @@
 |**createdAt** | **OffsetDateTime** |  |  |
 |**startedAt** | **OffsetDateTime** |  |  [optional] |
 |**finishedAt** | **OffsetDateTime** |  |  [optional] |
-
-
-

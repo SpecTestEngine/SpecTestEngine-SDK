@@ -32,5 +32,3 @@ fragment_dict = fragment_instance.to_dict()
 fragment_from_dict = Fragment.from_dict(fragment_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

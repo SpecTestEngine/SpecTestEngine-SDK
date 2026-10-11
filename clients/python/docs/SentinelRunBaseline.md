@@ -34,5 +34,3 @@ sentinel_run_baseline_dict = sentinel_run_baseline_instance.to_dict()
 sentinel_run_baseline_from_dict = SentinelRunBaseline.from_dict(sentinel_run_baseline_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

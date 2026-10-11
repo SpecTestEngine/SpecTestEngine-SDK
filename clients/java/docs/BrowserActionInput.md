@@ -67,6 +67,3 @@ One persisted semantic Browser action. Replay tries only the saved selector cand
 | IGNORE | &quot;IGNORE&quot; |
 | PRESENCE | &quot;PRESENCE&quot; |
 | STRICT | &quot;STRICT&quot; |
-
-
-

@@ -40,5 +40,3 @@ sentinel_check_input_dict = sentinel_check_input_instance.to_dict()
 sentinel_check_input_from_dict = SentinelCheckInput.from_dict(sentinel_check_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

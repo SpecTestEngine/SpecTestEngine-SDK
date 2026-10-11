@@ -9,6 +9,3 @@
 |------------ | ------------- | ------------- | -------------|
 |**name** | **String** |  |  [optional] |
 |**streamingSpec** | [**StreamingDefinition**](StreamingDefinition.md) |  |  |
-
-
-

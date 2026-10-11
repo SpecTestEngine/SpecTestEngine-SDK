@@ -11,6 +11,3 @@
 |**globalVariables** | **Map&lt;String, String&gt;** |  |  [optional] |
 |**globalVariableFallbacks** | **Map&lt;String, String&gt;** |  |  [optional] |
 |**draftRequest** | [**SavedRequestInput**](SavedRequestInput.md) |  |  [optional] |
-
-
-

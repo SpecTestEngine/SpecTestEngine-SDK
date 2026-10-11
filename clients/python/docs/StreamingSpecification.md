@@ -40,5 +40,3 @@ streaming_specification_dict = streaming_specification_instance.to_dict()
 streaming_specification_from_dict = StreamingSpecification.from_dict(streaming_specification_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

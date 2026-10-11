@@ -37,5 +37,3 @@ run_batch_item_dict = run_batch_item_instance.to_dict()
 run_batch_item_from_dict = RunBatchItem.from_dict(run_batch_item_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

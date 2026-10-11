@@ -46,5 +46,3 @@ browser_visual_comparison_summary_dict = browser_visual_comparison_summary_insta
 browser_visual_comparison_summary_from_dict = BrowserVisualComparisonSummary.from_dict(browser_visual_comparison_summary_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

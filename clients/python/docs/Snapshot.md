@@ -41,5 +41,3 @@ snapshot_dict = snapshot_instance.to_dict()
 snapshot_from_dict = Snapshot.from_dict(snapshot_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

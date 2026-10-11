@@ -28,5 +28,3 @@ streaming_definition_stream_dict = streaming_definition_stream_instance.to_dict(
 streaming_definition_stream_from_dict = StreamingDefinitionStream.from_dict(streaming_definition_stream_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -30,5 +30,3 @@ streaming_limits_dict = streaming_limits_instance.to_dict()
 streaming_limits_from_dict = StreamingLimits.from_dict(streaming_limits_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -31,5 +31,3 @@ fragment_page_dict = fragment_page_instance.to_dict()
 fragment_page_from_dict = FragmentPage.from_dict(fragment_page_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

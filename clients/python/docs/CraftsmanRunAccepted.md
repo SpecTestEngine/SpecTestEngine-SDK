@@ -26,5 +26,3 @@ craftsman_run_accepted_dict = craftsman_run_accepted_instance.to_dict()
 craftsman_run_accepted_from_dict = CraftsmanRunAccepted.from_dict(craftsman_run_accepted_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

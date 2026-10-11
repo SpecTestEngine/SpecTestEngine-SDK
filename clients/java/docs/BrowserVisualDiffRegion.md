@@ -16,6 +16,3 @@
 |**topRatio** | **Double** |  |  |
 |**widthRatio** | **Double** |  |  |
 |**heightRatio** | **Double** |  |  |
-
-
-

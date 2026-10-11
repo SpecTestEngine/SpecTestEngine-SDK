@@ -13,6 +13,3 @@
 |**maxBytes** | **Long** |  |  |
 |**maxEventBytes** | **Long** |  |  |
 |**maxConcurrentRunsPerCompany** | **Integer** |  |  |
-
-
-

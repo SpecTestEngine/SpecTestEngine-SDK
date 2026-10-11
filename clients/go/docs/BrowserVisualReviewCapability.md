@@ -104,5 +104,3 @@ HasDisabledReason returns a boolean if a field has been set.
 UnsetDisabledReason ensures that no value is present for DisabledReason, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

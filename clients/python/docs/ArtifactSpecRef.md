@@ -26,5 +26,3 @@ artifact_spec_ref_dict = artifact_spec_ref_instance.to_dict()
 artifact_spec_ref_from_dict = ArtifactSpecRef.from_dict(artifact_spec_ref_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

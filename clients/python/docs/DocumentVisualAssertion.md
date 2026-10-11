@@ -30,5 +30,3 @@ document_visual_assertion_dict = document_visual_assertion_instance.to_dict()
 document_visual_assertion_from_dict = DocumentVisualAssertion.from_dict(document_visual_assertion_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

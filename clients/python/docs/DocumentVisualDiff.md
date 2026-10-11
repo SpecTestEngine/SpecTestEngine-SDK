@@ -43,5 +43,3 @@ document_visual_diff_dict = document_visual_diff_instance.to_dict()
 document_visual_diff_from_dict = DocumentVisualDiff.from_dict(document_visual_diff_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

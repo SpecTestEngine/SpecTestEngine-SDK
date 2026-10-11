@@ -10,6 +10,3 @@
 |**format** | **ContentFormat** |  |  |
 |**rawSpec** | **String** |  |  |
 |**compiledSpec** | **Map&lt;String, Object&gt;** |  |  |
-
-
-

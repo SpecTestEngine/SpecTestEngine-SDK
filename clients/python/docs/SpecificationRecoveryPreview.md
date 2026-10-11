@@ -34,5 +34,3 @@ specification_recovery_preview_dict = specification_recovery_preview_instance.to
 specification_recovery_preview_from_dict = SpecificationRecoveryPreview.from_dict(specification_recovery_preview_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

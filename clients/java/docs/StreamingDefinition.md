@@ -15,6 +15,3 @@ Executable SpecTestEngine-like bounded Streaming DSL.
 |**exclusions** | **List&lt;String&gt;** |  |  [optional] |
 |**redactions** | **List&lt;String&gt;** |  |  [optional] |
 |**observationOnly** | **Boolean** |  |  [optional] |
-
-
-

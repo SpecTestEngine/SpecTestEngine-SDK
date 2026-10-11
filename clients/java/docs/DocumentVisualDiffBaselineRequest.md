@@ -18,6 +18,3 @@
 |---- | -----|
 | EXACT | &quot;EXACT&quot; |
 | VISUAL_EXCLUSIONS | &quot;VISUAL_EXCLUSIONS&quot; |
-
-
-

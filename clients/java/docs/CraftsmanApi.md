@@ -2487,5 +2487,3 @@ ApiResponse<[**DocumentAssetReference**](DocumentAssetReference.md)>
 | **_file** | **File** |  | |
 | **fieldName** | **String** |  | [optional] [default to file] |
 | **contentId** | **String** |  | [optional] |
-
-

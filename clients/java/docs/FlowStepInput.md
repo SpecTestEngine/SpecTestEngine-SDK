@@ -27,6 +27,3 @@
 | API_SPEC | &quot;API_SPEC&quot; |
 | UI_MACRO | &quot;UI_MACRO&quot; |
 | BROWSER_ACTION | &quot;BROWSER_ACTION&quot; |
-
-
-

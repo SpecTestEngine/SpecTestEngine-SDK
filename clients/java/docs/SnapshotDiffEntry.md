@@ -18,6 +18,3 @@
 |**leftBehaviorHash** | **String** |  |  [optional] |
 |**rightBehaviorHash** | **String** |  |  [optional] |
 |**details** | **String** |  |  [optional] |
-
-
-

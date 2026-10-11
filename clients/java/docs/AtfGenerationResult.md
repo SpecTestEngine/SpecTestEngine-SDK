@@ -14,6 +14,3 @@
 |**manifest** | **Map&lt;String, Object&gt;** |  |  |
 |**files** | [**List&lt;AtfGenerationResultFilesInner&gt;**](AtfGenerationResultFilesInner.md) |  |  |
 |**notes** | **List&lt;Map&lt;String, Object&gt;&gt;** |  |  |
-
-
-

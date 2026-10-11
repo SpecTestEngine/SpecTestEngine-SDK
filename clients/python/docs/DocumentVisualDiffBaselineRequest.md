@@ -26,5 +26,3 @@ document_visual_diff_baseline_request_dict = document_visual_diff_baseline_reque
 document_visual_diff_baseline_request_from_dict = DocumentVisualDiffBaselineRequest.from_dict(document_visual_diff_baseline_request_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

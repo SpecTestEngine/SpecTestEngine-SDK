@@ -2634,5 +2634,3 @@ ApiResponse<[**StreamingDraftValidation**](StreamingDraftValidation.md)>
 |     Name      |    Type       | Description   |     Notes    |
 | ------------- | ------------- | ------------- | -------------|
 | **body** | **String** |  | |
-
-

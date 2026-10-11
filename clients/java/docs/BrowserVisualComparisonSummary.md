@@ -29,6 +29,3 @@ Immutable visual evidence embedded in a Flow run or Snapshot behavior payload. E
 |**rootComparisonId** | **UUID** |  |  [optional] |
 |**excludedRegions** | [**List&lt;BrowserVisualExcludedRegion&gt;**](BrowserVisualExcludedRegion.md) |  |  [optional] |
 |**changedExcludedRegionIndexes** | **List&lt;Integer&gt;** |  |  [optional] |
-
-
-

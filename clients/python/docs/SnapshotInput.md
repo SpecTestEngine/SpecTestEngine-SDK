@@ -36,5 +36,3 @@ snapshot_input_dict = snapshot_input_instance.to_dict()
 snapshot_input_from_dict = SnapshotInput.from_dict(snapshot_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

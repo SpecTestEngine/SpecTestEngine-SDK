@@ -12,6 +12,3 @@
 |**steps** | [**List&lt;FlowStepInput&gt;**](FlowStepInput.md) |  |  |
 |**globalVariableFallbacks** | **Map&lt;String, String&gt;** |  |  [optional] |
 |**browserSession** | [**BrowserSessionInput**](BrowserSessionInput.md) |  |  [optional] |
-
-
-

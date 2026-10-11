@@ -39,5 +39,3 @@ browser_visual_assertion_dict = browser_visual_assertion_instance.to_dict()
 browser_visual_assertion_from_dict = BrowserVisualAssertion.from_dict(browser_visual_assertion_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

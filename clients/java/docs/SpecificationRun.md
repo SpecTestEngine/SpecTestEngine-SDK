@@ -19,6 +19,3 @@
 |**format** | **ContentFormat** |  |  [optional] |
 |**testResultLog** | **Map&lt;String, Object&gt;** |  |  |
 |**rawSpec** | **String** |  |  |
-
-
-

@@ -31,5 +31,3 @@ sentinel_check_page_dict = sentinel_check_page_instance.to_dict()
 sentinel_check_page_from_dict = SentinelCheckPage.from_dict(sentinel_check_page_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

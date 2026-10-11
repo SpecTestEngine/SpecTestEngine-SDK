@@ -32,5 +32,3 @@ request_workspace_dict = request_workspace_instance.to_dict()
 request_workspace_from_dict = RequestWorkspace.from_dict(request_workspace_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

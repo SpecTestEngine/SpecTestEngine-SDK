@@ -10,6 +10,3 @@
 |**id** | **String** |  |  |
 |**expectedAttachmentHash** | **String** |  |  |
 |**visualAssertion** | [**DocumentVisualAssertion**](DocumentVisualAssertion.md) |  |  [optional] |
-
-
-

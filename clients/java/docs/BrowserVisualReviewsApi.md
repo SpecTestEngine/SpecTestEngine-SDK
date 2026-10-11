@@ -845,5 +845,3 @@ ApiResponse<[**BrowserVisualComparison**](BrowserVisualComparison.md)>
 | ------------- | ------------- | ------------- | -------------|
 | **comparisonId** | **UUID** | Identifier of an immutable Browser visual comparison generation. | |
 | **browserVisualPromoteBaselineRequest** | [**BrowserVisualPromoteBaselineRequest**](BrowserVisualPromoteBaselineRequest.md) |  | |
-
-

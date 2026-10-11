@@ -14,6 +14,3 @@
 |**totalElements** | **Long** |  |  |
 |**totalPages** | **Integer** |  |  |
 |**complete** | **Boolean** |  |  |
-
-
-

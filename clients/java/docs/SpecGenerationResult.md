@@ -19,6 +19,3 @@
 | POSITIVE | &quot;POSITIVE&quot; |
 | NEGATIVE | &quot;NEGATIVE&quot; |
 | DUPLICATE | &quot;DUPLICATE&quot; |
-
-
-

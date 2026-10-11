@@ -15,6 +15,3 @@
 |**generatedFlowScenariosCount** | **Integer** |  |  [optional] |
 |**generatedFlowScenarios** | [**List&lt;FlowInput&gt;**](FlowInput.md) |  |  [optional] |
 |**coverage** | **Map&lt;String, Object&gt;** |  |  [optional] |
-
-
-

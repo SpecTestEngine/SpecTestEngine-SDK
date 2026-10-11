@@ -1642,5 +1642,3 @@ ApiResponse<[**Fragment**](Fragment.md)>
 | ------------- | ------------- | ------------- | -------------|
 | **fragmentId** | **UUID** |  | |
 | **fragmentInput** | [**FragmentInput**](FragmentInput.md) |  | |
-
-

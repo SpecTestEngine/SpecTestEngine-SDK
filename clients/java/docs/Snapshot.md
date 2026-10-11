@@ -24,6 +24,3 @@
 |**flows** | [**List&lt;SnapshotItem&gt;**](SnapshotItem.md) | Captured specification, UI macro, and flow evidence retained by the snapshot. |  |
 |**createdAt** | **OffsetDateTime** |  |  |
 |**approvedAt** | **OffsetDateTime** |  |  [optional] |
-
-
-

@@ -33,6 +33,3 @@ Immutable visual comparison generation. Baseline promotion creates a new baselin
 |**excludedRegions** | [**List&lt;BrowserVisualExcludedRegion&gt;**](BrowserVisualExcludedRegion.md) |  |  |
 |**changedExcludedRegionIndexes** | **Set&lt;Integer&gt;** |  |  |
 |**reviewCapabilities** | [**BrowserVisualReviewCapabilities**](BrowserVisualReviewCapabilities.md) |  |  |
-
-
-

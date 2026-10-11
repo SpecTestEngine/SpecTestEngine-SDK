@@ -22,4 +22,3 @@ Name | Type | Description | Notes
 **CooldownMs** | **long** |  | [optional] [default to 300000]
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

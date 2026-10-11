@@ -25,6 +25,3 @@
 | Name | Value |
 |---- | -----|
 | ATF_PROJECT | &quot;ATF_PROJECT&quot; |
-
-
-

@@ -6,11 +6,16 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CaptureFlowStepAttachmentVisualDiff**](FlowsAPI.md#CaptureFlowStepAttachmentVisualDiff) | **Post** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
 [**CreateFlow**](FlowsAPI.md#CreateFlow) | **Post** /test/flow/create | Create a test flow
+[**CreateFlowRecovery**](FlowsAPI.md#CreateFlowRecovery) | **Post** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies
 [**DeleteFlow**](FlowsAPI.md#DeleteFlow) | **Delete** /test/flow/by-id | Delete a test flow
 [**GetFlow**](FlowsAPI.md#GetFlow) | **Get** /test/flow/by-id/{flowId} | Get a test flow
+[**GetFlowRecoveryDependency**](FlowsAPI.md#GetFlowRecoveryDependency) | **Get** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
+[**GetFlowRecoveryOperation**](FlowsAPI.md#GetFlowRecoveryOperation) | **Get** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes
 [**GetFlowRun**](FlowsAPI.md#GetFlowRun) | **Get** /test/flow/run/saved/{runId} | Get a saved flow run
+[**ListFlowRecoveryDependencies**](FlowsAPI.md#ListFlowRecoveryDependencies) | **Get** /test/flow/run/saved/{runId}/recovery/dependencies | List historical dependency versions for Flow recovery
 [**ListFlowRuns**](FlowsAPI.md#ListFlowRuns) | **Get** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow
 [**ListFlows**](FlowsAPI.md#ListFlows) | **Get** /test/flow/page | List test flows
+[**PreviewFlowRecovery**](FlowsAPI.md#PreviewFlowRecovery) | **Get** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
 [**RunFlow**](FlowsAPI.md#RunFlow) | **Post** /test/flow/run/by-id/{flowId} | Run a saved flow
 [**RunFlowBatch**](FlowsAPI.md#RunFlowBatch) | **Post** /test/flow/run/batch | Run multiple saved flows
 [**UpdateFlow**](FlowsAPI.md#UpdateFlow) | **Put** /test/flow/by-id | Replace a test flow
@@ -157,6 +162,80 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## CreateFlowRecovery
+
+> FlowRecoveryOperation CreateFlowRecovery(ctx, runId).IdempotencyKey(idempotencyKey).FlowRecoveryInput(flowRecoveryInput).Execute()
+
+Recover a saved run as a new Flow and new dependency copies
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	idempotencyKey := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	flowRecoveryInput := *openapiclient.NewFlowRecoveryInput("ManifestHash_example", "Name_example", map[string]interface{}{"key": interface{}(123)}) // FlowRecoveryInput |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.CreateFlowRecovery(context.Background(), runId).IdempotencyKey(idempotencyKey).FlowRecoveryInput(flowRecoveryInput).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CreateFlowRecovery``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateFlowRecovery`: FlowRecoveryOperation
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.CreateFlowRecovery`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateFlowRecoveryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **idempotencyKey** | **string** |  |
+ **flowRecoveryInput** | [**FlowRecoveryInput**](FlowRecoveryInput.md) |  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## DeleteFlow
 
 > DeleteFlow(ctx).FlowId(flowId).Execute()
@@ -287,6 +366,145 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetFlowRecoveryDependency
+
+> FlowRecoveryDependencyDetail GetFlowRecoveryDependency(ctx, runId, dependencyKey).Execute()
+
+Inspect one retained safe dependency definition
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	dependencyKey := "dependencyKey_example" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.GetFlowRecoveryDependency(context.Background(), runId, dependencyKey).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.GetFlowRecoveryDependency``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetFlowRecoveryDependency`: FlowRecoveryDependencyDetail
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.GetFlowRecoveryDependency`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+**dependencyKey** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetFlowRecoveryDependencyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**FlowRecoveryDependencyDetail**](FlowRecoveryDependencyDetail.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetFlowRecoveryOperation
+
+> FlowRecoveryOperation GetFlowRecoveryOperation(ctx, operationId).Execute()
+
+Read a Flow recovery outcome without performing writes
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	operationId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.GetFlowRecoveryOperation(context.Background(), operationId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.GetFlowRecoveryOperation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetFlowRecoveryOperation`: FlowRecoveryOperation
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.GetFlowRecoveryOperation`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**operationId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetFlowRecoveryOperationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetFlowRun
 
 > FlowRun GetFlowRun(ctx, runId).Execute()
@@ -340,6 +558,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FlowRun**](FlowRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListFlowRecoveryDependencies
+
+> FlowRecoveryDependencyPage ListFlowRecoveryDependencies(ctx, runId).Page(page).Size(size).Execute()
+
+List historical dependency versions for Flow recovery
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 |  (optional) (default to 20)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.ListFlowRecoveryDependencies(context.Background(), runId).Page(page).Size(size).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.ListFlowRecoveryDependencies``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListFlowRecoveryDependencies`: FlowRecoveryDependencyPage
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.ListFlowRecoveryDependencies`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListFlowRecoveryDependenciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** |  | [default to 20]
+
+### Return type
+
+[**FlowRecoveryDependencyPage**](FlowRecoveryDependencyPage.md)
 
 ### Authorization
 
@@ -480,6 +770,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FlowPage**](FlowPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PreviewFlowRecovery
+
+> FlowRecoveryPreview PreviewFlowRecovery(ctx, runId).Execute()
+
+Preview an independent Flow recovery from a saved run
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.PreviewFlowRecovery(context.Background(), runId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.PreviewFlowRecovery``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `PreviewFlowRecovery`: FlowRecoveryPreview
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.PreviewFlowRecovery`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPreviewFlowRecoveryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**FlowRecoveryPreview**](FlowRecoveryPreview.md)
 
 ### Authorization
 
@@ -695,4 +1055,3 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to README]](../README.md)
-

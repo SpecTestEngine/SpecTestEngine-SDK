@@ -26,5 +26,3 @@ craftsman_streaming_run_input_dict = craftsman_streaming_run_input_instance.to_d
 craftsman_streaming_run_input_from_dict = CraftsmanStreamingRunInput.from_dict(craftsman_streaming_run_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

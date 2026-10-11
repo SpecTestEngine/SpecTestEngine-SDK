@@ -32,6 +32,3 @@
 |---- | -----|
 | GRADLE | &quot;GRADLE&quot; |
 | MAVEN | &quot;MAVEN&quot; |
-
-
-

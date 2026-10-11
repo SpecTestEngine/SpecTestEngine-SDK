@@ -10,6 +10,3 @@
 |**useCurrentAsNewBaseline** | [**BrowserVisualReviewCapability**](BrowserVisualReviewCapability.md) |  |  |
 |**excludeAreaAndRecompare** | [**BrowserVisualReviewCapability**](BrowserVisualReviewCapability.md) |  |  |
 |**keepAsRegression** | [**BrowserVisualReviewCapability**](BrowserVisualReviewCapability.md) |  |  |
-
-
-

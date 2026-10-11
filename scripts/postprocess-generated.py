@@ -148,6 +148,11 @@ def clean_document_visual_generation_docs(output: Path) -> None:
             path.write_text(updated, encoding="utf-8")
 
 
+def normalize_generated_whitespace(content: str) -> str:
+    updated = re.sub(r"[ \t]+(?=\r?$)", "", content, flags=re.MULTILINE)
+    return re.sub(r"(?:\r?\n){2,}\Z", "\n", updated)
+
+
 def strip_trailing_whitespace(output: Path) -> None:
     """Normalize generator whitespace so output is identical across local and CI runs."""
     for path in output.rglob("*"):
@@ -157,7 +162,7 @@ def strip_trailing_whitespace(output: Path) -> None:
             content = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
-        updated = re.sub(r"[ \t]+(?=\r?$)", "", content, flags=re.MULTILINE)
+        updated = normalize_generated_whitespace(content)
         if updated != content:
             path.write_text(updated, encoding="utf-8")
 

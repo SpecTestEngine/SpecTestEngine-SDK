@@ -2177,5 +2177,3 @@ ApiResponse<[**SentinelCheck**](SentinelCheck.md)>
 | ------------- | ------------- | ------------- | -------------|
 | **checkId** | **UUID** | UUIDv7 identifier of the Sentinel check. | |
 | **sentinelCheckInput** | [**SentinelCheckInput**](SentinelCheckInput.md) |  | |
-
-

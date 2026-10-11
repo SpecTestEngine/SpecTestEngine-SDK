@@ -30,5 +30,3 @@ page_metadata_dict = page_metadata_instance.to_dict()
 page_metadata_from_dict = PageMetadata.from_dict(page_metadata_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

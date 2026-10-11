@@ -10,6 +10,3 @@
 |**specType** | **SpecType** |  |  |
 |**streamingTransport** | **StreamingTransport** |  |  [optional] |
 |**fragmentIds** | **List&lt;UUID&gt;** |  |  |
-
-
-

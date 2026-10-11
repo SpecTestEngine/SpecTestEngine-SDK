@@ -22,6 +22,3 @@
 | TABLET | &quot;TABLET&quot; |
 | DESKTOP | &quot;DESKTOP&quot; |
 | CUSTOM | &quot;CUSTOM&quot; |
-
-
-

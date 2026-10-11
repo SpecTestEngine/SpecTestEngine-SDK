@@ -26,6 +26,3 @@ Approved expectations and recorded candidates are separate. Body/path values rem
 |**expectedBodyPaths** | **List&lt;Map&lt;String, Object&gt;&gt;** |  |  [optional] |
 |**candidateBodyPaths** | **Map&lt;String, Object&gt;** |  |  [optional] |
 |**excludedBodyFields** | **List&lt;String&gt;** |  |  [optional] |
-
-
-

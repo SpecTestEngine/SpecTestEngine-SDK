@@ -27,5 +27,3 @@ fragment_draft_assembly_dict = fragment_draft_assembly_instance.to_dict()
 fragment_draft_assembly_from_dict = FragmentDraftAssembly.from_dict(fragment_draft_assembly_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

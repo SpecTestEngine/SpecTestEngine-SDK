@@ -31,5 +31,3 @@ atf_generation_result_dict = atf_generation_result_instance.to_dict()
 atf_generation_result_from_dict = AtfGenerationResult.from_dict(atf_generation_result_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

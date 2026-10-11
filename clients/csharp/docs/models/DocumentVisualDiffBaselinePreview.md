@@ -18,4 +18,3 @@ Name | Type | Description | Notes
 **ExpectedAttachmentFingerprint** | **string** | Serialized deterministic fingerprint for a new specification revision. | [optional]
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

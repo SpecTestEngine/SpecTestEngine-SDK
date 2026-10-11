@@ -29,6 +29,3 @@ Persistent masked-render assertion. Protocol engines contact Browser Engine only
 | Name | Value |
 |---- | -----|
 | MASKED_RENDER_SHA256_V1 | &quot;MASKED_RENDER_SHA256_V1&quot; |
-
-
-

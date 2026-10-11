@@ -26,5 +26,3 @@ browser_visual_promote_baseline_request_dict = browser_visual_promote_baseline_r
 browser_visual_promote_baseline_request_from_dict = BrowserVisualPromoteBaselineRequest.from_dict(browser_visual_promote_baseline_request_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -27,5 +27,3 @@ atf_generation_result_files_inner_dict = atf_generation_result_files_inner_insta
 atf_generation_result_files_inner_from_dict = AtfGenerationResultFilesInner.from_dict(atf_generation_result_files_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

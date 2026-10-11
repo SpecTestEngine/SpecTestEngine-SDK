@@ -31,5 +31,3 @@ run_batch_page_dict = run_batch_page_instance.to_dict()
 run_batch_page_from_dict = RunBatchPage.from_dict(run_batch_page_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

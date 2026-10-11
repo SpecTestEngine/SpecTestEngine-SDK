@@ -27,5 +27,3 @@ artifact_selection_dict = artifact_selection_instance.to_dict()
 artifact_selection_from_dict = ArtifactSelection.from_dict(artifact_selection_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

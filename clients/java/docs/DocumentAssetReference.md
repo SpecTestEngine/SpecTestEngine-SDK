@@ -15,6 +15,3 @@
 |**objectKey** | **String** |  |  |
 |**fieldName** | **String** |  |  |
 |**contentId** | **String** |  |  [optional] |
-
-
-

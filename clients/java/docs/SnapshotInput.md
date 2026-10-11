@@ -19,6 +19,3 @@
 |**backendCommit** | **String** |  |  [optional] |
 |**frontendCommit** | **String** |  |  [optional] |
 |**createdBy** | **String** |  |  [optional] |
-
-
-

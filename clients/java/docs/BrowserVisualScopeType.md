@@ -10,6 +10,3 @@
 * `ELEMENT` (value: `"ELEMENT"`)
 
 * `REGION` (value: `"REGION"`)
-
-
-

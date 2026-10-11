@@ -4,6 +4,7 @@ set -eu
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 
 "$ROOT_DIR/scripts/validate.sh"
+python3 -m unittest discover -s "$ROOT_DIR/scripts/tests" -p 'test_generated_formatting.py'
 
 if [ -d "$ROOT_DIR/clients/java" ]; then
   (cd "$ROOT_DIR/clients/java" && ./gradlew test)
@@ -12,6 +13,7 @@ fi
 if [ -f "$ROOT_DIR/clients/typescript/package.json" ]; then
   (cd "$ROOT_DIR/clients/typescript" && npm install --ignore-scripts --package-lock=false && npm run build)
   node --test "$ROOT_DIR/scripts/tests/browser-contract.test.mjs"
+  node --test "$ROOT_DIR/scripts/tests/flow-recovery-contract.test.mjs"
 fi
 
 if [ -f "$ROOT_DIR/clients/python/pyproject.toml" ]; then

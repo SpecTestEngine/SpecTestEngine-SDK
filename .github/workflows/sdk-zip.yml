@@ -16,7 +16,7 @@ on:
       contract_version:
         description: Immutable version from openapi/versions.json
         required: true
-        default: 1.0.0-alpha.5
+        default: 1.0.0-alpha.6
         type: string
 
 permissions:

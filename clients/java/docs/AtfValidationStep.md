@@ -20,6 +20,3 @@
 |---- | -----|
 | PASS | &quot;PASS&quot; |
 | FAIL | &quot;FAIL&quot; |
-
-
-

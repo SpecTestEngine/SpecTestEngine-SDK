@@ -14,4 +14,3 @@ from spectestengine_sdk.api.soap_specifications_api import SOAPSpecificationsApi
 from spectestengine_sdk.api.sentinel_api import SentinelApi
 from spectestengine_sdk.api.snapshots_api import SnapshotsApi
 from spectestengine_sdk.api.streaming_specifications_api import StreamingSpecificationsApi
-

@@ -198,4 +198,3 @@ The uploaded PDF or image is rendered in memory and discarded. Only encrypted pa
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
-

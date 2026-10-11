@@ -30,5 +30,3 @@ streaming_run_accepted_dict = streaming_run_accepted_instance.to_dict()
 streaming_run_accepted_from_dict = StreamingRunAccepted.from_dict(streaming_run_accepted_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

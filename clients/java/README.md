@@ -2,7 +2,7 @@
 
 SpecTestEngine Public API
 
-- API version: 1.0.0-alpha.5
+- API version: 1.0.0-alpha.6
 
 - Generator version: 7.22.0
 
@@ -186,16 +186,26 @@ Class | Method | HTTP request | Description
 *FlowsApi* | [**captureFlowStepAttachmentVisualDiffWithHttpInfo**](docs/FlowsApi.md#captureFlowStepAttachmentVisualDiffWithHttpInfo) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
 *FlowsApi* | [**createFlow**](docs/FlowsApi.md#createFlow) | **POST** /test/flow/create | Create a test flow
 *FlowsApi* | [**createFlowWithHttpInfo**](docs/FlowsApi.md#createFlowWithHttpInfo) | **POST** /test/flow/create | Create a test flow
+*FlowsApi* | [**createFlowRecovery**](docs/FlowsApi.md#createFlowRecovery) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies
+*FlowsApi* | [**createFlowRecoveryWithHttpInfo**](docs/FlowsApi.md#createFlowRecoveryWithHttpInfo) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies
 *FlowsApi* | [**deleteFlow**](docs/FlowsApi.md#deleteFlow) | **DELETE** /test/flow/by-id | Delete a test flow
 *FlowsApi* | [**deleteFlowWithHttpInfo**](docs/FlowsApi.md#deleteFlowWithHttpInfo) | **DELETE** /test/flow/by-id | Delete a test flow
 *FlowsApi* | [**getFlow**](docs/FlowsApi.md#getFlow) | **GET** /test/flow/by-id/{flowId} | Get a test flow
 *FlowsApi* | [**getFlowWithHttpInfo**](docs/FlowsApi.md#getFlowWithHttpInfo) | **GET** /test/flow/by-id/{flowId} | Get a test flow
+*FlowsApi* | [**getFlowRecoveryDependency**](docs/FlowsApi.md#getFlowRecoveryDependency) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
+*FlowsApi* | [**getFlowRecoveryDependencyWithHttpInfo**](docs/FlowsApi.md#getFlowRecoveryDependencyWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
+*FlowsApi* | [**getFlowRecoveryOperation**](docs/FlowsApi.md#getFlowRecoveryOperation) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes
+*FlowsApi* | [**getFlowRecoveryOperationWithHttpInfo**](docs/FlowsApi.md#getFlowRecoveryOperationWithHttpInfo) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes
 *FlowsApi* | [**getFlowRun**](docs/FlowsApi.md#getFlowRun) | **GET** /test/flow/run/saved/{runId} | Get a saved flow run
 *FlowsApi* | [**getFlowRunWithHttpInfo**](docs/FlowsApi.md#getFlowRunWithHttpInfo) | **GET** /test/flow/run/saved/{runId} | Get a saved flow run
+*FlowsApi* | [**listFlowRecoveryDependencies**](docs/FlowsApi.md#listFlowRecoveryDependencies) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies | List historical dependency versions for Flow recovery
+*FlowsApi* | [**listFlowRecoveryDependenciesWithHttpInfo**](docs/FlowsApi.md#listFlowRecoveryDependenciesWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies | List historical dependency versions for Flow recovery
 *FlowsApi* | [**listFlowRuns**](docs/FlowsApi.md#listFlowRuns) | **GET** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow
 *FlowsApi* | [**listFlowRunsWithHttpInfo**](docs/FlowsApi.md#listFlowRunsWithHttpInfo) | **GET** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow
 *FlowsApi* | [**listFlows**](docs/FlowsApi.md#listFlows) | **GET** /test/flow/page | List test flows
 *FlowsApi* | [**listFlowsWithHttpInfo**](docs/FlowsApi.md#listFlowsWithHttpInfo) | **GET** /test/flow/page | List test flows
+*FlowsApi* | [**previewFlowRecovery**](docs/FlowsApi.md#previewFlowRecovery) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
+*FlowsApi* | [**previewFlowRecoveryWithHttpInfo**](docs/FlowsApi.md#previewFlowRecoveryWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
 *FlowsApi* | [**runFlow**](docs/FlowsApi.md#runFlow) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow
 *FlowsApi* | [**runFlowWithHttpInfo**](docs/FlowsApi.md#runFlowWithHttpInfo) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow
 *FlowsApi* | [**runFlowBatch**](docs/FlowsApi.md#runFlowBatch) | **POST** /test/flow/run/batch | Run multiple saved flows
@@ -465,6 +475,15 @@ Class | Method | HTTP request | Description
  - [FlowDocumentVisualDiffCaptureRunRequest](docs/FlowDocumentVisualDiffCaptureRunRequest.md)
  - [FlowInput](docs/FlowInput.md)
  - [FlowPage](docs/FlowPage.md)
+ - [FlowRecoveryBinding](docs/FlowRecoveryBinding.md)
+ - [FlowRecoveryDependency](docs/FlowRecoveryDependency.md)
+ - [FlowRecoveryDependencyDetail](docs/FlowRecoveryDependencyDetail.md)
+ - [FlowRecoveryDependencyPage](docs/FlowRecoveryDependencyPage.md)
+ - [FlowRecoveryHistoricalDefinition](docs/FlowRecoveryHistoricalDefinition.md)
+ - [FlowRecoveryInput](docs/FlowRecoveryInput.md)
+ - [FlowRecoveryOperation](docs/FlowRecoveryOperation.md)
+ - [FlowRecoveryPreview](docs/FlowRecoveryPreview.md)
+ - [FlowRecoveryProjection](docs/FlowRecoveryProjection.md)
  - [FlowRun](docs/FlowRun.md)
  - [FlowRunPage](docs/FlowRunPage.md)
  - [FlowRunStep](docs/FlowRunStep.md)
@@ -576,4 +595,3 @@ However, the instances of the api clients created from the `ApiClient` are threa
 ## Author
 
 support@ste.software
-

@@ -15,6 +15,3 @@
 |**content** | **Map&lt;String, Object&gt;** |  |  |
 |**fragmentId** | **UUID** | A UUIDv7 identifier. Treat identifiers as opaque values. |  |
 |**createdAt** | **OffsetDateTime** |  |  |
-
-
-

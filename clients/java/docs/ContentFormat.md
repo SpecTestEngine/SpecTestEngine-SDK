@@ -10,6 +10,3 @@
 * `YAML` (value: `"YAML"`)
 
 * `XML` (value: `"XML"`)
-
-
-

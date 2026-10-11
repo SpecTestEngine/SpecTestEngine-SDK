@@ -15,6 +15,3 @@
 |**overallTestStatus** | **String** |  |  |
 |**startedAt** | **OffsetDateTime** |  |  |
 |**finishedAt** | **OffsetDateTime** |  |  |
-
-
-

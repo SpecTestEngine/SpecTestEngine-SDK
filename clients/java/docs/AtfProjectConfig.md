@@ -78,6 +78,3 @@
 |---- | -----|
 | WARN | &quot;WARN&quot; |
 | FAIL | &quot;FAIL&quot; |
-
-
-

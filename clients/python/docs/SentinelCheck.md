@@ -48,5 +48,3 @@ sentinel_check_dict = sentinel_check_instance.to_dict()
 sentinel_check_from_dict = SentinelCheck.from_dict(sentinel_check_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

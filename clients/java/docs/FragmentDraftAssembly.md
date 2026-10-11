@@ -10,6 +10,3 @@
 |**specType** | **SpecType** |  |  |
 |**streamingTransport** | **StreamingTransport** |  |  [optional] |
 |**fragments** | [**List&lt;FragmentDraftInput&gt;**](FragmentDraftInput.md) |  |  |
-
-
-

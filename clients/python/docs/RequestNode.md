@@ -32,5 +32,3 @@ request_node_dict = request_node_instance.to_dict()
 request_node_from_dict = RequestNode.from_dict(request_node_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

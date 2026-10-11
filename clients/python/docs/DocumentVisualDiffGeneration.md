@@ -37,5 +37,3 @@ document_visual_diff_generation_dict = document_visual_diff_generation_instance.
 document_visual_diff_generation_from_dict = DocumentVisualDiffGeneration.from_dict(document_visual_diff_generation_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -13,6 +13,3 @@
 |**overallTestFlowStatus** | **String** |  |  |
 |**startedAt** | **OffsetDateTime** |  |  |
 |**finishedAt** | **OffsetDateTime** |  |  |
-
-
-

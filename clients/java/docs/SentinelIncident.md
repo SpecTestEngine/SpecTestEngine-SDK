@@ -27,6 +27,3 @@
 |---- | -----|
 | OPEN | &quot;OPEN&quot; |
 | RESOLVED | &quot;RESOLVED&quot; |
-
-
-

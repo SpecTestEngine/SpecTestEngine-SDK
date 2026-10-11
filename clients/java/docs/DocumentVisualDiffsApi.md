@@ -847,5 +847,3 @@ ApiResponse<[**DocumentVisualDiff**](DocumentVisualDiff.md)>
 | **visualDiffId** | **UUID** | UUIDv7 identifier of an organization-scoped visual document diff session. | |
 | **expected** | **File** |  | |
 | **colorThreshold** | **Double** |  | [optional] [default to 24] |
-
-

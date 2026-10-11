@@ -27,5 +27,3 @@ document_attachment_assertion_baseline_dict = document_attachment_assertion_base
 document_attachment_assertion_baseline_from_dict = DocumentAttachmentAssertionBaseline.from_dict(document_attachment_assertion_baseline_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

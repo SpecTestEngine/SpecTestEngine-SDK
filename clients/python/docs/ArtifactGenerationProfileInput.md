@@ -31,5 +31,3 @@ artifact_generation_profile_input_dict = artifact_generation_profile_input_insta
 artifact_generation_profile_input_from_dict = ArtifactGenerationProfileInput.from_dict(artifact_generation_profile_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

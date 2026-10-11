@@ -32,5 +32,3 @@ specification_run_summary_dict = specification_run_summary_instance.to_dict()
 specification_run_summary_from_dict = SpecificationRunSummary.from_dict(specification_run_summary_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

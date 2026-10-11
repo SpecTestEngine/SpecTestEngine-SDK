@@ -13,6 +13,3 @@
 |**widthRatio** | **Double** |  |  |
 |**heightRatio** | **Double** |  |  |
 |**reason** | **String** |  |  [optional] |
-
-
-

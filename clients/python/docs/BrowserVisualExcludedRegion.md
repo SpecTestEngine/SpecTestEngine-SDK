@@ -30,5 +30,3 @@ browser_visual_excluded_region_dict = browser_visual_excluded_region_instance.to
 browser_visual_excluded_region_from_dict = BrowserVisualExcludedRegion.from_dict(browser_visual_excluded_region_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

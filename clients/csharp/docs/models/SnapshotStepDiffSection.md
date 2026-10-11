@@ -9,4 +9,3 @@ Name | Type | Description | Notes
 **Changed** | [**List&lt;SnapshotStepDiffGroup&gt;**](SnapshotStepDiffGroup.md) |  |
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

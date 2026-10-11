@@ -50,6 +50,3 @@
 |---- | -----|
 | FAIL_FAST | &quot;FAIL_FAST&quot; |
 | CONTINUE_ON_ERROR | &quot;CONTINUE_ON_ERROR&quot; |
-
-
-

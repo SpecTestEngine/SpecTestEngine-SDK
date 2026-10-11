@@ -29,5 +29,3 @@ snapshot_diff_dict = snapshot_diff_instance.to_dict()
 snapshot_diff_from_dict = SnapshotDiff.from_dict(snapshot_diff_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -17,6 +17,3 @@
 |**resultLog** | **String** |  |  [optional] |
 |**errorMessage** | **String** |  |  [optional] |
 |**finishedAt** | **OffsetDateTime** |  |  [optional] |
-
-
-

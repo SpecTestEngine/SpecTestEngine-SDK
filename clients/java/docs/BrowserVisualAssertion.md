@@ -22,6 +22,3 @@ Persisted visual definition. Revisions are server-owned; baseline bytes are fetc
 |**moveTolerancePx** | **Double** |  |  [optional] |
 |**bounds** | [**BrowserVisualBounds**](BrowserVisualBounds.md) |  |  [optional] |
 |**excludedRegions** | [**List&lt;BrowserVisualExcludedRegion&gt;**](BrowserVisualExcludedRegion.md) |  |  |
-
-
-

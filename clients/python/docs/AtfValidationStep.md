@@ -28,5 +28,3 @@ atf_validation_step_dict = atf_validation_step_instance.to_dict()
 atf_validation_step_from_dict = AtfValidationStep.from_dict(atf_validation_step_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

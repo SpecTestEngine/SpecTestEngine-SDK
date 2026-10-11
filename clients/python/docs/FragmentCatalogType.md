@@ -30,5 +30,3 @@ fragment_catalog_type_dict = fragment_catalog_type_instance.to_dict()
 fragment_catalog_type_from_dict = FragmentCatalogType.from_dict(fragment_catalog_type_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

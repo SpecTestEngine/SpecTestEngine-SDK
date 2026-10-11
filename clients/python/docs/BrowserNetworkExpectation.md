@@ -43,5 +43,3 @@ browser_network_expectation_dict = browser_network_expectation_instance.to_dict(
 browser_network_expectation_from_dict = BrowserNetworkExpectation.from_dict(browser_network_expectation_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

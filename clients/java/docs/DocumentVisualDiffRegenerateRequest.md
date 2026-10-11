@@ -9,6 +9,3 @@
 |------------ | ------------- | ------------- | -------------|
 |**colorThreshold** | **Double** |  |  [optional] |
 |**excludedRegions** | [**List&lt;DocumentVisualExcludedRegion&gt;**](DocumentVisualExcludedRegion.md) |  |  [optional] |
-
-
-

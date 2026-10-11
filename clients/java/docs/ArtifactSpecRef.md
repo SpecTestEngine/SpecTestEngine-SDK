@@ -19,6 +19,3 @@
 | REST | &quot;REST&quot; |
 | SOAP | &quot;SOAP&quot; |
 | GRAPHQL | &quot;GRAPHQL&quot; |
-
-
-

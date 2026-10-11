@@ -28,5 +28,3 @@ request_workspace_input_dict = request_workspace_input_instance.to_dict()
 request_workspace_input_from_dict = RequestWorkspaceInput.from_dict(request_workspace_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

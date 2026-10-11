@@ -8,4 +8,3 @@ Name | Type | Description | Notes
 **ExpectedAssertionRevision** | **long** | Current assertion revision. A stale value is rejected with HTTP 409. |
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

@@ -17,6 +17,3 @@
 |**previousRunId** | **UUID** | A UUIDv7 identifier. Treat identifiers as opaque values. |  [optional] |
 |**lastRunAt** | **OffsetDateTime** |  |  [optional] |
 |**lastRunStatus** | **String** |  |  [optional] |
-
-
-

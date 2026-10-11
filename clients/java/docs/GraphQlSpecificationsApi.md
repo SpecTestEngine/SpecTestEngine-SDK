@@ -2005,5 +2005,3 @@ ApiResponse<[**Specification**](Specification.md)>
 | **specId** | **UUID** | UUIDv7 identifier of the saved specification. | |
 | **body** | **String** |  | |
 | **description** | **String** | Optional user-facing description stored with the asset. | [optional] |
-
-

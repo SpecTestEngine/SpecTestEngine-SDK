@@ -22,6 +22,3 @@
 * `TIMED_OUT` (value: `"TIMED_OUT"`)
 
 * `CANCELLED` (value: `"CANCELLED"`)
-
-
-

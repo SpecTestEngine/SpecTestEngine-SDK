@@ -22,6 +22,3 @@
 * `BEHAVIOR_CHANGED` (value: `"BEHAVIOR_CHANGED"`)
 
 * `STABLE` (value: `"STABLE"`)
-
-
-

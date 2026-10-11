@@ -32,5 +32,3 @@ document_asset_reference_dict = document_asset_reference_instance.to_dict()
 document_asset_reference_from_dict = DocumentAssetReference.from_dict(document_asset_reference_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

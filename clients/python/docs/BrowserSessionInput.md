@@ -28,5 +28,3 @@ browser_session_input_dict = browser_session_input_instance.to_dict()
 browser_session_input_from_dict = BrowserSessionInput.from_dict(browser_session_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

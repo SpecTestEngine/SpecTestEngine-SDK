@@ -37,5 +37,3 @@ run_batch_input_dict = run_batch_input_instance.to_dict()
 run_batch_input_from_dict = RunBatchInput.from_dict(run_batch_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

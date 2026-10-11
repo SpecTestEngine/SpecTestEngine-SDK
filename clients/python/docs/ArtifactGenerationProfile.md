@@ -34,5 +34,3 @@ artifact_generation_profile_dict = artifact_generation_profile_instance.to_dict(
 artifact_generation_profile_from_dict = ArtifactGenerationProfile.from_dict(artifact_generation_profile_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -34,6 +34,3 @@
 * `SELECT_OPTION` (value: `"SELECT_OPTION"`)
 
 * `EXTRACT_TEXT` (value: `"EXTRACT_TEXT"`)
-
-
-

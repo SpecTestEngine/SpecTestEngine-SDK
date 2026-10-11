@@ -11,6 +11,3 @@
 |**SOAP** | **Long** |  |  |
 |**GRAPHQL** | **Long** |  |  |
 |**STREAMING** | **Long** |  |  |
-
-
-

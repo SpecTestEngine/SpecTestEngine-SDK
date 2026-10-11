@@ -32,5 +32,3 @@ open_api_generation_result_dict = open_api_generation_result_instance.to_dict()
 open_api_generation_result_from_dict = OpenApiGenerationResult.from_dict(open_api_generation_result_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

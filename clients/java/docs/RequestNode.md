@@ -24,6 +24,3 @@
 |---- | -----|
 | FOLDER | &quot;FOLDER&quot; |
 | REQUEST | &quot;REQUEST&quot; |
-
-
-

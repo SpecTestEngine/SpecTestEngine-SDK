@@ -27,5 +27,3 @@ streaming_draft_validation_dict = streaming_draft_validation_instance.to_dict()
 streaming_draft_validation_from_dict = StreamingDraftValidation.from_dict(streaming_draft_validation_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

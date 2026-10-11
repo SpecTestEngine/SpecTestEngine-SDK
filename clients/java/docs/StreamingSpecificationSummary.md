@@ -38,6 +38,3 @@
 | XML | &quot;XML&quot; |
 | BINARY | &quot;BINARY&quot; |
 | PROTOBUF_JSON | &quot;PROTOBUF_JSON&quot; |
-
-
-

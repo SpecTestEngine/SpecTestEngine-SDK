@@ -30,6 +30,3 @@
 | PATCH | &quot;PATCH&quot; |
 | DELETE | &quot;DELETE&quot; |
 | HEAD | &quot;HEAD&quot; |
-
-
-

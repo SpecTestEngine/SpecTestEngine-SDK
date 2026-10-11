@@ -12,6 +12,3 @@
 |**batchId** | **UUID** | A UUIDv7 identifier. Treat identifiers as opaque values. |  [optional] |
 |**entries** | [**List&lt;SnapshotDiffEntry&gt;**](SnapshotDiffEntry.md) |  |  |
 |**generatedAt** | **OffsetDateTime** |  |  |
-
-
-

@@ -503,5 +503,3 @@ ApiResponse<[**RunBatchPage**](RunBatchPage.md)>
 | **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
 | **size** | **Integer** | Maximum number of results returned in one page. | [optional] [default to 20] |
 | **search** | **String** | Case-insensitive server-side search within the active project. | [optional] |
-
-

@@ -30,5 +30,3 @@ fragment_input_dict = fragment_input_instance.to_dict()
 fragment_input_from_dict = FragmentInput.from_dict(fragment_input_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

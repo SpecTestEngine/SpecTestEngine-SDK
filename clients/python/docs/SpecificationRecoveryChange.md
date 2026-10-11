@@ -28,5 +28,3 @@ specification_recovery_change_dict = specification_recovery_change_instance.to_d
 specification_recovery_change_from_dict = SpecificationRecoveryChange.from_dict(specification_recovery_change_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

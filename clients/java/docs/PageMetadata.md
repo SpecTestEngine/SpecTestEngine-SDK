@@ -13,6 +13,3 @@
 |**totalPages** | **Integer** |  |  |
 |**first** | **Boolean** |  |  |
 |**last** | **Boolean** |  |  |
-
-
-

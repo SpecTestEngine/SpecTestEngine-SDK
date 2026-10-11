@@ -14,6 +14,3 @@
 |**failedRuns24h** | **Long** |  |  |
 |**uptime24h** | **Double** |  |  |
 |**averageLatency24h** | **Double** |  |  [optional] |
-
-
-

@@ -11,4 +11,3 @@ Name | Type | Description | Notes
 **RightBehaviorPayload** | **Object** | A JSON value whose shape depends on the captured test subject and step type. | [optional]
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

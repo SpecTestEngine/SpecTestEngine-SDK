@@ -35,5 +35,3 @@ sentinel_incident_dict = sentinel_incident_instance.to_dict()
 sentinel_incident_from_dict = SentinelIncident.from_dict(sentinel_incident_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

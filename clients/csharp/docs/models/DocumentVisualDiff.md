@@ -25,4 +25,3 @@ Name | Type | Description | Notes
 **CurrentGeneration** | [**DocumentVisualDiffGeneration**](DocumentVisualDiffGeneration.md) |  | [optional]
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

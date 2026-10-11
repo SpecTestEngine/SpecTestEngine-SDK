@@ -32,14 +32,16 @@ Typed clients and the canonical public OpenAPI contract for integrating with
 
 ### What You Can Automate
 
-The current public contract covers 134 operations across the core testing workflow:
+The current public contract covers 139 operations across the core testing workflow:
+
+See [Flow recovery](docs/FLOW-RECOVERY.md) for preview, fresh bindings, explicit creation and safe retry/readback.
 
 | Area | Typical integrations |
 |---|---|
 | REST, SOAP, GraphQL, and streaming specifications | Create executable contracts, search libraries, run saved specs, inspect run history, and recover the exact DSL content retained by a completed PASS or FAIL run |
 | Streaming testing | Validate and execute bounded WebSocket/WSS, SSE, gRPC Streaming, and MQTT DSL, poll asynchronous runs, page redacted semantic transcripts, and cancel active work |
 | Fragments | Discover the protocol-aware DSL catalog, filter and store granular blocks, compile saved or inline fragments, and save the result in the matching engine |
-| Flows | Compose API and typed browser steps with selector chains, network/visual assertions and exclusions, run one flow, or run a batch |
+| Flows | Compose API and typed browser steps, run one Flow or a batch, preview historical recovery and explicitly create an independent Flow with new dependency copies |
 | Run batches and snapshots | Collect release evidence, promote baselines, and compare definition or behavior drift |
 | Craftsman | Manage mixed-protocol request workspaces, queue HTTP or bounded Streaming sessions, poll evidence/transcripts, cancel active work, and reuse request attachments |
 | Sentinel | Create checks, queue probes, and retrieve retry and baseline evidence |
@@ -168,7 +170,7 @@ Select an immutable contract explicitly:
 ```bash
 python3 scripts/package-sdk.py \
   --language go \
-  --contract-version 1.0.0-alpha.5
+  --contract-version 1.0.0-alpha.6
 ```
 
 Use `--language all` or `make package` to build all five. Archives and `.sha256` sidecars are written

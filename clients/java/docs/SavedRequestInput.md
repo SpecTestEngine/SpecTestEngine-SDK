@@ -44,6 +44,3 @@ HTTP-shaped fields are required for REST/SOAP/GraphQL; streamingSpec is required
 | DELETE | &quot;DELETE&quot; |
 | HEAD | &quot;HEAD&quot; |
 | OPTIONS | &quot;OPTIONS&quot; |
-
-
-

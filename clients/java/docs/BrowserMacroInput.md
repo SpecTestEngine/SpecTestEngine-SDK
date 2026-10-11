@@ -13,6 +13,3 @@
 |**viewportWidth** | **Integer** |  |  [optional] |
 |**viewportHeight** | **Integer** |  |  [optional] |
 |**steps** | [**List&lt;BrowserMacroStepInput&gt;**](BrowserMacroStepInput.md) |  |  |
-
-
-

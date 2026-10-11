@@ -11,6 +11,3 @@
 |**width** | **Integer** |  |  |
 |**height** | **Integer** |  |  |
 |**maskedSha256** | **String** |  |  |
-
-
-

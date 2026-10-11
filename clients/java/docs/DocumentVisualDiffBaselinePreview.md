@@ -37,6 +37,3 @@
 |---- | -----|
 | PREVIEW | &quot;PREVIEW&quot; |
 | DRAFT_READY | &quot;DRAFT_READY&quot; |
-
-
-

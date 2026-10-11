@@ -27,5 +27,3 @@ browser_visual_review_capability_dict = browser_visual_review_capability_instanc
 browser_visual_review_capability_from_dict = BrowserVisualReviewCapability.from_dict(browser_visual_review_capability_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

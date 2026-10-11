@@ -30,5 +30,3 @@ flow_run_summary_dict = flow_run_summary_instance.to_dict()
 flow_run_summary_from_dict = FlowRunSummary.from_dict(flow_run_summary_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

@@ -11,6 +11,3 @@
 |**overview** | **List&lt;String&gt;** |  |  |
 |**definition** | [**SnapshotStepDiffSection**](SnapshotStepDiffSection.md) |  |  |
 |**behavior** | [**SnapshotStepDiffSection**](SnapshotStepDiffSection.md) |  |  |
-
-
-

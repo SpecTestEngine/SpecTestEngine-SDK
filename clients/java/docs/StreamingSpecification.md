@@ -52,6 +52,3 @@
 |---- | -----|
 | JSON | &quot;JSON&quot; |
 | YAML | &quot;YAML&quot; |
-
-
-

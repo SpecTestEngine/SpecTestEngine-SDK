@@ -20,6 +20,3 @@
 |**definitionPayload** | **Object** | A JSON value whose shape depends on the captured test subject and step type. |  [optional] |
 |**behaviorPayload** | **Object** | A JSON value whose shape depends on the captured test subject and step type. |  [optional] |
 |**recordedAt** | **OffsetDateTime** |  |  |
-
-
-

@@ -14,6 +14,3 @@
 |**first** | **Boolean** |  |  |
 |**last** | **Boolean** |  |  |
 |**items** | [**List&lt;RequestWorkspace&gt;**](RequestWorkspace.md) |  |  |
-
-
-

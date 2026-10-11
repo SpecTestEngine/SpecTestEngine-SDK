@@ -35,5 +35,3 @@ streaming_specification_summary_dict = streaming_specification_summary_instance.
 streaming_specification_summary_from_dict = StreamingSpecificationSummary.from_dict(streaming_specification_summary_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

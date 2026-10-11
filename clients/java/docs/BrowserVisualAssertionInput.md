@@ -21,6 +21,3 @@ Saved visual assertion. The existing Java comparator and thresholds are unchange
 |**excludedRegions** | [**List&lt;BrowserVisualExcludedRegion&gt;**](BrowserVisualExcludedRegion.md) |  |  [optional] |
 |**baselineScreenshotBase64** | **byte[]** | Raw baseline capture supplied during authoring; omitted from saved definition reads. |  [optional] |
 |**baselineSemanticJson** | **String** |  |  [optional] |
-
-
-

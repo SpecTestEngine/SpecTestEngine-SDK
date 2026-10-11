@@ -29,6 +29,3 @@ Saved Flow read model. Browser action fields are flattened on each step; create/
 | TABLET | &quot;TABLET&quot; |
 | DESKTOP | &quot;DESKTOP&quot; |
 | CUSTOM | &quot;CUSTOM&quot; |
-
-
-

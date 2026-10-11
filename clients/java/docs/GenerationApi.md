@@ -2480,5 +2480,3 @@ ApiResponse<[**AtfValidationResult**](AtfValidationResult.md)>
 |     Name      |    Type       | Description   |     Notes    |
 | ------------- | ------------- | ------------- | -------------|
 | **atfGenerationInput** | [**AtfGenerationInput**](AtfGenerationInput.md) |  | |
-
-

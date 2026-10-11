@@ -33,5 +33,3 @@ streaming_capabilities_dict = streaming_capabilities_instance.to_dict()
 streaming_capabilities_from_dict = StreamingCapabilities.from_dict(streaming_capabilities_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

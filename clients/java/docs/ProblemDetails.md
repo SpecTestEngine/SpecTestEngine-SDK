@@ -16,6 +16,3 @@
 |**translationKey** | **String** |  |  [optional] |
 |**requestId** | **String** |  |  [optional] |
 |**violations** | **List&lt;Map&lt;String, Object&gt;&gt;** |  |  [optional] |
-
-
-

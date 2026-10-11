@@ -13,6 +13,3 @@
 |**streamingTransport** | **StreamingTransport** |  |  [optional] |
 |**type** | **FragmentType** |  |  |
 |**content** | **Map&lt;String, Object&gt;** |  |  |
-
-
-

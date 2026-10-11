@@ -493,5 +493,3 @@ HasApprovedAt returns a boolean if a field has been set.
 UnsetApprovedAt ensures that no value is present for ApprovedAt, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

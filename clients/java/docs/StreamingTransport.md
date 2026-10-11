@@ -12,6 +12,3 @@
 * `GRPC` (value: `"GRPC"`)
 
 * `MQTT` (value: `"MQTT"`)
-
-
-

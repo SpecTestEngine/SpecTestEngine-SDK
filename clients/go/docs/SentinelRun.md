@@ -643,5 +643,3 @@ HasBaseline returns a boolean if a field has been set.
 UnsetBaseline ensures that no value is present for Baseline, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

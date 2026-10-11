@@ -31,5 +31,3 @@ streaming_transcript_page_dict = streaming_transcript_page_instance.to_dict()
 streaming_transcript_page_from_dict = StreamingTranscriptPage.from_dict(streaming_transcript_page_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

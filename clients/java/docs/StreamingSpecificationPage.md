@@ -14,6 +14,3 @@
 |**first** | **Boolean** |  |  |
 |**last** | **Boolean** |  |  |
 |**items** | [**List&lt;StreamingSpecificationSummary&gt;**](StreamingSpecificationSummary.md) |  |  |
-
-
-

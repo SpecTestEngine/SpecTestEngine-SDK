@@ -10,6 +10,3 @@
 * `APPROVED` (value: `"APPROVED"`)
 
 * `ARCHIVED` (value: `"ARCHIVED"`)
-
-
-

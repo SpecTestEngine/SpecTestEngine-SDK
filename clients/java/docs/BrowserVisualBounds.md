@@ -12,6 +12,3 @@ Normalized capture rectangle in page coordinates for REGION scope. Excluded regi
 |**topRatio** | **Double** |  |  [optional] |
 |**widthRatio** | **Double** |  |  [optional] |
 |**heightRatio** | **Double** |  |  [optional] |
-
-
-

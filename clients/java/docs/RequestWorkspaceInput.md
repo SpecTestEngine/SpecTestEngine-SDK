@@ -11,6 +11,3 @@
 |**description** | **String** |  |  [optional] |
 |**variables** | **Map&lt;String, String&gt;** |  |  [optional] |
 |**globalVariableFallbacks** | **Map&lt;String, String&gt;** |  |  [optional] |
-
-
-

@@ -46,5 +46,3 @@ sentinel_run_dict = sentinel_run_instance.to_dict()
 sentinel_run_from_dict = SentinelRun.from_dict(sentinel_run_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

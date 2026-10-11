@@ -30,5 +30,3 @@ document_visual_diff_page_dict = document_visual_diff_page_instance.to_dict()
 document_visual_diff_page_from_dict = DocumentVisualDiffPage.from_dict(document_visual_diff_page_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

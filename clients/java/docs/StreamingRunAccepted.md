@@ -13,6 +13,3 @@
 |**transcriptUrl** | **String** |  |  |
 |**cancelUrl** | **String** |  |  |
 |**createdAt** | **OffsetDateTime** |  |  |
-
-
-

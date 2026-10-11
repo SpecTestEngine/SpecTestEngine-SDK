@@ -1,6 +1,11 @@
 {
-  "latest": "1.0.0-alpha.5",
+  "latest": "1.0.0-alpha.6",
   "versions": {
+    "1.0.0-alpha.6": {
+      "contract": "openapi/versions/1.0.0-alpha.6.yaml",
+      "sha256": "f8a7f7bfe3ae35e89b3e55cb1c745c557d5f108e3279bc1ac32e679107152b3a",
+      "status": "preview"
+    },
     "1.0.0-alpha.5": {
       "contract": "openapi/versions/1.0.0-alpha.5.yaml",
       "sha256": "52932bfee27dbd11dec04972365cbf69e18545814dcbb689424a1d525d7b6704",

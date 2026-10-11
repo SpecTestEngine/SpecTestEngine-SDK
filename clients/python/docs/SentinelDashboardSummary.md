@@ -31,5 +31,3 @@ sentinel_dashboard_summary_dict = sentinel_dashboard_summary_instance.to_dict()
 sentinel_dashboard_summary_from_dict = SentinelDashboardSummary.from_dict(sentinel_dashboard_summary_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

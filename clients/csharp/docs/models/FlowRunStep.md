@@ -26,4 +26,3 @@ Name | Type | Description | Notes
 **TestStepRun** | **Dictionary&lt;string, Object&gt;** | Engine-native specification result; Browser steps do not fabricate an API result. | [optional]
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
-

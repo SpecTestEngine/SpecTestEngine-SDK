@@ -13,6 +13,3 @@ Normalized rectangle relative to the active PAGE, ELEMENT, or REGION comparison 
 |**widthRatio** | **Double** |  |  |
 |**heightRatio** | **Double** |  |  |
 |**reason** | **String** |  |  [optional] |
-
-
-

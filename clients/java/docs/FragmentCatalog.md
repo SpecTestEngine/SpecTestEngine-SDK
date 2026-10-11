@@ -10,6 +10,3 @@
 |**specType** | **SpecType** |  |  |
 |**streamingTransport** | **StreamingTransport** |  |  [optional] |
 |**types** | [**List&lt;FragmentCatalogType&gt;**](FragmentCatalogType.md) |  |  |
-
-
-

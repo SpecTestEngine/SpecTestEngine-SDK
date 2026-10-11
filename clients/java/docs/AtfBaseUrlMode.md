@@ -12,6 +12,3 @@
 * `INLINE` (value: `"INLINE"`)
 
 * `SPRING_BOOT_LOCAL_SERVER_PORT` (value: `"SPRING_BOOT_LOCAL_SERVER_PORT"`)
-
-
-

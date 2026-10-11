@@ -12,6 +12,3 @@
 * `GRAPHQL` (value: `"GRAPHQL"`)
 
 * `STREAMING` (value: `"STREAMING"`)
-
-
-

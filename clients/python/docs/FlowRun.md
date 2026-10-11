@@ -32,5 +32,3 @@ flow_run_dict = flow_run_instance.to_dict()
 flow_run_from_dict = FlowRun.from_dict(flow_run_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
-
-

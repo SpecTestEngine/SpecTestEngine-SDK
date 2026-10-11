@@ -24,6 +24,3 @@
 |**items** | [**List&lt;RunBatchItem&gt;**](RunBatchItem.md) |  |  |
 |**createdAt** | **OffsetDateTime** |  |  |
 |**finishedAt** | **OffsetDateTime** |  |  [optional] |
-
-
-

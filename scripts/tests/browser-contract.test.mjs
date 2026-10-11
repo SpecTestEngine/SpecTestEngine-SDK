@@ -18,7 +18,7 @@ test('Flow input preserves browser session URL, selector chain, explicit sensiti
     sensitive: true, textSource: 'ELEMENT_TEXT', variableName: 'otp', tabAlias: 'mail',
     timeoutMs: 12000, expectedNetworkPolicy: 'STRICT', visualAssertion: assertion,
     expectedNetworkCalls: [{ method: 'GET', url: '/mail', body: { unread: true, count: 2 },
-      expectedBodyPaths: { '$.unread': true, '$.count': 2 }, excludedBodyFields: ['receivedAt'] }],
+      expectedBodyPaths: [{ path: '$.unread', value: true }, { path: '$.count', value: 2 }], excludedBodyFields: ['receivedAt'] }],
   };
   const input = { name: 'Fresh OTP', browserSession: { url: 'https://example.test', viewportWidth: 1280, viewportHeight: 720 },
     steps: [{ stepType: 'BROWSER_ACTION', browserAction: action }] };
