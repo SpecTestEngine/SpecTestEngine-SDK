@@ -2,7 +2,7 @@
 
 SpecTestEngine Public API
 
-- API version: 1.0.0-alpha.6
+- API version: 1.0.0-alpha.7
 
 - Generator version: 7.22.0
 
@@ -184,6 +184,8 @@ Class | Method | HTTP request | Description
 *DocumentVisualDiffsApi* | [**uploadDocumentVisualDiffExpectedWithHttpInfo**](docs/DocumentVisualDiffsApi.md#uploadDocumentVisualDiffExpectedWithHttpInfo) | **POST** /browser/visual/document-diffs/{visualDiffId}/expected | Upload a reference document and create a diff generation
 *FlowsApi* | [**captureFlowStepAttachmentVisualDiff**](docs/FlowsApi.md#captureFlowStepAttachmentVisualDiff) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
 *FlowsApi* | [**captureFlowStepAttachmentVisualDiffWithHttpInfo**](docs/FlowsApi.md#captureFlowStepAttachmentVisualDiffWithHttpInfo) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
+*FlowsApi* | [**copyFlowRecoveryDraft**](docs/FlowsApi.md#copyFlowRecoveryDraft) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow
+*FlowsApi* | [**copyFlowRecoveryDraftWithHttpInfo**](docs/FlowsApi.md#copyFlowRecoveryDraftWithHttpInfo) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow
 *FlowsApi* | [**createFlow**](docs/FlowsApi.md#createFlow) | **POST** /test/flow/create | Create a test flow
 *FlowsApi* | [**createFlowWithHttpInfo**](docs/FlowsApi.md#createFlowWithHttpInfo) | **POST** /test/flow/create | Create a test flow
 *FlowsApi* | [**createFlowRecovery**](docs/FlowsApi.md#createFlowRecovery) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies
@@ -192,6 +194,8 @@ Class | Method | HTTP request | Description
 *FlowsApi* | [**deleteFlowWithHttpInfo**](docs/FlowsApi.md#deleteFlowWithHttpInfo) | **DELETE** /test/flow/by-id | Delete a test flow
 *FlowsApi* | [**getFlow**](docs/FlowsApi.md#getFlow) | **GET** /test/flow/by-id/{flowId} | Get a test flow
 *FlowsApi* | [**getFlowWithHttpInfo**](docs/FlowsApi.md#getFlowWithHttpInfo) | **GET** /test/flow/by-id/{flowId} | Get a test flow
+*FlowsApi* | [**getFlowRecoveryCurrentDependency**](docs/FlowsApi.md#getFlowRecoveryCurrentDependency) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency
+*FlowsApi* | [**getFlowRecoveryCurrentDependencyWithHttpInfo**](docs/FlowsApi.md#getFlowRecoveryCurrentDependencyWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency
 *FlowsApi* | [**getFlowRecoveryDependency**](docs/FlowsApi.md#getFlowRecoveryDependency) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
 *FlowsApi* | [**getFlowRecoveryDependencyWithHttpInfo**](docs/FlowsApi.md#getFlowRecoveryDependencyWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
 *FlowsApi* | [**getFlowRecoveryOperation**](docs/FlowsApi.md#getFlowRecoveryOperation) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes
@@ -206,6 +210,10 @@ Class | Method | HTTP request | Description
 *FlowsApi* | [**listFlowsWithHttpInfo**](docs/FlowsApi.md#listFlowsWithHttpInfo) | **GET** /test/flow/page | List test flows
 *FlowsApi* | [**previewFlowRecovery**](docs/FlowsApi.md#previewFlowRecovery) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
 *FlowsApi* | [**previewFlowRecoveryWithHttpInfo**](docs/FlowsApi.md#previewFlowRecoveryWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
+*FlowsApi* | [**restoreFlowRecoveryDraft**](docs/FlowsApi.md#restoreFlowRecoveryDraft) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow
+*FlowsApi* | [**restoreFlowRecoveryDraftWithHttpInfo**](docs/FlowsApi.md#restoreFlowRecoveryDraftWithHttpInfo) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow
+*FlowsApi* | [**reviewFlowRecovery**](docs/FlowsApi.md#reviewFlowRecovery) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy
+*FlowsApi* | [**reviewFlowRecoveryWithHttpInfo**](docs/FlowsApi.md#reviewFlowRecoveryWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy
 *FlowsApi* | [**runFlow**](docs/FlowsApi.md#runFlow) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow
 *FlowsApi* | [**runFlowWithHttpInfo**](docs/FlowsApi.md#runFlowWithHttpInfo) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow
 *FlowsApi* | [**runFlowBatch**](docs/FlowsApi.md#runFlowBatch) | **POST** /test/flow/run/batch | Run multiple saved flows
@@ -476,14 +484,19 @@ Class | Method | HTTP request | Description
  - [FlowInput](docs/FlowInput.md)
  - [FlowPage](docs/FlowPage.md)
  - [FlowRecoveryBinding](docs/FlowRecoveryBinding.md)
+ - [FlowRecoveryCurrentDependency](docs/FlowRecoveryCurrentDependency.md)
+ - [FlowRecoveryCurrentDependencySource](docs/FlowRecoveryCurrentDependencySource.md)
  - [FlowRecoveryDependency](docs/FlowRecoveryDependency.md)
  - [FlowRecoveryDependencyDetail](docs/FlowRecoveryDependencyDetail.md)
  - [FlowRecoveryDependencyPage](docs/FlowRecoveryDependencyPage.md)
+ - [FlowRecoveryDraftInput](docs/FlowRecoveryDraftInput.md)
  - [FlowRecoveryHistoricalDefinition](docs/FlowRecoveryHistoricalDefinition.md)
  - [FlowRecoveryInput](docs/FlowRecoveryInput.md)
+ - [FlowRecoveryOccurrence](docs/FlowRecoveryOccurrence.md)
  - [FlowRecoveryOperation](docs/FlowRecoveryOperation.md)
  - [FlowRecoveryPreview](docs/FlowRecoveryPreview.md)
  - [FlowRecoveryProjection](docs/FlowRecoveryProjection.md)
+ - [FlowRecoveryReview](docs/FlowRecoveryReview.md)
  - [FlowRun](docs/FlowRun.md)
  - [FlowRunPage](docs/FlowRunPage.md)
  - [FlowRunStep](docs/FlowRunStep.md)

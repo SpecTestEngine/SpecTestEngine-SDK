@@ -27,7 +27,7 @@ info:
     name: Apache License 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
   title: SpecTestEngine Public API
-  version: 1.0.0-alpha.6
+  version: 1.0.0-alpha.7
 externalDocs:
   description: SpecTestEngine product documentation
   url: https://ste.software/docs/sdk
@@ -3354,6 +3354,237 @@ paths:
       - Flows
       x-sdk-stability: beta
       x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/flow/run/saved/{runId}/recovery/review:
+    get:
+      description: "Historical authoring, original occurrence mapping and current\
+        \ versions only. Does not write or execute. Current human and resource read\
+        \ authority required."
+      operationId: reviewFlowRecovery
+      parameters:
+      - explode: false
+        in: path
+        name: runId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowRecoveryReview"
+          description: Shared review for both recovery intents.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Review Flow Recovery for restore or independent copy
+      tags:
+      - Flows
+      x-sdk-stability: preview
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/flow/run/saved/{runId}/recovery/current-dependency:
+    get:
+      operationId: getFlowRecoveryCurrentDependency
+      parameters:
+      - explode: false
+        in: path
+        name: runId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: kind
+        required: true
+        schema:
+          enum:
+          - REST
+          - SOAP
+          - GRAPHQL
+          - STREAMING
+          - UI_MACRO
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sourceId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: form
+      - description: Retained key for an existing occurrence; omit for an explicitly
+          added saved reference.
+        explode: true
+        in: query
+        name: dependencyKey
+        required: false
+        schema:
+          pattern: "^[a-f0-9]{64}$"
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowRecoveryCurrentDependency"
+          description: "Current authoring projection and revision, with masked literal\
+            \ inputs."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Read one current safe Recovery dependency
+      tags:
+      - Flows
+      x-sdk-stability: preview
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/flow/run/saved/{runId}/recovery/restore:
+    post:
+      description: Updates the original Flow and selected original dependencies. Shared
+        consumers are affected. Requires current resource update authority. Added
+        saved references stay unchanged. Owner-local receipts make the same exact
+        key/body resumable; some originals may already be updated after a partial
+        failure. No automatic rollback or execution. Mode must be RESTORE. Retain
+        the identical reviewed body and UUID key; GET status never resumes writes.
+      operationId: restoreFlowRecoveryDraft
+      parameters:
+      - explode: false
+        in: path
+        name: runId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FlowRecoveryDraftInput"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowRecoveryOperation"
+          description: Completed outcome with original Flow ID for RESTORE or new
+            Flow ID for COPY.
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowRecoveryOperation"
+          description: "Partial or unconfirmed outcome, not success. Resume only this\
+            \ same request."
+          headers:
+            Location:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Restore an edited historical Flow into the current Flow
+      tags:
+      - Flows
+      x-sdk-stability: preview
+      x-idempotent: true
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /test/flow/run/saved/{runId}/recovery/copy:
+    post:
+      description: Creates a new Flow and independent selected dependency copies;
+        originals are unchanged. Requires current owner create authority and a unique
+        Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain
+        the identical reviewed body and UUID key; GET status never resumes writes.
+      operationId: copyFlowRecoveryDraft
+      parameters:
+      - explode: false
+        in: path
+        name: runId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FlowRecoveryDraftInput"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowRecoveryOperation"
+          description: Completed outcome with original Flow ID for RESTORE or new
+            Flow ID for COPY.
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowRecoveryOperation"
+          description: "Partial or unconfirmed outcome, not success. Resume only this\
+            \ same request."
+          headers:
+            Location:
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Recover an edited draft as an independent new Flow
+      tags:
+      - Flows
+      x-sdk-stability: preview
+      x-idempotent: true
+      x-content-type: application/json
       x-accepts:
       - application/json
   /test/flow/run/saved/{runId}/recovery/preview:
@@ -9871,6 +10102,273 @@ components:
       - stepId
       - stepType
       type: object
+    FlowRecoveryDraftInput:
+      example:
+        mode: RESTORE
+        sourceStepIds:
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        manifestHash: manifestHash
+        draft:
+          key: ""
+        bindings:
+          key: ""
+        expectedFlowRevision: 0
+        dependencyRevisions:
+          key: 0
+      properties:
+        manifestHash:
+          pattern: "^[a-f0-9]{64}$"
+          type: string
+        mode:
+          enum:
+          - RESTORE
+          - COPY
+          type: string
+        draft:
+          additionalProperties: true
+          description: "Ordinary Flow create/update authoring shape, up to 16 MiB.\
+            \ Preserve retained visual references for owner validation."
+          type: object
+        expectedFlowRevision:
+          format: int64
+          minimum: 0
+          type: integer
+        sourceStepIds:
+          description: "One original occurrence UUID per ordered draft step, or null\
+            \ for an added step. Identity does not grant authority."
+          items:
+            format: uuid
+            nullable: true
+            type: string
+          maxItems: 1000
+          type: array
+        dependencyRevisions:
+          additionalProperties:
+            format: int64
+            minimum: 0
+            type: integer
+          maxProperties: 1000
+          type: object
+        bindings:
+          additionalProperties: true
+          description: Exactly required selected bindings. Preserve scalar types;
+            never invent old literal inputs. Not retained in the journal.
+          maxProperties: 1000
+          type: object
+      required:
+      - bindings
+      - dependencyRevisions
+      - draft
+      - expectedFlowRevision
+      - manifestHash
+      - mode
+      - sourceStepIds
+      type: object
+    FlowRecoveryOccurrence:
+      example:
+        role: EXECUTED
+        orderIndex: 0
+        dependencyKey: dependencyKey
+        sourceStepId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        sourceStepId:
+          format: uuid
+          type: string
+        orderIndex:
+          minimum: 0
+          type: integer
+        dependencyKey:
+          nullable: true
+          type: string
+        role:
+          enum:
+          - EXECUTED
+          - PLANNED_NOT_EXECUTED
+          - USER_ADDED
+          type: string
+      required:
+      - orderIndex
+      - role
+      - sourceStepId
+      type: object
+    FlowRecoveryReview:
+      example:
+        occurrences:
+        - role: EXECUTED
+          orderIndex: 0
+          dependencyKey: dependencyKey
+          sourceStepId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - role: EXECUTED
+          orderIndex: 0
+          dependencyKey: dependencyKey
+          sourceStepId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - role: EXECUTED
+          orderIndex: 0
+          dependencyKey: dependencyKey
+          sourceStepId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - role: EXECUTED
+          orderIndex: 0
+          dependencyKey: dependencyKey
+          sourceStepId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - role: EXECUTED
+          orderIndex: 0
+          dependencyKey: dependencyKey
+          sourceStepId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        targetName: targetName
+        targetRevision: 0
+        targetDescription: targetDescription
+        restoreReason: restoreReason
+        historical:
+          reason: reason
+          manifestVersion: 0
+          activeOperation: ""
+          manifestHash: manifestHash
+          bindings:
+          - path: path
+            valueType: STRING
+            label: label
+            dependencyKey: dependencyKey
+            key: key
+          - path: path
+            valueType: STRING
+            label: label
+            dependencyKey: dependencyKey
+            key: key
+          - path: path
+            valueType: STRING
+            label: label
+            dependencyKey: dependencyKey
+            key: key
+          - path: path
+            valueType: STRING
+            label: label
+            dependencyKey: dependencyKey
+            key: key
+          - path: path
+            valueType: STRING
+            label: label
+            dependencyKey: dependencyKey
+            key: key
+          available: true
+          suggestedName: suggestedName
+          copyCount: 1
+          runId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          stepCount: 6
+          flow: ""
+          dependencies:
+            size: 12
+            last: true
+            totalPages: 9
+            page: 0
+            items:
+            - bindingCount: 596
+              kind: REST
+              roles:
+              - EXECUTED
+              - EXECUTED
+              format: JSON
+              sourceName: sourceName
+              definitionHash: definitionHash
+              key: key
+            - bindingCount: 596
+              kind: REST
+              roles:
+              - EXECUTED
+              - EXECUTED
+              format: JSON
+              sourceName: sourceName
+              definitionHash: definitionHash
+              key: key
+            - bindingCount: 596
+              kind: REST
+              roles:
+              - EXECUTED
+              - EXECUTED
+              format: JSON
+              sourceName: sourceName
+              definitionHash: definitionHash
+              key: key
+            - bindingCount: 596
+              kind: REST
+              roles:
+              - EXECUTED
+              - EXECUTED
+              format: JSON
+              sourceName: sourceName
+              definitionHash: definitionHash
+              key: key
+            - bindingCount: 596
+              kind: REST
+              roles:
+              - EXECUTED
+              - EXECUTED
+              format: JSON
+              sourceName: sourceName
+              definitionHash: definitionHash
+              key: key
+            first: true
+            totalElements: 7
+        dependencyRevisions:
+          key: 0
+        restoreAvailable: true
+      properties:
+        historical:
+          $ref: "#/components/schemas/FlowRecoveryPreview"
+        targetRevision:
+          format: int64
+          minimum: 0
+          type: integer
+        targetName:
+          nullable: true
+          type: string
+        targetDescription:
+          nullable: true
+          type: string
+        dependencyRevisions:
+          additionalProperties:
+            format: int64
+            minimum: 0
+            type: integer
+          type: object
+        occurrences:
+          items:
+            $ref: "#/components/schemas/FlowRecoveryOccurrence"
+          maxItems: 1000
+          type: array
+        restoreAvailable:
+          type: boolean
+        restoreReason:
+          nullable: true
+          type: string
+      required:
+      - dependencyRevisions
+      - historical
+      - occurrences
+      - restoreAvailable
+      - targetRevision
+      type: object
+    FlowRecoveryCurrentDependency:
+      example:
+        source:
+          sourceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          name: name
+          format: format
+          definition: ""
+          revision: 0
+        key: key
+      properties:
+        key:
+          type: string
+        source:
+          $ref: "#/components/schemas/FlowRecoveryCurrentDependency_source"
+      required:
+      - key
+      - source
+      type: object
     FlowRecoveryInput:
       example:
         manifestHash: manifestHash
@@ -9908,6 +10406,7 @@ components:
         path: path
         valueType: STRING
         label: label
+        dependencyKey: dependencyKey
         key: key
       properties:
         key:
@@ -9925,6 +10424,10 @@ components:
           - NUMBER
           - BOOLEAN
           type: string
+        dependencyKey:
+          description: Selected dependency identity; null for a Flow-level binding.
+          nullable: true
+          type: string
       required:
       - key
       - path
@@ -9938,22 +10441,27 @@ components:
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
       properties:
         definitionJson:
@@ -10127,22 +10635,27 @@ components:
           - path: path
             valueType: STRING
             label: label
+            dependencyKey: dependencyKey
             key: key
           - path: path
             valueType: STRING
             label: label
+            dependencyKey: dependencyKey
             key: key
           - path: path
             valueType: STRING
             label: label
+            dependencyKey: dependencyKey
             key: key
           - path: path
             valueType: STRING
             label: label
+            dependencyKey: dependencyKey
             key: key
           - path: path
             valueType: STRING
             label: label
+            dependencyKey: dependencyKey
             key: key
       properties:
         summary:
@@ -10193,6 +10706,7 @@ components:
       type: object
     FlowRecoveryOperation:
       example:
+        mode: RESTORE
         failureCode: failureCode
         idempotencyKey: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         manifestHash: manifestHash
@@ -10211,8 +10725,14 @@ components:
           enum:
           - PREPARING
           - CREATING_DEPENDENCIES
+          - RESTORING_DEPENDENCIES
           - OUTCOME_UNKNOWN
           - COMPLETED
+          type: string
+        mode:
+          enum:
+          - RESTORE
+          - COPY
           type: string
         flowId:
           format: uuid
@@ -10257,22 +10777,27 @@ components:
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         - path: path
           valueType: STRING
           label: label
+          dependencyKey: dependencyKey
           key: key
         available: true
         suggestedName: suggestedName
@@ -14579,6 +15104,35 @@ components:
       - REST
       - SOAP
       - STREAMING
+      type: object
+    FlowRecoveryCurrentDependency_source:
+      example:
+        sourceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        name: name
+        format: format
+        definition: ""
+        revision: 0
+      properties:
+        sourceId:
+          format: uuid
+          type: string
+        revision:
+          format: int64
+          minimum: 0
+          type: integer
+        name:
+          type: string
+        format:
+          type: string
+        definition:
+          allOf:
+          - $ref: "#/components/schemas/FlowRecoveryProjection"
+          nullable: true
+      required:
+      - format
+      - name
+      - revision
+      - sourceId
       type: object
     AtfGenerationResult_files_inner:
       example:

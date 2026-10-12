@@ -10,6 +10,7 @@ Name | Type
 `label` | string
 `path` | string
 `valueType` | string
+`dependencyKey` | string
 
 ## Example
 
@@ -22,6 +23,7 @@ const example = {
   "label": null,
   "path": null,
   "valueType": null,
+  "dependencyKey": null,
 } satisfies FlowRecoveryBinding
 
 console.log(example)

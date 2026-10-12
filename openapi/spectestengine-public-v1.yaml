@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: SpecTestEngine Public API
-  version: 1.0.0-alpha.6
+  version: 1.0.0-alpha.7
   description: |
     The versioned integration contract for creating, running, observing, and exporting
     SpecTestEngine test assets. The API is project-scoped: the bearer token selects the
@@ -1760,6 +1760,131 @@ paths:
                 $ref: '#/components/schemas/FlowRun'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /test/flow/run/saved/{runId}/recovery/review:
+    get:
+      tags: [Flows]
+      summary: Review Flow Recovery for restore or independent copy
+      description: Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+      operationId: reviewFlowRecovery
+      x-sdk-stability: preview
+      x-idempotent: true
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Shared review for both recovery intents.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FlowRecoveryReview' }
+        default: { $ref: '#/components/responses/ErrorResponse' }
+  /test/flow/run/saved/{runId}/recovery/current-dependency:
+    get:
+      tags: [Flows]
+      summary: Read one current safe Recovery dependency
+      operationId: getFlowRecoveryCurrentDependency
+      x-sdk-stability: preview
+      x-idempotent: true
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: kind
+          in: query
+          required: true
+          schema: { type: string, enum: [REST, SOAP, GRAPHQL, STREAMING, UI_MACRO] }
+        - name: sourceId
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+        - name: dependencyKey
+          in: query
+          description: Retained key for an existing occurrence; omit for an explicitly added saved reference.
+          schema: { type: string, pattern: '^[a-f0-9]{64}$' }
+      responses:
+        '200':
+          description: Current authoring projection and revision, with masked literal inputs.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FlowRecoveryCurrentDependency' }
+        default: { $ref: '#/components/responses/ErrorResponse' }
+  /test/flow/run/saved/{runId}/recovery/restore:
+    post:
+      tags: [Flows]
+      summary: Restore an edited historical Flow into the current Flow
+      description: Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+      operationId: restoreFlowRecoveryDraft
+      x-sdk-stability: preview
+      x-idempotent: true
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FlowRecoveryDraftInput' }
+      responses:
+        '200':
+          description: Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FlowRecoveryOperation' }
+        '202':
+          description: Partial or unconfirmed outcome, not success. Resume only this same request.
+          headers:
+            Location:
+              schema: { type: string }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FlowRecoveryOperation' }
+        default: { $ref: '#/components/responses/ErrorResponse' }
+  /test/flow/run/saved/{runId}/recovery/copy:
+    post:
+      tags: [Flows]
+      summary: Recover an edited draft as an independent new Flow
+      description: Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+      operationId: copyFlowRecoveryDraft
+      x-sdk-stability: preview
+      x-idempotent: true
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FlowRecoveryDraftInput' }
+      responses:
+        '200':
+          description: Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FlowRecoveryOperation' }
+        '202':
+          description: Partial or unconfirmed outcome, not success. Resume only this same request.
+          headers:
+            Location:
+              schema: { type: string }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FlowRecoveryOperation' }
+        default: { $ref: '#/components/responses/ErrorResponse' }
   /test/flow/run/saved/{runId}/recovery/preview:
     get:
       tags: [Flows]
@@ -4669,6 +4794,69 @@ components:
           items: { $ref: '#/components/schemas/BrowserNetworkExpectation' }
         storeValues: { type: object, additionalProperties: { type: string } }
         overrideValues: { type: object, additionalProperties: true }
+    FlowRecoveryDraftInput:
+      type: object
+      required: [manifestHash, mode, draft, expectedFlowRevision, sourceStepIds, dependencyRevisions, bindings]
+      properties:
+        manifestHash: { type: string, pattern: '^[a-f0-9]{64}$' }
+        mode: { type: string, enum: [RESTORE, COPY] }
+        draft:
+          type: object
+          description: Ordinary Flow create/update authoring shape, up to 16 MiB. Preserve retained visual references for owner validation.
+          additionalProperties: true
+        expectedFlowRevision: { type: integer, format: int64, minimum: 0 }
+        sourceStepIds:
+          type: array
+          maxItems: 1000
+          description: One original occurrence UUID per ordered draft step, or null for an added step. Identity does not grant authority.
+          items: { type: string, format: uuid, nullable: true }
+        dependencyRevisions:
+          type: object
+          maxProperties: 1000
+          additionalProperties: { type: integer, format: int64, minimum: 0 }
+        bindings:
+          type: object
+          maxProperties: 1000
+          description: Exactly required selected bindings. Preserve scalar types; never invent old literal inputs. Not retained in the journal.
+          additionalProperties: true
+    FlowRecoveryOccurrence:
+      type: object
+      required: [sourceStepId, orderIndex, role]
+      properties:
+        sourceStepId: { type: string, format: uuid }
+        orderIndex: { type: integer, minimum: 0 }
+        dependencyKey: { type: string, nullable: true }
+        role: { type: string, enum: [EXECUTED, PLANNED_NOT_EXECUTED, USER_ADDED] }
+    FlowRecoveryReview:
+      type: object
+      required: [historical, targetRevision, dependencyRevisions, occurrences, restoreAvailable]
+      properties:
+        historical: { $ref: '#/components/schemas/FlowRecoveryPreview' }
+        targetRevision: { type: integer, format: int64, minimum: 0 }
+        targetName: { type: string, nullable: true }
+        targetDescription: { type: string, nullable: true }
+        dependencyRevisions:
+          type: object
+          additionalProperties: { type: integer, format: int64, minimum: 0 }
+        occurrences: { type: array, maxItems: 1000, items: { $ref: '#/components/schemas/FlowRecoveryOccurrence' } }
+        restoreAvailable: { type: boolean }
+        restoreReason: { type: string, nullable: true }
+    FlowRecoveryCurrentDependency:
+      type: object
+      required: [key, source]
+      properties:
+        key: { type: string }
+        source:
+          type: object
+          required: [sourceId, revision, name, format]
+          properties:
+            sourceId: { type: string, format: uuid }
+            revision: { type: integer, format: int64, minimum: 0 }
+            name: { type: string }
+            format: { type: string }
+            definition:
+              allOf: [{ $ref: '#/components/schemas/FlowRecoveryProjection' }]
+              nullable: true
     FlowRecoveryInput:
       type: object
       required: [manifestHash, name, bindings]
@@ -4689,6 +4877,7 @@ components:
         label: { type: string, nullable: true }
         path: { type: string, description: JSON Pointer in the safe authoring definition. }
         valueType: { type: string, enum: [STRING, NUMBER, BOOLEAN] }
+        dependencyKey: { type: string, nullable: true, description: Selected dependency identity; null for a Flow-level binding. }
     FlowRecoveryProjection:
       type: object
       required: [bindings]
@@ -4743,7 +4932,8 @@ components:
       required: [operationId, state, idempotencyKey, name, manifestHash, copiedDependencies, totalDependencies]
       properties:
         operationId: { type: string, format: uuid }
-        state: { type: string, enum: [PREPARING, CREATING_DEPENDENCIES, OUTCOME_UNKNOWN, COMPLETED] }
+        state: { type: string, enum: [PREPARING, CREATING_DEPENDENCIES, RESTORING_DEPENDENCIES, OUTCOME_UNKNOWN, COMPLETED] }
+        mode: { type: string, enum: [RESTORE, COPY] }
         flowId: { type: string, format: uuid, nullable: true }
         failureCode: { type: string, nullable: true }
         idempotencyKey: { type: string, format: uuid }

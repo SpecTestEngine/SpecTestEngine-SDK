@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Label** | Pointer to **NullableString** |  | [optional]
 **Path** | **string** | JSON Pointer in the safe authoring definition. |
 **ValueType** | **string** |  |
+**DependencyKey** | Pointer to **NullableString** | Selected dependency identity; null for a Flow-level binding. | [optional]
 
 ## Methods
 
@@ -123,5 +124,40 @@ and a boolean to check if the value has been set.
 SetValueType sets ValueType field to given value.
 
 
+### GetDependencyKey
+
+`func (o *FlowRecoveryBinding) GetDependencyKey() string`
+
+GetDependencyKey returns the DependencyKey field if non-nil, zero value otherwise.
+
+### GetDependencyKeyOk
+
+`func (o *FlowRecoveryBinding) GetDependencyKeyOk() (*string, bool)`
+
+GetDependencyKeyOk returns a tuple with the DependencyKey field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDependencyKey
+
+`func (o *FlowRecoveryBinding) SetDependencyKey(v string)`
+
+SetDependencyKey sets DependencyKey field to given value.
+
+### HasDependencyKey
+
+`func (o *FlowRecoveryBinding) HasDependencyKey() bool`
+
+HasDependencyKey returns a boolean if a field has been set.
+
+### SetDependencyKeyNil
+
+`func (o *FlowRecoveryBinding) SetDependencyKeyNil(b bool)`
+
+ SetDependencyKeyNil sets the value for DependencyKey to be an explicit nil
+
+### UnsetDependencyKey
+`func (o *FlowRecoveryBinding) UnsetDependencyKey()`
+
+UnsetDependencyKey ensures that no value is present for DependencyKey, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

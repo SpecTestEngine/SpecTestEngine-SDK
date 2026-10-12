@@ -5,10 +5,12 @@ All URIs are relative to *https://app.ste.software*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**capture_flow_step_attachment_visual_diff**](FlowsApi.md#capture_flow_step_attachment_visual_diff) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
+[**copy_flow_recovery_draft**](FlowsApi.md#copy_flow_recovery_draft) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow
 [**create_flow**](FlowsApi.md#create_flow) | **POST** /test/flow/create | Create a test flow
 [**create_flow_recovery**](FlowsApi.md#create_flow_recovery) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies
 [**delete_flow**](FlowsApi.md#delete_flow) | **DELETE** /test/flow/by-id | Delete a test flow
 [**get_flow**](FlowsApi.md#get_flow) | **GET** /test/flow/by-id/{flowId} | Get a test flow
+[**get_flow_recovery_current_dependency**](FlowsApi.md#get_flow_recovery_current_dependency) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency
 [**get_flow_recovery_dependency**](FlowsApi.md#get_flow_recovery_dependency) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
 [**get_flow_recovery_operation**](FlowsApi.md#get_flow_recovery_operation) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes
 [**get_flow_run**](FlowsApi.md#get_flow_run) | **GET** /test/flow/run/saved/{runId} | Get a saved flow run
@@ -16,6 +18,8 @@ Method | HTTP request | Description
 [**list_flow_runs**](FlowsApi.md#list_flow_runs) | **GET** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow
 [**list_flows**](FlowsApi.md#list_flows) | **GET** /test/flow/page | List test flows
 [**preview_flow_recovery**](FlowsApi.md#preview_flow_recovery) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
+[**restore_flow_recovery_draft**](FlowsApi.md#restore_flow_recovery_draft) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow
+[**review_flow_recovery**](FlowsApi.md#review_flow_recovery) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy
 [**run_flow**](FlowsApi.md#run_flow) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow
 [**run_flow_batch**](FlowsApi.md#run_flow_batch) | **POST** /test/flow/run/batch | Run multiple saved flows
 [**update_flow**](FlowsApi.md#update_flow) | **PUT** /test/flow/by-id | Replace a test flow
@@ -99,6 +103,91 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Complete flow run evidence containing the temporary visual diff link in the selected step. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **copy_flow_recovery_draft**
+> FlowRecoveryOperation copy_flow_recovery_draft(run_id, idempotency_key, flow_recovery_draft_input)
+
+Recover an edited draft as an independent new Flow
+
+Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.flow_recovery_draft_input import FlowRecoveryDraftInput
+from spectestengine_sdk.models.flow_recovery_operation import FlowRecoveryOperation
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.FlowsApi(api_client)
+    run_id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+    idempotency_key = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+    flow_recovery_draft_input = spectestengine_sdk.FlowRecoveryDraftInput() # FlowRecoveryDraftInput |
+
+    try:
+        # Recover an edited draft as an independent new Flow
+        api_response = api_instance.copy_flow_recovery_draft(run_id, idempotency_key, flow_recovery_draft_input)
+        print("The response of FlowsApi->copy_flow_recovery_draft:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling FlowsApi->copy_flow_recovery_draft: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **run_id** | **UUID**|  |
+ **idempotency_key** | **UUID**|  |
+ **flow_recovery_draft_input** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md)|  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+**202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
 **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -421,6 +510,89 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | The requested flow. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_flow_recovery_current_dependency**
+> FlowRecoveryCurrentDependency get_flow_recovery_current_dependency(run_id, kind, source_id, dependency_key=dependency_key)
+
+Read one current safe Recovery dependency
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.flow_recovery_current_dependency import FlowRecoveryCurrentDependency
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.FlowsApi(api_client)
+    run_id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+    kind = 'kind_example' # str |
+    source_id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+    dependency_key = 'dependency_key_example' # str | Retained key for an existing occurrence; omit for an explicitly added saved reference. (optional)
+
+    try:
+        # Read one current safe Recovery dependency
+        api_response = api_instance.get_flow_recovery_current_dependency(run_id, kind, source_id, dependency_key=dependency_key)
+        print("The response of FlowsApi->get_flow_recovery_current_dependency:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling FlowsApi->get_flow_recovery_current_dependency: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **run_id** | **UUID**|  |
+ **kind** | **str**|  |
+ **source_id** | **UUID**|  |
+ **dependency_key** | **str**| Retained key for an existing occurrence; omit for an explicitly added saved reference. | [optional]
+
+### Return type
+
+[**FlowRecoveryCurrentDependency**](FlowRecoveryCurrentDependency.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Current authoring projection and revision, with masked literal inputs. |  -  |
 **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -976,6 +1148,170 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Eligibility, historical definition, binding requirements and bounded dependency summaries. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **restore_flow_recovery_draft**
+> FlowRecoveryOperation restore_flow_recovery_draft(run_id, idempotency_key, flow_recovery_draft_input)
+
+Restore an edited historical Flow into the current Flow
+
+Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.flow_recovery_draft_input import FlowRecoveryDraftInput
+from spectestengine_sdk.models.flow_recovery_operation import FlowRecoveryOperation
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.FlowsApi(api_client)
+    run_id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+    idempotency_key = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+    flow_recovery_draft_input = spectestengine_sdk.FlowRecoveryDraftInput() # FlowRecoveryDraftInput |
+
+    try:
+        # Restore an edited historical Flow into the current Flow
+        api_response = api_instance.restore_flow_recovery_draft(run_id, idempotency_key, flow_recovery_draft_input)
+        print("The response of FlowsApi->restore_flow_recovery_draft:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling FlowsApi->restore_flow_recovery_draft: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **run_id** | **UUID**|  |
+ **idempotency_key** | **UUID**|  |
+ **flow_recovery_draft_input** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md)|  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+**202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **review_flow_recovery**
+> FlowRecoveryReview review_flow_recovery(run_id)
+
+Review Flow Recovery for restore or independent copy
+
+Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.flow_recovery_review import FlowRecoveryReview
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.FlowsApi(api_client)
+    run_id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |
+
+    try:
+        # Review Flow Recovery for restore or independent copy
+        api_response = api_instance.review_flow_recovery(run_id)
+        print("The response of FlowsApi->review_flow_recovery:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling FlowsApi->review_flow_recovery: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **run_id** | **UUID**|  |
+
+### Return type
+
+[**FlowRecoveryReview**](FlowRecoveryReview.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Shared review for both recovery intents. |  -  |
 **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

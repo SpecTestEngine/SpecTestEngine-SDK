@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **label** | **str** |  | [optional]
 **path** | **str** | JSON Pointer in the safe authoring definition. |
 **value_type** | **str** |  |
+**dependency_key** | **str** | Selected dependency identity; null for a Flow-level binding. | [optional]
 
 ## Example
 

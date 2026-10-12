@@ -5,10 +5,12 @@ All URIs are relative to *https://app.ste.software*
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
 | [**CaptureFlowStepAttachmentVisualDiff**](FlowsApi.md#captureflowstepattachmentvisualdiff) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion |
+| [**CopyFlowRecoveryDraft**](FlowsApi.md#copyflowrecoverydraft) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow |
 | [**CreateFlow**](FlowsApi.md#createflow) | **POST** /test/flow/create | Create a test flow |
 | [**CreateFlowRecovery**](FlowsApi.md#createflowrecovery) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies |
 | [**DeleteFlow**](FlowsApi.md#deleteflow) | **DELETE** /test/flow/by-id | Delete a test flow |
 | [**GetFlow**](FlowsApi.md#getflow) | **GET** /test/flow/by-id/{flowId} | Get a test flow |
+| [**GetFlowRecoveryCurrentDependency**](FlowsApi.md#getflowrecoverycurrentdependency) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency |
 | [**GetFlowRecoveryDependency**](FlowsApi.md#getflowrecoverydependency) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition |
 | [**GetFlowRecoveryOperation**](FlowsApi.md#getflowrecoveryoperation) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes |
 | [**GetFlowRun**](FlowsApi.md#getflowrun) | **GET** /test/flow/run/saved/{runId} | Get a saved flow run |
@@ -16,6 +18,8 @@ All URIs are relative to *https://app.ste.software*
 | [**ListFlowRuns**](FlowsApi.md#listflowruns) | **GET** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow |
 | [**ListFlows**](FlowsApi.md#listflows) | **GET** /test/flow/page | List test flows |
 | [**PreviewFlowRecovery**](FlowsApi.md#previewflowrecovery) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run |
+| [**RestoreFlowRecoveryDraft**](FlowsApi.md#restoreflowrecoverydraft) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow |
+| [**ReviewFlowRecovery**](FlowsApi.md#reviewflowrecovery) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy |
 | [**RunFlow**](FlowsApi.md#runflow) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow |
 | [**RunFlowBatch**](FlowsApi.md#runflowbatch) | **POST** /test/flow/run/batch | Run multiple saved flows |
 | [**UpdateFlow**](FlowsApi.md#updateflow) | **PUT** /test/flow/by-id | Replace a test flow |
@@ -54,6 +58,46 @@ Explicitly reruns the saved flow and captures one failed PDF or image response f
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete flow run evidence containing the temporary visual diff link in the selected step. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="copyflowrecoverydraft"></a>
+# **CopyFlowRecoveryDraft**
+> FlowRecoveryOperation CopyFlowRecoveryDraft (Guid runId, Guid idempotencyKey, FlowRecoveryDraftInput flowRecoveryDraftInput)
+
+Recover an edited draft as an independent new Flow
+
+Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **runId** | **Guid** |  |  |
+| **idempotencyKey** | **Guid** |  |  |
+| **flowRecoveryDraftInput** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md) |  |  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
@@ -204,6 +248,44 @@ Get a test flow
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested flow. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="getflowrecoverycurrentdependency"></a>
+# **GetFlowRecoveryCurrentDependency**
+> FlowRecoveryCurrentDependency GetFlowRecoveryCurrentDependency (Guid runId, string kind, Guid sourceId, string dependencyKey = null)
+
+Read one current safe Recovery dependency
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **runId** | **Guid** |  |  |
+| **kind** | **string** |  |  |
+| **sourceId** | **Guid** |  |  |
+| **dependencyKey** | **string** | Retained key for an existing occurrence; omit for an explicitly added saved reference. | [optional]  |
+
+### Return type
+
+[**FlowRecoveryCurrentDependency**](FlowRecoveryCurrentDependency.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Current authoring projection and revision, with masked literal inputs. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
@@ -458,6 +540,83 @@ Read-only historical authoring preview. Requires current source Flow/project and
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Eligibility, historical definition, binding requirements and bounded dependency summaries. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="restoreflowrecoverydraft"></a>
+# **RestoreFlowRecoveryDraft**
+> FlowRecoveryOperation RestoreFlowRecoveryDraft (Guid runId, Guid idempotencyKey, FlowRecoveryDraftInput flowRecoveryDraftInput)
+
+Restore an edited historical Flow into the current Flow
+
+Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **runId** | **Guid** |  |  |
+| **idempotencyKey** | **Guid** |  |  |
+| **flowRecoveryDraftInput** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md) |  |  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="reviewflowrecovery"></a>
+# **ReviewFlowRecovery**
+> FlowRecoveryReview ReviewFlowRecovery (Guid runId)
+
+Review Flow Recovery for restore or independent copy
+
+Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **runId** | **Guid** |  |  |
+
+### Return type
+
+[**FlowRecoveryReview**](FlowRecoveryReview.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Shared review for both recovery intents. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

@@ -5,10 +5,12 @@ All URIs are relative to *https://app.ste.software*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CaptureFlowStepAttachmentVisualDiff**](FlowsAPI.md#CaptureFlowStepAttachmentVisualDiff) | **Post** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion
+[**CopyFlowRecoveryDraft**](FlowsAPI.md#CopyFlowRecoveryDraft) | **Post** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow
 [**CreateFlow**](FlowsAPI.md#CreateFlow) | **Post** /test/flow/create | Create a test flow
 [**CreateFlowRecovery**](FlowsAPI.md#CreateFlowRecovery) | **Post** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies
 [**DeleteFlow**](FlowsAPI.md#DeleteFlow) | **Delete** /test/flow/by-id | Delete a test flow
 [**GetFlow**](FlowsAPI.md#GetFlow) | **Get** /test/flow/by-id/{flowId} | Get a test flow
+[**GetFlowRecoveryCurrentDependency**](FlowsAPI.md#GetFlowRecoveryCurrentDependency) | **Get** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency
 [**GetFlowRecoveryDependency**](FlowsAPI.md#GetFlowRecoveryDependency) | **Get** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition
 [**GetFlowRecoveryOperation**](FlowsAPI.md#GetFlowRecoveryOperation) | **Get** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes
 [**GetFlowRun**](FlowsAPI.md#GetFlowRun) | **Get** /test/flow/run/saved/{runId} | Get a saved flow run
@@ -16,6 +18,8 @@ Method | HTTP request | Description
 [**ListFlowRuns**](FlowsAPI.md#ListFlowRuns) | **Get** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow
 [**ListFlows**](FlowsAPI.md#ListFlows) | **Get** /test/flow/page | List test flows
 [**PreviewFlowRecovery**](FlowsAPI.md#PreviewFlowRecovery) | **Get** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run
+[**RestoreFlowRecoveryDraft**](FlowsAPI.md#RestoreFlowRecoveryDraft) | **Post** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow
+[**ReviewFlowRecovery**](FlowsAPI.md#ReviewFlowRecovery) | **Get** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy
 [**RunFlow**](FlowsAPI.md#RunFlow) | **Post** /test/flow/run/by-id/{flowId} | Run a saved flow
 [**RunFlowBatch**](FlowsAPI.md#RunFlowBatch) | **Post** /test/flow/run/batch | Run multiple saved flows
 [**UpdateFlow**](FlowsAPI.md#UpdateFlow) | **Put** /test/flow/by-id | Replace a test flow
@@ -79,6 +83,80 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FlowRun**](FlowRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## CopyFlowRecoveryDraft
+
+> FlowRecoveryOperation CopyFlowRecoveryDraft(ctx, runId).IdempotencyKey(idempotencyKey).FlowRecoveryDraftInput(flowRecoveryDraftInput).Execute()
+
+Recover an edited draft as an independent new Flow
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	idempotencyKey := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	flowRecoveryDraftInput := *openapiclient.NewFlowRecoveryDraftInput("ManifestHash_example", "Mode_example", map[string]interface{}{"key": interface{}(123)}, int64(123), []*string{nil}, map[string]int64{"key": int64(123)}, map[string]interface{}{"key": interface{}(123)}) // FlowRecoveryDraftInput |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.CopyFlowRecoveryDraft(context.Background(), runId).IdempotencyKey(idempotencyKey).FlowRecoveryDraftInput(flowRecoveryDraftInput).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.CopyFlowRecoveryDraft``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CopyFlowRecoveryDraft`: FlowRecoveryOperation
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.CopyFlowRecoveryDraft`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCopyFlowRecoveryDraftRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **idempotencyKey** | **string** |  |
+ **flowRecoveryDraftInput** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md) |  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
 
 ### Authorization
 
@@ -351,6 +429,80 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Flow**](Flow.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetFlowRecoveryCurrentDependency
+
+> FlowRecoveryCurrentDependency GetFlowRecoveryCurrentDependency(ctx, runId).Kind(kind).SourceId(sourceId).DependencyKey(dependencyKey).Execute()
+
+Read one current safe Recovery dependency
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	kind := "kind_example" // string |
+	sourceId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	dependencyKey := "dependencyKey_example" // string | Retained key for an existing occurrence; omit for an explicitly added saved reference. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.GetFlowRecoveryCurrentDependency(context.Background(), runId).Kind(kind).SourceId(sourceId).DependencyKey(dependencyKey).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.GetFlowRecoveryCurrentDependency``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetFlowRecoveryCurrentDependency`: FlowRecoveryCurrentDependency
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.GetFlowRecoveryCurrentDependency`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetFlowRecoveryCurrentDependencyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **kind** | **string** |  |
+ **sourceId** | **string** |  |
+ **dependencyKey** | **string** | Retained key for an existing occurrence; omit for an explicitly added saved reference. |
+
+### Return type
+
+[**FlowRecoveryCurrentDependency**](FlowRecoveryCurrentDependency.md)
 
 ### Authorization
 
@@ -840,6 +992,150 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FlowRecoveryPreview**](FlowRecoveryPreview.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## RestoreFlowRecoveryDraft
+
+> FlowRecoveryOperation RestoreFlowRecoveryDraft(ctx, runId).IdempotencyKey(idempotencyKey).FlowRecoveryDraftInput(flowRecoveryDraftInput).Execute()
+
+Restore an edited historical Flow into the current Flow
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	idempotencyKey := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+	flowRecoveryDraftInput := *openapiclient.NewFlowRecoveryDraftInput("ManifestHash_example", "Mode_example", map[string]interface{}{"key": interface{}(123)}, int64(123), []*string{nil}, map[string]int64{"key": int64(123)}, map[string]interface{}{"key": interface{}(123)}) // FlowRecoveryDraftInput |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.RestoreFlowRecoveryDraft(context.Background(), runId).IdempotencyKey(idempotencyKey).FlowRecoveryDraftInput(flowRecoveryDraftInput).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.RestoreFlowRecoveryDraft``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `RestoreFlowRecoveryDraft`: FlowRecoveryOperation
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.RestoreFlowRecoveryDraft`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRestoreFlowRecoveryDraftRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **idempotencyKey** | **string** |  |
+ **flowRecoveryDraftInput** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md) |  |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ReviewFlowRecovery
+
+> FlowRecoveryReview ReviewFlowRecovery(ctx, runId).Execute()
+
+Review Flow Recovery for restore or independent copy
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	runId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.FlowsAPI.ReviewFlowRecovery(context.Background(), runId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `FlowsAPI.ReviewFlowRecovery``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ReviewFlowRecovery`: FlowRecoveryReview
+	fmt.Fprintf(os.Stdout, "Response from `FlowsAPI.ReviewFlowRecovery`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**runId** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiReviewFlowRecoveryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**FlowRecoveryReview**](FlowRecoveryReview.md)
 
 ### Authorization
 

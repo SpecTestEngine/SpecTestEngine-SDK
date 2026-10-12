@@ -5,10 +5,12 @@ All URIs are relative to *https://app.ste.software*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**captureFlowStepAttachmentVisualDiff**](FlowsApi.md#captureflowstepattachmentvisualdiff) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion |
+| [**copyFlowRecoveryDraft**](FlowsApi.md#copyflowrecoverydraft) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow |
 | [**createFlow**](FlowsApi.md#createflow) | **POST** /test/flow/create | Create a test flow |
 | [**createFlowRecovery**](FlowsApi.md#createflowrecovery) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies |
 | [**deleteFlow**](FlowsApi.md#deleteflow) | **DELETE** /test/flow/by-id | Delete a test flow |
 | [**getFlow**](FlowsApi.md#getflow) | **GET** /test/flow/by-id/{flowId} | Get a test flow |
+| [**getFlowRecoveryCurrentDependency**](FlowsApi.md#getflowrecoverycurrentdependency) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency |
 | [**getFlowRecoveryDependency**](FlowsApi.md#getflowrecoverydependency) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition |
 | [**getFlowRecoveryOperation**](FlowsApi.md#getflowrecoveryoperation) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes |
 | [**getFlowRun**](FlowsApi.md#getflowrun) | **GET** /test/flow/run/saved/{runId} | Get a saved flow run |
@@ -16,6 +18,8 @@ All URIs are relative to *https://app.ste.software*
 | [**listFlowRuns**](FlowsApi.md#listflowruns) | **GET** /test/flow/run/by-flow-id/{flowId}/page | List saved runs for a flow |
 | [**listFlows**](FlowsApi.md#listflows) | **GET** /test/flow/page | List test flows |
 | [**previewFlowRecovery**](FlowsApi.md#previewflowrecovery) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run |
+| [**restoreFlowRecoveryDraft**](FlowsApi.md#restoreflowrecoverydraft) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow |
+| [**reviewFlowRecovery**](FlowsApi.md#reviewflowrecovery) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy |
 | [**runFlow**](FlowsApi.md#runflow) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow |
 | [**runFlowBatch**](FlowsApi.md#runflowbatchoperation) | **POST** /test/flow/run/batch | Run multiple saved flows |
 | [**updateFlow**](FlowsApi.md#updateflow) | **PUT** /test/flow/by-id | Replace a test flow |
@@ -92,6 +96,85 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete flow run evidence containing the temporary visual diff link in the selected step. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## copyFlowRecoveryDraft
+
+> FlowRecoveryOperation copyFlowRecoveryDraft(runId, idempotencyKey, flowRecoveryDraftInput)
+
+Recover an edited draft as an independent new Flow
+
+Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FlowsApi,
+} from '@spectestengine/sdk';
+import type { CopyFlowRecoveryDraftRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FlowsApi(config);
+
+  const body = {
+    // string
+    runId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string
+    idempotencyKey: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // FlowRecoveryDraftInput
+    flowRecoveryDraftInput: ...,
+  } satisfies CopyFlowRecoveryDraftRequest;
+
+  try {
+    const data = await api.copyFlowRecoveryDraft(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **runId** | `string` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` |  | [Defaults to `undefined`] |
+| **flowRecoveryDraftInput** | [FlowRecoveryDraftInput](FlowRecoveryDraftInput.md) |  | |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -390,6 +473,85 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | The requested flow. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## getFlowRecoveryCurrentDependency
+
+> FlowRecoveryCurrentDependency getFlowRecoveryCurrentDependency(runId, kind, sourceId, dependencyKey)
+
+Read one current safe Recovery dependency
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FlowsApi,
+} from '@spectestengine/sdk';
+import type { GetFlowRecoveryCurrentDependencyRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FlowsApi(config);
+
+  const body = {
+    // string
+    runId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // 'REST' | 'SOAP' | 'GRAPHQL' | 'STREAMING' | 'UI_MACRO'
+    kind: kind_example,
+    // string
+    sourceId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string | Retained key for an existing occurrence; omit for an explicitly added saved reference. (optional)
+    dependencyKey: dependencyKey_example,
+  } satisfies GetFlowRecoveryCurrentDependencyRequest;
+
+  try {
+    const data = await api.getFlowRecoveryCurrentDependency(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **runId** | `string` |  | [Defaults to `undefined`] |
+| **kind** | `REST`, `SOAP`, `GRAPHQL`, `STREAMING`, `UI_MACRO` |  | [Defaults to `undefined`] [Enum: REST, SOAP, GRAPHQL, STREAMING, UI_MACRO] |
+| **sourceId** | `string` |  | [Defaults to `undefined`] |
+| **dependencyKey** | `string` | Retained key for an existing occurrence; omit for an explicitly added saved reference. | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**FlowRecoveryCurrentDependency**](FlowRecoveryCurrentDependency.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Current authoring projection and revision, with masked literal inputs. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
@@ -903,6 +1065,157 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Eligibility, historical definition, binding requirements and bounded dependency summaries. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## restoreFlowRecoveryDraft
+
+> FlowRecoveryOperation restoreFlowRecoveryDraft(runId, idempotencyKey, flowRecoveryDraftInput)
+
+Restore an edited historical Flow into the current Flow
+
+Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FlowsApi,
+} from '@spectestengine/sdk';
+import type { RestoreFlowRecoveryDraftRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FlowsApi(config);
+
+  const body = {
+    // string
+    runId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // string
+    idempotencyKey: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+    // FlowRecoveryDraftInput
+    flowRecoveryDraftInput: ...,
+  } satisfies RestoreFlowRecoveryDraftRequest;
+
+  try {
+    const data = await api.restoreFlowRecoveryDraft(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **runId** | `string` |  | [Defaults to `undefined`] |
+| **idempotencyKey** | `string` |  | [Defaults to `undefined`] |
+| **flowRecoveryDraftInput** | [FlowRecoveryDraftInput](FlowRecoveryDraftInput.md) |  | |
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: `application/json`
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## reviewFlowRecovery
+
+> FlowRecoveryReview reviewFlowRecovery(runId)
+
+Review Flow Recovery for restore or independent copy
+
+Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  FlowsApi,
+} from '@spectestengine/sdk';
+import type { ReviewFlowRecoveryRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new FlowsApi(config);
+
+  const body = {
+    // string
+    runId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
+  } satisfies ReviewFlowRecoveryRequest;
+
+  try {
+    const data = await api.reviewFlowRecovery(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **runId** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**FlowRecoveryReview**](FlowRecoveryReview.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Shared review for both recovery intents. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

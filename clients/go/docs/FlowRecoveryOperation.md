@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **OperationId** | **string** |  |
 **State** | **string** |  |
+**Mode** | Pointer to **string** |  | [optional]
 **FlowId** | Pointer to **NullableString** |  | [optional]
 **FailureCode** | Pointer to **NullableString** |  | [optional]
 **IdempotencyKey** | **string** |  |
@@ -73,6 +74,31 @@ and a boolean to check if the value has been set.
 
 SetState sets State field to given value.
 
+
+### GetMode
+
+`func (o *FlowRecoveryOperation) GetMode() string`
+
+GetMode returns the Mode field if non-nil, zero value otherwise.
+
+### GetModeOk
+
+`func (o *FlowRecoveryOperation) GetModeOk() (*string, bool)`
+
+GetModeOk returns a tuple with the Mode field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMode
+
+`func (o *FlowRecoveryOperation) SetMode(v string)`
+
+SetMode sets Mode field to given value.
+
+### HasMode
+
+`func (o *FlowRecoveryOperation) HasMode() bool`
+
+HasMode returns a boolean if a field has been set.
 
 ### GetFlowId
 

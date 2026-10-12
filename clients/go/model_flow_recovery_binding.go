@@ -3,7 +3,7 @@ SpecTestEngine Public API
 
 The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
 
-API version: 1.0.0-alpha.6
+API version: 1.0.0-alpha.7
 Contact: support@ste.software
 */
 
@@ -27,6 +27,8 @@ type FlowRecoveryBinding struct {
 	// JSON Pointer in the safe authoring definition.
 	Path string `json:"path"`
 	ValueType string `json:"valueType"`
+	// Selected dependency identity; null for a Flow-level binding.
+	DependencyKey NullableString `json:"dependencyKey,omitempty"`
 }
 
 type _FlowRecoveryBinding FlowRecoveryBinding
@@ -165,6 +167,48 @@ func (o *FlowRecoveryBinding) SetValueType(v string) {
 	o.ValueType = v
 }
 
+// GetDependencyKey returns the DependencyKey field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *FlowRecoveryBinding) GetDependencyKey() string {
+	if o == nil || IsNil(o.DependencyKey.Get()) {
+		var ret string
+		return ret
+	}
+	return *o.DependencyKey.Get()
+}
+
+// GetDependencyKeyOk returns a tuple with the DependencyKey field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *FlowRecoveryBinding) GetDependencyKeyOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.DependencyKey.Get(), o.DependencyKey.IsSet()
+}
+
+// HasDependencyKey returns a boolean if a field has been set.
+func (o *FlowRecoveryBinding) HasDependencyKey() bool {
+	if o != nil && o.DependencyKey.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetDependencyKey gets a reference to the given NullableString and assigns it to the DependencyKey field.
+func (o *FlowRecoveryBinding) SetDependencyKey(v string) {
+	o.DependencyKey.Set(&v)
+}
+// SetDependencyKeyNil sets the value for DependencyKey to be an explicit nil
+func (o *FlowRecoveryBinding) SetDependencyKeyNil() {
+	o.DependencyKey.Set(nil)
+}
+
+// UnsetDependencyKey ensures that no value is present for DependencyKey, not even an explicit nil
+func (o *FlowRecoveryBinding) UnsetDependencyKey() {
+	o.DependencyKey.Unset()
+}
+
 func (o FlowRecoveryBinding) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -181,6 +225,9 @@ func (o FlowRecoveryBinding) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["path"] = o.Path
 	toSerialize["valueType"] = o.ValueType
+	if o.DependencyKey.IsSet() {
+		toSerialize["dependencyKey"] = o.DependencyKey.Get()
+	}
 	return toSerialize, nil
 }
 

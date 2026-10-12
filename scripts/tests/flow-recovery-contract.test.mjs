@@ -45,3 +45,28 @@ test('generated recovery transport keeps typed bindings, exact retries, paginati
   assert.equal(calls[4].url, `https://example.test/test/flow/run/recovery-operations/${operationId}`);
   for (const { init } of calls) assert.equal(init.headers.Authorization, 'Bearer fixture-authority');
 });
+
+test('editable restore and copy preserve the typed draft and mode without retrying writes', async () => {
+  const calls = [];
+  const api = new sdk.FlowsApi(new sdk.Configuration({basePath:'https://example.test', accessToken:'fixture-authority',
+    fetchApi:async (url, init)=>{
+      calls.push({url,init});
+      return new Response(JSON.stringify({...operation,mode:'RESTORE'}),{status:202,headers:{'Content-Type':'application/json'}});
+    }}));
+  const body = {manifestHash:input.manifestHash,mode:'RESTORE',expectedFlowRevision:2,
+    sourceStepIds:[runId,null],dependencyRevisions:{dependency:3},bindings:input.bindings,
+    draft:{name:'Checkout',browserSession:{url:'https://example.test'},steps:[
+      {stepType:'API_SPEC',specType:'REST',specId:runId,orderIndex:0,overrideValues:{count:7,enabled:false}},
+      {stepType:'BROWSER_ACTION',browserActionType:'CLICK',selector:'#confirm',orderIndex:1}]}};
+  const request = {runId,idempotencyKey:key,flowRecoveryDraftInput:body};
+  await api.restoreFlowRecoveryDraft(request);
+  await api.getFlowRecoveryOperation({operationId});
+  await api.restoreFlowRecoveryDraft(request);
+  await api.copyFlowRecoveryDraft({...request,flowRecoveryDraftInput:{...body,mode:'COPY',draft:{...body.draft,name:'Independent checkout'}}});
+  assert.deepEqual(calls.map(({init})=>init.method),['POST','GET','POST','POST']);
+  assert.match(calls[0].url,/\/recovery\/restore$/); assert.match(calls[3].url,/\/recovery\/copy$/);
+  assert.deepEqual(JSON.parse(calls[0].init.body),body);
+  assert.equal(calls[0].init.body,calls[2].init.body);
+  assert.equal(calls[0].init.headers['Idempotency-Key'],key);
+  assert.equal(JSON.parse(calls[3].init.body).mode,'COPY');
+});

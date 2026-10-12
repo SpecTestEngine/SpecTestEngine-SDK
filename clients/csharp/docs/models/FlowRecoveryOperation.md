@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **ManifestHash** | **string** |  |
 **CopiedDependencies** | **int** |  |
 **TotalDependencies** | **int** |  |
+**Mode** | **string** |  | [optional]
 **FlowId** | **Guid** |  | [optional]
 **FailureCode** | **string** |  | [optional]
 **Description** | **string** |  | [optional]

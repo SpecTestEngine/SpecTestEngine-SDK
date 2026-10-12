@@ -11,6 +11,7 @@
 |**label** | **String** |  |  [optional] |
 |**path** | **String** | JSON Pointer in the safe authoring definition. |  |
 |**valueType** | [**ValueTypeEnum**](#ValueTypeEnum) |  |  |
+|**dependencyKey** | **String** | Selected dependency identity; null for a Flow-level binding. |  [optional] |
 
 
 

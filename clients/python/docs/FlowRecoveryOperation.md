@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **operation_id** | **UUID** |  |
 **state** | **str** |  |
+**mode** | **str** |  | [optional]
 **flow_id** | **UUID** |  | [optional]
 **failure_code** | **str** |  | [optional]
 **idempotency_key** | **UUID** |  |

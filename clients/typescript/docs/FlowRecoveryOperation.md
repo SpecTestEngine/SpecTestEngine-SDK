@@ -8,6 +8,7 @@ Name | Type
 ------------ | -------------
 `operationId` | string
 `state` | string
+`mode` | string
 `flowId` | string
 `failureCode` | string
 `idempotencyKey` | string
@@ -26,6 +27,7 @@ import type { FlowRecoveryOperation } from '@spectestengine/sdk'
 const example = {
   "operationId": null,
   "state": null,
+  "mode": null,
   "flowId": null,
   "failureCode": null,
   "idempotencyKey": null,

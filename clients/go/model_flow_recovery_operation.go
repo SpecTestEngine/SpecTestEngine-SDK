@@ -3,7 +3,7 @@ SpecTestEngine Public API
 
 The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
 
-API version: 1.0.0-alpha.6
+API version: 1.0.0-alpha.7
 Contact: support@ste.software
 */
 
@@ -24,6 +24,7 @@ var _ MappedNullable = &FlowRecoveryOperation{}
 type FlowRecoveryOperation struct {
 	OperationId string `json:"operationId"`
 	State string `json:"state"`
+	Mode *string `json:"mode,omitempty"`
 	FlowId NullableString `json:"flowId,omitempty"`
 	FailureCode NullableString `json:"failureCode,omitempty"`
 	IdempotencyKey string `json:"idempotencyKey"`
@@ -106,6 +107,38 @@ func (o *FlowRecoveryOperation) GetStateOk() (*string, bool) {
 // SetState sets field value
 func (o *FlowRecoveryOperation) SetState(v string) {
 	o.State = v
+}
+
+// GetMode returns the Mode field value if set, zero value otherwise.
+func (o *FlowRecoveryOperation) GetMode() string {
+	if o == nil || IsNil(o.Mode) {
+		var ret string
+		return ret
+	}
+	return *o.Mode
+}
+
+// GetModeOk returns a tuple with the Mode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FlowRecoveryOperation) GetModeOk() (*string, bool) {
+	if o == nil || IsNil(o.Mode) {
+		return nil, false
+	}
+	return o.Mode, true
+}
+
+// HasMode returns a boolean if a field has been set.
+func (o *FlowRecoveryOperation) HasMode() bool {
+	if o != nil && !IsNil(o.Mode) {
+		return true
+	}
+
+	return false
+}
+
+// SetMode gets a reference to the given string and assigns it to the Mode field.
+func (o *FlowRecoveryOperation) SetMode(v string) {
+	o.Mode = &v
 }
 
 // GetFlowId returns the FlowId field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -366,6 +399,9 @@ func (o FlowRecoveryOperation) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["operationId"] = o.OperationId
 	toSerialize["state"] = o.State
+	if !IsNil(o.Mode) {
+		toSerialize["mode"] = o.Mode
+	}
 	if o.FlowId.IsSet() {
 		toSerialize["flowId"] = o.FlowId.Get()
 	}

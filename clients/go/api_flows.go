@@ -3,7 +3,7 @@ SpecTestEngine Public API
 
 The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
 
-API version: 1.0.0-alpha.6
+API version: 1.0.0-alpha.7
 Contact: support@ste.software
 */
 
@@ -37,6 +37,21 @@ type FlowsAPI interface {
 	// CaptureFlowStepAttachmentVisualDiffExecute executes the request
 	//  @return FlowRun
 	CaptureFlowStepAttachmentVisualDiffExecute(r ApiCaptureFlowStepAttachmentVisualDiffRequest) (*FlowRun, *http.Response, error)
+
+	/*
+	CopyFlowRecoveryDraft Recover an edited draft as an independent new Flow
+
+	Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param runId
+	@return ApiCopyFlowRecoveryDraftRequest
+	*/
+	CopyFlowRecoveryDraft(ctx context.Context, runId string) ApiCopyFlowRecoveryDraftRequest
+
+	// CopyFlowRecoveryDraftExecute executes the request
+	//  @return FlowRecoveryOperation
+	CopyFlowRecoveryDraftExecute(r ApiCopyFlowRecoveryDraftRequest) (*FlowRecoveryOperation, *http.Response, error)
 
 	/*
 	CreateFlow Create a test flow
@@ -88,6 +103,19 @@ type FlowsAPI interface {
 	// GetFlowExecute executes the request
 	//  @return Flow
 	GetFlowExecute(r ApiGetFlowRequest) (*Flow, *http.Response, error)
+
+	/*
+	GetFlowRecoveryCurrentDependency Read one current safe Recovery dependency
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param runId
+	@return ApiGetFlowRecoveryCurrentDependencyRequest
+	*/
+	GetFlowRecoveryCurrentDependency(ctx context.Context, runId string) ApiGetFlowRecoveryCurrentDependencyRequest
+
+	// GetFlowRecoveryCurrentDependencyExecute executes the request
+	//  @return FlowRecoveryCurrentDependency
+	GetFlowRecoveryCurrentDependencyExecute(r ApiGetFlowRecoveryCurrentDependencyRequest) (*FlowRecoveryCurrentDependency, *http.Response, error)
 
 	/*
 	GetFlowRecoveryDependency Inspect one retained safe dependency definition
@@ -181,6 +209,36 @@ type FlowsAPI interface {
 	// PreviewFlowRecoveryExecute executes the request
 	//  @return FlowRecoveryPreview
 	PreviewFlowRecoveryExecute(r ApiPreviewFlowRecoveryRequest) (*FlowRecoveryPreview, *http.Response, error)
+
+	/*
+	RestoreFlowRecoveryDraft Restore an edited historical Flow into the current Flow
+
+	Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param runId
+	@return ApiRestoreFlowRecoveryDraftRequest
+	*/
+	RestoreFlowRecoveryDraft(ctx context.Context, runId string) ApiRestoreFlowRecoveryDraftRequest
+
+	// RestoreFlowRecoveryDraftExecute executes the request
+	//  @return FlowRecoveryOperation
+	RestoreFlowRecoveryDraftExecute(r ApiRestoreFlowRecoveryDraftRequest) (*FlowRecoveryOperation, *http.Response, error)
+
+	/*
+	ReviewFlowRecovery Review Flow Recovery for restore or independent copy
+
+	Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param runId
+	@return ApiReviewFlowRecoveryRequest
+	*/
+	ReviewFlowRecovery(ctx context.Context, runId string) ApiReviewFlowRecoveryRequest
+
+	// ReviewFlowRecoveryExecute executes the request
+	//  @return FlowRecoveryReview
+	ReviewFlowRecoveryExecute(r ApiReviewFlowRecoveryRequest) (*FlowRecoveryReview, *http.Response, error)
 
 	/*
 	RunFlow Run a saved flow
@@ -300,6 +358,138 @@ func (a *FlowsAPIService) CaptureFlowStepAttachmentVisualDiffExecute(r ApiCaptur
 	}
 	// body params
 	localVarPostBody = r.flowDocumentVisualDiffCaptureRunRequest
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v ProblemDetails
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiCopyFlowRecoveryDraftRequest struct {
+	ctx context.Context
+	ApiService FlowsAPI
+	runId string
+	idempotencyKey *string
+	flowRecoveryDraftInput *FlowRecoveryDraftInput
+}
+
+func (r ApiCopyFlowRecoveryDraftRequest) IdempotencyKey(idempotencyKey string) ApiCopyFlowRecoveryDraftRequest {
+	r.idempotencyKey = &idempotencyKey
+	return r
+}
+
+func (r ApiCopyFlowRecoveryDraftRequest) FlowRecoveryDraftInput(flowRecoveryDraftInput FlowRecoveryDraftInput) ApiCopyFlowRecoveryDraftRequest {
+	r.flowRecoveryDraftInput = &flowRecoveryDraftInput
+	return r
+}
+
+func (r ApiCopyFlowRecoveryDraftRequest) Execute() (*FlowRecoveryOperation, *http.Response, error) {
+	return r.ApiService.CopyFlowRecoveryDraftExecute(r)
+}
+
+/*
+CopyFlowRecoveryDraft Recover an edited draft as an independent new Flow
+
+Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param runId
+ @return ApiCopyFlowRecoveryDraftRequest
+*/
+func (a *FlowsAPIService) CopyFlowRecoveryDraft(ctx context.Context, runId string) ApiCopyFlowRecoveryDraftRequest {
+	return ApiCopyFlowRecoveryDraftRequest{
+		ApiService: a,
+		ctx: ctx,
+		runId: runId,
+	}
+}
+
+// Execute executes the request
+//  @return FlowRecoveryOperation
+func (a *FlowsAPIService) CopyFlowRecoveryDraftExecute(r ApiCopyFlowRecoveryDraftRequest) (*FlowRecoveryOperation, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *FlowRecoveryOperation
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FlowsAPIService.CopyFlowRecoveryDraft")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/test/flow/run/saved/{runId}/recovery/copy"
+	localVarPath = strings.Replace(localVarPath, "{"+"runId"+"}", url.PathEscape(parameterValueToString(r.runId, "runId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.idempotencyKey == nil {
+		return localVarReturnValue, nil, reportError("idempotencyKey is required and must be specified")
+	}
+	if r.flowRecoveryDraftInput == nil {
+		return localVarReturnValue, nil, reportError("flowRecoveryDraftInput is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	parameterAddToHeaderOrQuery(localVarHeaderParams, "Idempotency-Key", r.idempotencyKey, "simple", "")
+	// body params
+	localVarPostBody = r.flowRecoveryDraftInput
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -801,6 +991,145 @@ func (a *FlowsAPIService) GetFlowExecute(r ApiGetFlowRequest) (*Flow, *http.Resp
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v ProblemDetails
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiGetFlowRecoveryCurrentDependencyRequest struct {
+	ctx context.Context
+	ApiService FlowsAPI
+	runId string
+	kind *string
+	sourceId *string
+	dependencyKey *string
+}
+
+func (r ApiGetFlowRecoveryCurrentDependencyRequest) Kind(kind string) ApiGetFlowRecoveryCurrentDependencyRequest {
+	r.kind = &kind
+	return r
+}
+
+func (r ApiGetFlowRecoveryCurrentDependencyRequest) SourceId(sourceId string) ApiGetFlowRecoveryCurrentDependencyRequest {
+	r.sourceId = &sourceId
+	return r
+}
+
+// Retained key for an existing occurrence; omit for an explicitly added saved reference.
+func (r ApiGetFlowRecoveryCurrentDependencyRequest) DependencyKey(dependencyKey string) ApiGetFlowRecoveryCurrentDependencyRequest {
+	r.dependencyKey = &dependencyKey
+	return r
+}
+
+func (r ApiGetFlowRecoveryCurrentDependencyRequest) Execute() (*FlowRecoveryCurrentDependency, *http.Response, error) {
+	return r.ApiService.GetFlowRecoveryCurrentDependencyExecute(r)
+}
+
+/*
+GetFlowRecoveryCurrentDependency Read one current safe Recovery dependency
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param runId
+ @return ApiGetFlowRecoveryCurrentDependencyRequest
+*/
+func (a *FlowsAPIService) GetFlowRecoveryCurrentDependency(ctx context.Context, runId string) ApiGetFlowRecoveryCurrentDependencyRequest {
+	return ApiGetFlowRecoveryCurrentDependencyRequest{
+		ApiService: a,
+		ctx: ctx,
+		runId: runId,
+	}
+}
+
+// Execute executes the request
+//  @return FlowRecoveryCurrentDependency
+func (a *FlowsAPIService) GetFlowRecoveryCurrentDependencyExecute(r ApiGetFlowRecoveryCurrentDependencyRequest) (*FlowRecoveryCurrentDependency, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *FlowRecoveryCurrentDependency
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FlowsAPIService.GetFlowRecoveryCurrentDependency")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/test/flow/run/saved/{runId}/recovery/current-dependency"
+	localVarPath = strings.Replace(localVarPath, "{"+"runId"+"}", url.PathEscape(parameterValueToString(r.runId, "runId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.kind == nil {
+		return localVarReturnValue, nil, reportError("kind is required and must be specified")
+	}
+	if r.sourceId == nil {
+		return localVarReturnValue, nil, reportError("sourceId is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "kind", r.kind, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "sourceId", r.sourceId, "form", "")
+	if r.dependencyKey != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "dependencyKey", r.dependencyKey, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1659,6 +1988,249 @@ func (a *FlowsAPIService) PreviewFlowRecoveryExecute(r ApiPreviewFlowRecoveryReq
 	}
 
 	localVarPath := localBasePath + "/test/flow/run/saved/{runId}/recovery/preview"
+	localVarPath = strings.Replace(localVarPath, "{"+"runId"+"}", url.PathEscape(parameterValueToString(r.runId, "runId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v ProblemDetails
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiRestoreFlowRecoveryDraftRequest struct {
+	ctx context.Context
+	ApiService FlowsAPI
+	runId string
+	idempotencyKey *string
+	flowRecoveryDraftInput *FlowRecoveryDraftInput
+}
+
+func (r ApiRestoreFlowRecoveryDraftRequest) IdempotencyKey(idempotencyKey string) ApiRestoreFlowRecoveryDraftRequest {
+	r.idempotencyKey = &idempotencyKey
+	return r
+}
+
+func (r ApiRestoreFlowRecoveryDraftRequest) FlowRecoveryDraftInput(flowRecoveryDraftInput FlowRecoveryDraftInput) ApiRestoreFlowRecoveryDraftRequest {
+	r.flowRecoveryDraftInput = &flowRecoveryDraftInput
+	return r
+}
+
+func (r ApiRestoreFlowRecoveryDraftRequest) Execute() (*FlowRecoveryOperation, *http.Response, error) {
+	return r.ApiService.RestoreFlowRecoveryDraftExecute(r)
+}
+
+/*
+RestoreFlowRecoveryDraft Restore an edited historical Flow into the current Flow
+
+Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param runId
+ @return ApiRestoreFlowRecoveryDraftRequest
+*/
+func (a *FlowsAPIService) RestoreFlowRecoveryDraft(ctx context.Context, runId string) ApiRestoreFlowRecoveryDraftRequest {
+	return ApiRestoreFlowRecoveryDraftRequest{
+		ApiService: a,
+		ctx: ctx,
+		runId: runId,
+	}
+}
+
+// Execute executes the request
+//  @return FlowRecoveryOperation
+func (a *FlowsAPIService) RestoreFlowRecoveryDraftExecute(r ApiRestoreFlowRecoveryDraftRequest) (*FlowRecoveryOperation, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *FlowRecoveryOperation
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FlowsAPIService.RestoreFlowRecoveryDraft")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/test/flow/run/saved/{runId}/recovery/restore"
+	localVarPath = strings.Replace(localVarPath, "{"+"runId"+"}", url.PathEscape(parameterValueToString(r.runId, "runId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.idempotencyKey == nil {
+		return localVarReturnValue, nil, reportError("idempotencyKey is required and must be specified")
+	}
+	if r.flowRecoveryDraftInput == nil {
+		return localVarReturnValue, nil, reportError("flowRecoveryDraftInput is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	parameterAddToHeaderOrQuery(localVarHeaderParams, "Idempotency-Key", r.idempotencyKey, "simple", "")
+	// body params
+	localVarPostBody = r.flowRecoveryDraftInput
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v ProblemDetails
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiReviewFlowRecoveryRequest struct {
+	ctx context.Context
+	ApiService FlowsAPI
+	runId string
+}
+
+func (r ApiReviewFlowRecoveryRequest) Execute() (*FlowRecoveryReview, *http.Response, error) {
+	return r.ApiService.ReviewFlowRecoveryExecute(r)
+}
+
+/*
+ReviewFlowRecovery Review Flow Recovery for restore or independent copy
+
+Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param runId
+ @return ApiReviewFlowRecoveryRequest
+*/
+func (a *FlowsAPIService) ReviewFlowRecovery(ctx context.Context, runId string) ApiReviewFlowRecoveryRequest {
+	return ApiReviewFlowRecoveryRequest{
+		ApiService: a,
+		ctx: ctx,
+		runId: runId,
+	}
+}
+
+// Execute executes the request
+//  @return FlowRecoveryReview
+func (a *FlowsAPIService) ReviewFlowRecoveryExecute(r ApiReviewFlowRecoveryRequest) (*FlowRecoveryReview, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *FlowRecoveryReview
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FlowsAPIService.ReviewFlowRecovery")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/test/flow/run/saved/{runId}/recovery/review"
 	localVarPath = strings.Replace(localVarPath, "{"+"runId"+"}", url.PathEscape(parameterValueToString(r.runId, "runId")), -1)
 
 	localVarHeaderParams := make(map[string]string)

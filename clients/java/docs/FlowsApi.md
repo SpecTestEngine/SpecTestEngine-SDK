@@ -6,6 +6,8 @@ All URIs are relative to *https://app.ste.software*
 |------------- | ------------- | -------------|
 | [**captureFlowStepAttachmentVisualDiff**](FlowsApi.md#captureFlowStepAttachmentVisualDiff) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion |
 | [**captureFlowStepAttachmentVisualDiffWithHttpInfo**](FlowsApi.md#captureFlowStepAttachmentVisualDiffWithHttpInfo) | **POST** /test/flow/run/by-id/{flowId}/visual-diff-captures | Create a visual diff from a failed flow-step attachment assertion |
+| [**copyFlowRecoveryDraft**](FlowsApi.md#copyFlowRecoveryDraft) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow |
+| [**copyFlowRecoveryDraftWithHttpInfo**](FlowsApi.md#copyFlowRecoveryDraftWithHttpInfo) | **POST** /test/flow/run/saved/{runId}/recovery/copy | Recover an edited draft as an independent new Flow |
 | [**createFlow**](FlowsApi.md#createFlow) | **POST** /test/flow/create | Create a test flow |
 | [**createFlowWithHttpInfo**](FlowsApi.md#createFlowWithHttpInfo) | **POST** /test/flow/create | Create a test flow |
 | [**createFlowRecovery**](FlowsApi.md#createFlowRecovery) | **POST** /test/flow/run/saved/{runId}/recovery | Recover a saved run as a new Flow and new dependency copies |
@@ -14,6 +16,8 @@ All URIs are relative to *https://app.ste.software*
 | [**deleteFlowWithHttpInfo**](FlowsApi.md#deleteFlowWithHttpInfo) | **DELETE** /test/flow/by-id | Delete a test flow |
 | [**getFlow**](FlowsApi.md#getFlow) | **GET** /test/flow/by-id/{flowId} | Get a test flow |
 | [**getFlowWithHttpInfo**](FlowsApi.md#getFlowWithHttpInfo) | **GET** /test/flow/by-id/{flowId} | Get a test flow |
+| [**getFlowRecoveryCurrentDependency**](FlowsApi.md#getFlowRecoveryCurrentDependency) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency |
+| [**getFlowRecoveryCurrentDependencyWithHttpInfo**](FlowsApi.md#getFlowRecoveryCurrentDependencyWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/current-dependency | Read one current safe Recovery dependency |
 | [**getFlowRecoveryDependency**](FlowsApi.md#getFlowRecoveryDependency) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition |
 | [**getFlowRecoveryDependencyWithHttpInfo**](FlowsApi.md#getFlowRecoveryDependencyWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/dependencies/{dependencyKey} | Inspect one retained safe dependency definition |
 | [**getFlowRecoveryOperation**](FlowsApi.md#getFlowRecoveryOperation) | **GET** /test/flow/run/recovery-operations/{operationId} | Read a Flow recovery outcome without performing writes |
@@ -28,6 +32,10 @@ All URIs are relative to *https://app.ste.software*
 | [**listFlowsWithHttpInfo**](FlowsApi.md#listFlowsWithHttpInfo) | **GET** /test/flow/page | List test flows |
 | [**previewFlowRecovery**](FlowsApi.md#previewFlowRecovery) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run |
 | [**previewFlowRecoveryWithHttpInfo**](FlowsApi.md#previewFlowRecoveryWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/preview | Preview an independent Flow recovery from a saved run |
+| [**restoreFlowRecoveryDraft**](FlowsApi.md#restoreFlowRecoveryDraft) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow |
+| [**restoreFlowRecoveryDraftWithHttpInfo**](FlowsApi.md#restoreFlowRecoveryDraftWithHttpInfo) | **POST** /test/flow/run/saved/{runId}/recovery/restore | Restore an edited historical Flow into the current Flow |
+| [**reviewFlowRecovery**](FlowsApi.md#reviewFlowRecovery) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy |
+| [**reviewFlowRecoveryWithHttpInfo**](FlowsApi.md#reviewFlowRecoveryWithHttpInfo) | **GET** /test/flow/run/saved/{runId}/recovery/review | Review Flow Recovery for restore or independent copy |
 | [**runFlow**](FlowsApi.md#runFlow) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow |
 | [**runFlowWithHttpInfo**](FlowsApi.md#runFlowWithHttpInfo) | **POST** /test/flow/run/by-id/{flowId} | Run a saved flow |
 | [**runFlowBatch**](FlowsApi.md#runFlowBatch) | **POST** /test/flow/run/batch | Run multiple saved flows |
@@ -201,6 +209,180 @@ ApiResponse<[**FlowRun**](FlowRun.md)>
 | ------------- | ------------- | ------------- | -------------|
 | **flowId** | **UUID** | UUIDv7 identifier of the saved test flow. | |
 | **flowDocumentVisualDiffCaptureRunRequest** | [**FlowDocumentVisualDiffCaptureRunRequest**](FlowDocumentVisualDiffCaptureRunRequest.md) |  | |
+
+
+
+## copyFlowRecoveryDraft
+
+> FlowRecoveryOperation copyFlowRecoveryDraft(copyFlowRecoveryDraftRequest)
+
+Recover an edited draft as an independent new Flow
+
+Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        UUID idempotencyKey = UUID.randomUUID(); // UUID |
+        FlowRecoveryDraftInput flowRecoveryDraftInput = new FlowRecoveryDraftInput(); // FlowRecoveryDraftInput |
+        try {
+            APIcopyFlowRecoveryDraftRequest request = APIcopyFlowRecoveryDraftRequest.newBuilder()
+                .runId(runId)
+                .idempotencyKey(idempotencyKey)
+                .flowRecoveryDraftInput(flowRecoveryDraftInput)
+                .build();
+            FlowRecoveryOperation result = apiInstance.copyFlowRecoveryDraft(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#copyFlowRecoveryDraft");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| copyFlowRecoveryDraftRequest | [**APIcopyFlowRecoveryDraftRequest**](FlowsApi.md#APIcopyFlowRecoveryDraftRequest)|-|-|
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+| **0** | The request failed. |  -  |
+
+## copyFlowRecoveryDraftWithHttpInfo
+
+> ApiResponse<FlowRecoveryOperation> copyFlowRecoveryDraftWithHttpInfo(copyFlowRecoveryDraftRequest)
+
+Recover an edited draft as an independent new Flow
+
+Creates a new Flow and independent selected dependency copies; originals are unchanged. Requires current owner create authority and a unique Flow name. No ordinary-create fallback or execution. Mode must be COPY. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        UUID idempotencyKey = UUID.randomUUID(); // UUID |
+        FlowRecoveryDraftInput flowRecoveryDraftInput = new FlowRecoveryDraftInput(); // FlowRecoveryDraftInput |
+        try {
+            APIcopyFlowRecoveryDraftRequest request = APIcopyFlowRecoveryDraftRequest.newBuilder()
+                .runId(runId)
+                .idempotencyKey(idempotencyKey)
+                .flowRecoveryDraftInput(flowRecoveryDraftInput)
+                .build();
+            ApiResponse<FlowRecoveryOperation> response = apiInstance.copyFlowRecoveryDraftWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#copyFlowRecoveryDraft");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| copyFlowRecoveryDraftRequest | [**APIcopyFlowRecoveryDraftRequest**](FlowsApi.md#APIcopyFlowRecoveryDraftRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**FlowRecoveryOperation**](FlowRecoveryOperation.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIcopyFlowRecoveryDraftRequest"></a>
+## APIcopyFlowRecoveryDraftRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **runId** | **UUID** |  | |
+| **idempotencyKey** | **UUID** |  | |
+| **flowRecoveryDraftInput** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md) |  | |
 
 
 
@@ -863,6 +1045,179 @@ ApiResponse<[**Flow**](Flow.md)>
 |     Name      |    Type       | Description   |     Notes    |
 | ------------- | ------------- | ------------- | -------------|
 | **flowId** | **UUID** | UUIDv7 identifier of the saved test flow. | |
+
+
+
+## getFlowRecoveryCurrentDependency
+
+> FlowRecoveryCurrentDependency getFlowRecoveryCurrentDependency(getFlowRecoveryCurrentDependencyRequest)
+
+Read one current safe Recovery dependency
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        String kind = "REST"; // String |
+        UUID sourceId = UUID.randomUUID(); // UUID |
+        String dependencyKey = "dependencyKey_example"; // String | Retained key for an existing occurrence; omit for an explicitly added saved reference.
+        try {
+            APIgetFlowRecoveryCurrentDependencyRequest request = APIgetFlowRecoveryCurrentDependencyRequest.newBuilder()
+                .runId(runId)
+                .kind(kind)
+                .sourceId(sourceId)
+                .dependencyKey(dependencyKey)
+                .build();
+            FlowRecoveryCurrentDependency result = apiInstance.getFlowRecoveryCurrentDependency(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#getFlowRecoveryCurrentDependency");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getFlowRecoveryCurrentDependencyRequest | [**APIgetFlowRecoveryCurrentDependencyRequest**](FlowsApi.md#APIgetFlowRecoveryCurrentDependencyRequest)|-|-|
+
+### Return type
+
+[**FlowRecoveryCurrentDependency**](FlowRecoveryCurrentDependency.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Current authoring projection and revision, with masked literal inputs. |  -  |
+| **0** | The request failed. |  -  |
+
+## getFlowRecoveryCurrentDependencyWithHttpInfo
+
+> ApiResponse<FlowRecoveryCurrentDependency> getFlowRecoveryCurrentDependencyWithHttpInfo(getFlowRecoveryCurrentDependencyRequest)
+
+Read one current safe Recovery dependency
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        String kind = "REST"; // String |
+        UUID sourceId = UUID.randomUUID(); // UUID |
+        String dependencyKey = "dependencyKey_example"; // String | Retained key for an existing occurrence; omit for an explicitly added saved reference.
+        try {
+            APIgetFlowRecoveryCurrentDependencyRequest request = APIgetFlowRecoveryCurrentDependencyRequest.newBuilder()
+                .runId(runId)
+                .kind(kind)
+                .sourceId(sourceId)
+                .dependencyKey(dependencyKey)
+                .build();
+            ApiResponse<FlowRecoveryCurrentDependency> response = apiInstance.getFlowRecoveryCurrentDependencyWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#getFlowRecoveryCurrentDependency");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getFlowRecoveryCurrentDependencyRequest | [**APIgetFlowRecoveryCurrentDependencyRequest**](FlowsApi.md#APIgetFlowRecoveryCurrentDependencyRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**FlowRecoveryCurrentDependency**](FlowRecoveryCurrentDependency.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Current authoring projection and revision, with masked literal inputs. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIgetFlowRecoveryCurrentDependencyRequest"></a>
+## APIgetFlowRecoveryCurrentDependencyRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **runId** | **UUID** |  | |
+| **kind** | **String** |  | [enum: REST, SOAP, GRAPHQL, STREAMING, UI_MACRO] |
+| **sourceId** | **UUID** |  | |
+| **dependencyKey** | **String** | Retained key for an existing occurrence; omit for an explicitly added saved reference. | [optional] |
 
 
 
@@ -2003,6 +2358,342 @@ ApiResponse<[**FlowRecoveryPreview**](FlowRecoveryPreview.md)>
 
 <a id="APIpreviewFlowRecoveryRequest"></a>
 ## APIpreviewFlowRecoveryRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **runId** | **UUID** |  | |
+
+
+
+## restoreFlowRecoveryDraft
+
+> FlowRecoveryOperation restoreFlowRecoveryDraft(restoreFlowRecoveryDraftRequest)
+
+Restore an edited historical Flow into the current Flow
+
+Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        UUID idempotencyKey = UUID.randomUUID(); // UUID |
+        FlowRecoveryDraftInput flowRecoveryDraftInput = new FlowRecoveryDraftInput(); // FlowRecoveryDraftInput |
+        try {
+            APIrestoreFlowRecoveryDraftRequest request = APIrestoreFlowRecoveryDraftRequest.newBuilder()
+                .runId(runId)
+                .idempotencyKey(idempotencyKey)
+                .flowRecoveryDraftInput(flowRecoveryDraftInput)
+                .build();
+            FlowRecoveryOperation result = apiInstance.restoreFlowRecoveryDraft(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#restoreFlowRecoveryDraft");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| restoreFlowRecoveryDraftRequest | [**APIrestoreFlowRecoveryDraftRequest**](FlowsApi.md#APIrestoreFlowRecoveryDraftRequest)|-|-|
+
+### Return type
+
+[**FlowRecoveryOperation**](FlowRecoveryOperation.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+| **0** | The request failed. |  -  |
+
+## restoreFlowRecoveryDraftWithHttpInfo
+
+> ApiResponse<FlowRecoveryOperation> restoreFlowRecoveryDraftWithHttpInfo(restoreFlowRecoveryDraftRequest)
+
+Restore an edited historical Flow into the current Flow
+
+Updates the original Flow and selected original dependencies. Shared consumers are affected. Requires current resource update authority. Added saved references stay unchanged. Owner-local receipts make the same exact key/body resumable; some originals may already be updated after a partial failure. No automatic rollback or execution. Mode must be RESTORE. Retain the identical reviewed body and UUID key; GET status never resumes writes.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        UUID idempotencyKey = UUID.randomUUID(); // UUID |
+        FlowRecoveryDraftInput flowRecoveryDraftInput = new FlowRecoveryDraftInput(); // FlowRecoveryDraftInput |
+        try {
+            APIrestoreFlowRecoveryDraftRequest request = APIrestoreFlowRecoveryDraftRequest.newBuilder()
+                .runId(runId)
+                .idempotencyKey(idempotencyKey)
+                .flowRecoveryDraftInput(flowRecoveryDraftInput)
+                .build();
+            ApiResponse<FlowRecoveryOperation> response = apiInstance.restoreFlowRecoveryDraftWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#restoreFlowRecoveryDraft");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| restoreFlowRecoveryDraftRequest | [**APIrestoreFlowRecoveryDraftRequest**](FlowsApi.md#APIrestoreFlowRecoveryDraftRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**FlowRecoveryOperation**](FlowRecoveryOperation.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Completed outcome with original Flow ID for RESTORE or new Flow ID for COPY. |  -  |
+| **202** | Partial or unconfirmed outcome, not success. Resume only this same request. |  * Location -  <br>  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIrestoreFlowRecoveryDraftRequest"></a>
+## APIrestoreFlowRecoveryDraftRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **runId** | **UUID** |  | |
+| **idempotencyKey** | **UUID** |  | |
+| **flowRecoveryDraftInput** | [**FlowRecoveryDraftInput**](FlowRecoveryDraftInput.md) |  | |
+
+
+
+## reviewFlowRecovery
+
+> FlowRecoveryReview reviewFlowRecovery(reviewFlowRecoveryRequest)
+
+Review Flow Recovery for restore or independent copy
+
+Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        try {
+            APIreviewFlowRecoveryRequest request = APIreviewFlowRecoveryRequest.newBuilder()
+                .runId(runId)
+                .build();
+            FlowRecoveryReview result = apiInstance.reviewFlowRecovery(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#reviewFlowRecovery");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| reviewFlowRecoveryRequest | [**APIreviewFlowRecoveryRequest**](FlowsApi.md#APIreviewFlowRecoveryRequest)|-|-|
+
+### Return type
+
+[**FlowRecoveryReview**](FlowRecoveryReview.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Shared review for both recovery intents. |  -  |
+| **0** | The request failed. |  -  |
+
+## reviewFlowRecoveryWithHttpInfo
+
+> ApiResponse<FlowRecoveryReview> reviewFlowRecoveryWithHttpInfo(reviewFlowRecoveryRequest)
+
+Review Flow Recovery for restore or independent copy
+
+Historical authoring, original occurrence mapping and current versions only. Does not write or execute. Current human and resource read authority required.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.FlowsApi;
+import software.ste.sdk.generated.api.FlowsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        FlowsApi apiInstance = new FlowsApi(defaultClient);
+        UUID runId = UUID.randomUUID(); // UUID |
+        try {
+            APIreviewFlowRecoveryRequest request = APIreviewFlowRecoveryRequest.newBuilder()
+                .runId(runId)
+                .build();
+            ApiResponse<FlowRecoveryReview> response = apiInstance.reviewFlowRecoveryWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling FlowsApi#reviewFlowRecovery");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| reviewFlowRecoveryRequest | [**APIreviewFlowRecoveryRequest**](FlowsApi.md#APIreviewFlowRecoveryRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**FlowRecoveryReview**](FlowRecoveryReview.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Shared review for both recovery intents. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIreviewFlowRecoveryRequest"></a>
+## APIreviewFlowRecoveryRequest
 ### Properties
 
 |     Name      |    Type       | Description   |     Notes    |
