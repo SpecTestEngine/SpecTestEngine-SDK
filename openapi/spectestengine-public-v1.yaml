@@ -1,11 +1,16 @@
 openapi: 3.0.3
 info:
   title: SpecTestEngine Public API
-  version: 1.0.0-alpha.7
+  version: 1.0.0-alpha.10
   description: |
     The versioned integration contract for creating, running, observing, and exporting
     SpecTestEngine test assets. The API is project-scoped: the bearer token selects the
     company and active project, and clients must not send internal owner identifiers.
+
+    Execution and assertion results retain the exact strings `----------------PASS-------------------`,
+    `----------------FAIL-------------------`, and `---------------ERROR-------------------` in raw JSON.
+    Product UI renders these as Passed, Failed, and Execution error. Target response fields and
+    lifecycle states (such as QUEUED, RUNNING, CANCELLED) retain their own values.
 
     Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive
     integrations use Authorization Code with PKCE; CI and server-to-server integrations use
@@ -328,6 +333,178 @@ paths:
           content:
             image/png:
               schema: { type: string, format: binary }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/rest-spec/preparations:
+    get:
+      tags: [REST specifications]
+      summary: List eligible Prepare requests and output declarations
+      operationId: listRestPreparations
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - name: size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: A page of eligible REST preparation sources.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationPage' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/rest-spec/preparations/by-ref/{ref}:
+    get:
+      tags: [REST specifications]
+      summary: Read eligible REST Prepare request metadata by stable key
+      operationId: getRestPreparation
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 128 }
+      responses:
+        '200':
+          description: The eligible source and its declared output variables.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationSummary' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/soap-spec/preparations:
+    get:
+      tags: [SOAP specifications]
+      summary: List eligible Prepare requests and output declarations
+      operationId: listSoapPreparations
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - name: size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: A page of eligible SOAP preparation sources.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationPage' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/soap-spec/preparations/by-ref/{ref}:
+    get:
+      tags: [SOAP specifications]
+      summary: Read eligible SOAP Prepare request metadata by stable key
+      operationId: getSoapPreparation
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 128 }
+      responses:
+        '200':
+          description: The eligible source and its declared output variables.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationSummary' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/graphql-spec/preparations:
+    get:
+      tags: [GraphQL specifications]
+      summary: List eligible Prepare requests and output declarations
+      operationId: listGraphqlPreparations
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - name: size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: A page of eligible GRAPHQL preparation sources.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationPage' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/graphql-spec/preparations/by-ref/{ref}:
+    get:
+      tags: [GraphQL specifications]
+      summary: Read eligible GRAPHQL Prepare request metadata by stable key
+      operationId: getGraphqlPreparation
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 128 }
+      responses:
+        '200':
+          description: The eligible source and its declared output variables.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationSummary' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/streaming-spec/preparations:
+    get:
+      tags: [Streaming specifications]
+      summary: List eligible Prepare requests and output declarations
+      operationId: listStreamingPreparations
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - name: size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - $ref: '#/components/parameters/Search'
+      responses:
+        '200':
+          description: A page of eligible STREAMING preparation sources.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationPage' }
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /test/streaming-spec/preparations/by-ref/{ref}:
+    get:
+      tags: [Streaming specifications]
+      summary: Read eligible STREAMING Prepare request metadata by stable key
+      operationId: getStreamingPreparation
+      x-sdk-stability: stable
+      x-idempotent: true
+      description: Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+      parameters:
+        - name: ref
+          in: path
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 128 }
+      responses:
+        '200':
+          description: The eligible source and its declared output variables.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PreparationSummary' }
         default:
           $ref: '#/components/responses/ErrorResponse'
   /test/rest-spec/page:
@@ -2922,7 +3099,7 @@ paths:
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/RunStatus'
+            $ref: '#/components/schemas/RunStatusCode'
         - name: sortBy
           in: query
           required: false
@@ -3601,7 +3778,7 @@ components:
       enum: [STOP_RUN, CONTINUE_AND_REVIEW]
     BrowserVisualComparisonStatus:
       type: string
-      enum: [PASSED, FAILED, BASELINE_MISSING, REVIEW_REQUIRED]
+      enum: ["----------------PASS-------------------", "----------------FAIL-------------------", BASELINE_MISSING, REVIEW_REQUIRED]
     BrowserVisualDecisionStatus:
       type: string
       enum: [UNREVIEWED, EXPECTED_CHANGE, EXCLUDED_AND_RECOMPARED, CONFIRMED_REGRESSION, NEEDS_INVESTIGATION]
@@ -4054,7 +4231,7 @@ components:
       enum: [QUEUED, CONNECTING, OPEN, ACTIVE, COMPLETING, COMPLETED, FAILED, TIMED_OUT, CANCELLED]
     StreamingRunOutcome:
       type: string
-      enum: [PASS, FAIL, ERROR, CANCELLED]
+      enum: ["----------------PASS-------------------", "----------------FAIL-------------------", "---------------ERROR-------------------", CANCELLED]
     StreamingDraftValidation:
       type: object
       required: [valid, specType, transport]
@@ -4203,9 +4380,13 @@ components:
         totalElements: { type: integer, format: int64, minimum: 0 }
         totalPages: { type: integer, minimum: 0 }
         complete: { type: boolean }
+    RunStatusCode:
+      type: string
+      description: Query and notification configuration code, independent of an execution result verdict.
+      enum: [QUEUED, RUNNING, PASS, RECOVERED, FAIL, ERROR, SKIPPED]
     RunStatus:
       type: string
-      enum: [QUEUED, RUNNING, PASS, RECOVERED, FAIL, ERROR, SKIPPED]
+      enum: [QUEUED, RUNNING, "----------------PASS-------------------", RECOVERED, "----------------FAIL-------------------", "---------------ERROR-------------------", SKIPPED]
     ProblemDetails:
       type: object
       required: [timestamp, status, error, message, path, errorCode]
@@ -4289,6 +4470,67 @@ components:
             spec:
               type: object
               additionalProperties: true
+    PreparationOutput:
+      type: object
+      required: [path, required]
+      properties:
+        path: { type: string, description: "JSON Pointer into the native response surface (REST body, GraphQL envelope, namespace-local SOAP projection, or Streaming events)", maxLength: 2048 }
+        type: { type: string, nullable: true, enum: [string, number, boolean, object, array] }
+        required: { type: boolean, default: true }
+    PreparationSummary:
+      type: object
+      required: [id, stableKey, name, protocol, outputs]
+      properties:
+        id: { type: string, format: uuid }
+        stableKey: { type: string }
+        name: { type: string }
+        protocol: { type: string, enum: [REST, SOAP, GRAPHQL, STREAMING] }
+        outputs:
+          type: object
+          maxProperties: 64
+          additionalProperties: { $ref: '#/components/schemas/PreparationOutput' }
+    PreparationPage:
+      type: object
+      required: [items, page, size, totalElements, totalPages, first, last]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/PreparationSummary' } }
+        page: { type: integer }
+        size: { type: integer }
+        totalElements: { type: integer, format: int64 }
+        totalPages: { type: integer }
+        first: { type: boolean }
+        last: { type: boolean }
+    BrowserAuthGuard:
+      type: object
+      additionalProperties: false
+      required: [variable, source, path, prefix]
+      properties:
+        variable: { type: string, pattern: '^[A-Za-z_][A-Za-z0-9_]{0,63}$' }
+        source: { type: string, enum: [REQUEST_BODY, REQUEST_HEADER, REQUEST_COOKIE] }
+        path: { type: string, minLength: 1, maxLength: 256 }
+        prefix: { type: string, enum: ['', 'Bearer '] }
+    BrowserAuthSource:
+      type: object
+      additionalProperties: false
+      required: [name, source, path, scopeOrigin]
+      properties:
+        name: { type: string, pattern: '^[A-Za-z_][A-Za-z0-9_]{0,63}$' }
+        source: { type: string, enum: [RESPONSE_BODY, RESPONSE_HEADER, RESPONSE_COOKIE] }
+        path: { type: string, minLength: 1, maxLength: 256 }
+        scopeOrigin: { type: string, format: uri, description: 'Exact HTTP(S) origin without credentials, path, query or fragment.' }
+        updateFrom:
+          allOf: [{ $ref: '#/components/schemas/BrowserAuthGuard' }]
+          nullable: true
+    BrowserAuthTransfer:
+      type: object
+      additionalProperties: false
+      description: Metadata only. Initial sources are Action-bound; renewal sources are run-bound and require an exact current-run private input. No token values or public initial-variable seeds are accepted. Resolve Recorder ambiguity before saving.
+      properties:
+        sources: { type: array, maxItems: 32, items: { $ref: '#/components/schemas/BrowserAuthSource' } }
+        authorizationVariable: { type: string, nullable: true, pattern: '^[A-Za-z_][A-Za-z0-9_]{0,63}$' }
+        candidates: { type: array, maxItems: 0, items: {} }
+        optionalRefresh: { type: boolean, default: false }
+        choiceId: { type: string, nullable: true, pattern: '^[A-Za-z0-9_]{1,64}$' }
     SpecificationPage:
       allOf:
         - $ref: '#/components/schemas/PageMetadata'
@@ -4403,6 +4645,7 @@ components:
         - HEADER_ASSERTION
         - BODY_ASSERTION
         - ATTACHMENT_ASSERTION
+        - JWT_ASSERTION
         - SOAP_REQUEST
         - SOAP_ASSERTION
         - GRAPHQL_OPERATION
@@ -4610,16 +4853,18 @@ components:
           additionalProperties: true
     BrowserActionType:
       type: string
-      enum: [NAVIGATE, OPEN_PAGE, SWITCH_PAGE, GO_BACK, GO_FORWARD, REFRESH, CLOSE_PAGE, CLICK, DOUBLE_CLICK, DRAG, SCROLL, FILL, PRESS, SELECT_OPTION, EXTRACT_TEXT]
+      enum: [NAVIGATE, OPEN_PAGE, SWITCH_PAGE, GO_BACK, GO_FORWARD, REFRESH, CLOSE_PAGE, CLICK, DOUBLE_CLICK, DRAG, SCROLL, FILL, PASTE_ADDRESS_BAR, PRESS, SELECT_OPTION, EXTRACT_TEXT]
     BrowserNetworkExpectation:
       type: object
-      description: Approved expectations and recorded candidates are separate. Body/path values remain typed JSON; exclusions affect network validation only.
+      additionalProperties: false
+      description: Local checks over observed browser traffic, never a second HTTP send. Candidates are not executable checks. Recorded credentials are rejected; current-run bindings are private and optional. Body and headers constrain the request; expectedBody and expectedHeaders constrain the response. Explicit empty response-header objects are checks. Unsupported OpenAPI/schema/attachment assertions are rejected, not processed by Browser.
       properties:
         enabled: { type: boolean }
+        policy: { type: string, enum: [IGNORE, PRESENCE, STRICT], description: Per-Event policy. IGNORE keeps automatic source capture active without requiring refresh presence. }
         recordedCallId: { type: integer }
-        recordedUrl: { type: string, maxLength: 2000 }
+        recordedUrl: { type: string, maxLength: 32768 }
         method: { type: string, maxLength: 16 }
-        url: { type: string, maxLength: 2000 }
+        url: { type: string, maxLength: 32768 }
         expectedStatusCode: { type: integer }
         candidateStatusCode: { type: integer }
         expectedContentType: { type: string, maxLength: 255 }
@@ -4632,9 +4877,110 @@ components:
         candidateBody: {}
         expectedBodyPaths:
           type: array
-          items: { type: object, additionalProperties: true }
+          maxItems: 250
+          items: { $ref: '#/components/schemas/BrowserPathExpectation' }
+        expectedHeaderPaths:
+          type: array
+          maxItems: 250
+          items: { $ref: '#/components/schemas/BrowserPathExpectation' }
+        stream:
+          $ref: '#/components/schemas/BrowserStreamMessage'
         candidateBodyPaths: { type: object, additionalProperties: true }
         excludedBodyFields: { type: array, items: { type: string } }
+        headers:
+          type: object
+          description: Expected request headers; values may use ${runtime.name} from a prior declared current-run response source.
+          additionalProperties: { type: string }
+        expectedBody:
+          description: Complete expected response JSON value, including explicit null; absence disables this criterion. Partial or unavailable captured bodies cannot pass.
+        skipExactBodyCheck: { type: boolean }
+        excludeAllOtherBodyFields:
+          type: boolean
+          description: Include-only response-object comparison. Array include-only is unsupported in Browser.
+        occurrence:
+          type: integer
+          minimum: 1
+          maximum: 300
+          description: Select this request-start occurrence within its Action and method/URL matcher. Required by guided value-transfer relations; old recorded call IDs are not replay identity.
+        requestBodyPaths:
+          type: array
+          maxItems: 250
+          description: Focused outgoing Body checks. A complete runtime placeholder preserves the source JSON type; prefix/suffix text requires a string source.
+          items: { $ref: '#/components/schemas/BrowserPathExpectation' }
+        candidateFields:
+          $ref: '#/components/schemas/BrowserNetworkFieldInventory'
+        authTransfer:
+          $ref: '#/components/schemas/BrowserAuthTransfer'
+        runtimeBindings:
+          type: array
+          maxItems: 32
+          description: Fresh private response sources, active independently of response assertion policy. Never contains a token value. Resume retains the same execution; full Rerun clears it.
+          items: { $ref: '#/components/schemas/BrowserNetworkRuntimeBinding' }
+    BrowserPathExpectation:
+      type: object
+      additionalProperties: false
+      required: [path]
+      description: Exactly one of value or pattern is required. Values retain JSON types, including explicit null. Pattern is a whole-string glob with at most 32 stars; only a star or backslash can be escaped. Runtime templates are not accepted in patterns.
+      properties:
+        path: { type: string, maxLength: 2048 }
+        value:
+          description: Exact JSON value, including null. Absence selects pattern matching instead.
+        pattern: { type: string, maxLength: 512 }
+    BrowserStreamMessage:
+      type: object
+      additionalProperties: false
+      required: [transport, direction]
+      description: Observed stream message metadata. SSE only supports INBOUND. This never sends another request.
+      properties:
+        transport: { type: string, enum: [WEBSOCKET, SSE] }
+        direction: { type: string, enum: [INBOUND, OUTBOUND] }
+        eventName: { type: string, maxLength: 128 }
+        binary: { type: boolean, default: false }
+        failed: { type: boolean, default: false }
+    BrowserTargetIdentity:
+      type: object
+      additionalProperties: false
+      required: [role, name]
+      properties:
+        role: { type: string, enum: [button, link, textbox, searchbox, combobox, listbox, checkbox, radio, switch, menuitem, menuitemcheckbox, menuitemradio, option, slider, spinbutton, tab, treeitem, listitem, group, img] }
+        name: { type: string, minLength: 1, maxLength: 160 }
+    BrowserTargetMatch:
+      type: object
+      additionalProperties: false
+      required: [role, name]
+      description: Explicit selector-first role/name policy. Only DRAG accepts a destination identity. Sensitive actions cannot use this policy.
+      properties:
+        role: { type: string, enum: [button, link, textbox, searchbox, combobox, listbox, checkbox, radio, switch, menuitem, menuitemcheckbox, menuitemradio, option, slider, spinbutton, tab, treeitem, listitem, group, img] }
+        name: { type: string, minLength: 1, maxLength: 160 }
+        destination: { $ref: '#/components/schemas/BrowserTargetIdentity' }
+    BrowserNetworkFieldInventory:
+      type: object
+      required: [requestHeaders, requestBody, responseBody, requestHeadersComplete, requestBodyComplete, responseBodyComplete]
+      properties:
+        requestHeaders: { type: array, maxItems: 128, items: { type: string, maxLength: 256 } }
+        requestBody: { type: array, maxItems: 250, items: { $ref: '#/components/schemas/BrowserNetworkField' } }
+        responseBody: { type: array, maxItems: 250, items: { $ref: '#/components/schemas/BrowserNetworkField' } }
+        requestHeadersComplete: { type: boolean }
+        requestBodyComplete: { type: boolean }
+        responseBodyComplete: { type: boolean }
+    BrowserNetworkField:
+      type: object
+      required: [path, type]
+      properties:
+        path: { type: string, maxLength: 256 }
+        type: { type: string, enum: [STRING, NUMBER, BOOLEAN, 'NULL', OBJECT, ARRAY] }
+    BrowserNetworkRuntimeBinding:
+      type: object
+      additionalProperties: false
+      required: [name, source, path]
+      properties:
+        name: { type: string, pattern: '^[A-Za-z_][A-Za-z0-9_]{0,63}$' }
+        source: { type: string, enum: [RESPONSE_BODY, RESPONSE_HEADER] }
+        path: { type: string, minLength: 1, maxLength: 256 }
+        scopeOrigin:
+          type: string
+          maxLength: 2048
+          description: Optional explicit HTTP(S) origin for later matching calls; no credentials, path, query or fragment. Defaults to the source call origin.
     BrowserActionInput:
       type: object
       required: [actionType]
@@ -4643,6 +4989,7 @@ components:
         orderIndex: { type: integer, minimum: 0 }
         actionType: { $ref: '#/components/schemas/BrowserActionType' }
         selector: { type: string, maxLength: 1000 }
+        targetMatch: { $ref: '#/components/schemas/BrowserTargetMatch' }
         selectorCandidates:
           type: array
           maxItems: 12
@@ -4660,11 +5007,11 @@ components:
         variableName: { type: string, maxLength: 100 }
         pattern: { type: string, maxLength: 1000 }
         extractionHint: { type: string, maxLength: 200 }
-        textSource: { type: string, enum: [ELEMENT_TEXT, TEXT_BLOCK] }
+        textSource: { type: string, enum: [ELEMENT_TEXT, TEXT_BLOCK, LINK_URL, HIGHLIGHT_URL] }
         expectedPageUrl: { type: string, maxLength: 2000 }
-        expectedPageUrlPolicy: { type: string, enum: [IGNORE, CORE, EXACT] }
+        expectedPageUrlPolicy: { type: string, enum: [IGNORE, EXACT, MATCH] }
         expectedPageTitle: { type: string, maxLength: 1000 }
-        expectedPageTitlePolicy: { type: string, enum: [IGNORE, EXACT, CONTAINS] }
+        expectedPageTitlePolicy: { type: string, enum: [IGNORE, EXACT, MATCH] }
         expectedNetworkPolicy: { type: string, enum: [IGNORE, PRESENCE, STRICT] }
         expectedNetworkCalls:
           type: array
@@ -4773,6 +5120,7 @@ components:
           allOf: [{ $ref: '#/components/schemas/BrowserActionType' }]
           nullable: true
         selector: { type: string, nullable: true }
+        targetMatch: { $ref: '#/components/schemas/BrowserTargetMatch' }
         selectorCandidates: { type: array, items: { type: string } }
         value: { type: string, nullable: true }
         variableName: { type: string, nullable: true }
@@ -4780,11 +5128,11 @@ components:
         frameSelector: { type: string, nullable: true }
         pattern: { type: string, nullable: true }
         extractionHint: { type: string, nullable: true }
-        textSource: { type: string, enum: [ELEMENT_TEXT, TEXT_BLOCK], nullable: true }
+        textSource: { type: string, enum: [ELEMENT_TEXT, TEXT_BLOCK, LINK_URL, HIGHLIGHT_URL], nullable: true }
         expectedPageUrl: { type: string, nullable: true }
-        expectedPageUrlPolicy: { type: string, enum: [IGNORE, CORE, EXACT], nullable: true }
+        expectedPageUrlPolicy: { type: string, enum: [IGNORE, EXACT, MATCH], nullable: true }
         expectedPageTitle: { type: string, nullable: true }
-        expectedPageTitlePolicy: { type: string, enum: [IGNORE, EXACT, CONTAINS], nullable: true }
+        expectedPageTitlePolicy: { type: string, enum: [IGNORE, EXACT, MATCH], nullable: true }
         expectedNetworkPolicy: { type: string, enum: [IGNORE, PRESENCE, STRICT], nullable: true }
         visualAssertion:
           allOf: [{ $ref: '#/components/schemas/BrowserVisualAssertion' }]

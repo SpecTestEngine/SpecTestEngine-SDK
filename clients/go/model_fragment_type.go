@@ -1,9 +1,9 @@
 /*
 SpecTestEngine Public API
 
-The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
+The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Execution and assertion results retain the exact strings `----------------PASS-------------------`, `----------------FAIL-------------------`, and `---------------ERROR-------------------` in raw JSON. Product UI renders these as Passed, Failed, and Execution error. Target response fields and lifecycle states (such as QUEUED, RUNNING, CANCELLED) retain their own values.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
 
-API version: 1.0.0-alpha.7
+API version: 1.0.0-alpha.10
 Contact: support@ste.software
 */
 
@@ -28,6 +28,7 @@ const (
 	FRAGMENTTYPE_HEADER_ASSERTION FragmentType = "HEADER_ASSERTION"
 	FRAGMENTTYPE_BODY_ASSERTION FragmentType = "BODY_ASSERTION"
 	FRAGMENTTYPE_ATTACHMENT_ASSERTION FragmentType = "ATTACHMENT_ASSERTION"
+	FRAGMENTTYPE_JWT_ASSERTION FragmentType = "JWT_ASSERTION"
 	FRAGMENTTYPE_SOAP_REQUEST FragmentType = "SOAP_REQUEST"
 	FRAGMENTTYPE_SOAP_ASSERTION FragmentType = "SOAP_ASSERTION"
 	FRAGMENTTYPE_GRAPHQL_OPERATION FragmentType = "GRAPHQL_OPERATION"
@@ -49,6 +50,7 @@ var AllowedFragmentTypeEnumValues = []FragmentType{
 	"HEADER_ASSERTION",
 	"BODY_ASSERTION",
 	"ATTACHMENT_ASSERTION",
+	"JWT_ASSERTION",
 	"SOAP_REQUEST",
 	"SOAP_ASSERTION",
 	"GRAPHQL_OPERATION",

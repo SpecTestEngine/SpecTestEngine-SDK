@@ -10,10 +10,14 @@ All URIs are relative to *https://app.ste.software*
 | [**createSoapSpecificationWithHttpInfo**](SoapSpecificationsApi.md#createSoapSpecificationWithHttpInfo) | **POST** /test/soap-spec/create | Create a SOAP specification |
 | [**deleteSoapSpecification**](SoapSpecificationsApi.md#deleteSoapSpecification) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification |
 | [**deleteSoapSpecificationWithHttpInfo**](SoapSpecificationsApi.md#deleteSoapSpecificationWithHttpInfo) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification |
+| [**getSoapPreparation**](SoapSpecificationsApi.md#getSoapPreparation) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key |
+| [**getSoapPreparationWithHttpInfo**](SoapSpecificationsApi.md#getSoapPreparationWithHttpInfo) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key |
 | [**getSoapSpecification**](SoapSpecificationsApi.md#getSoapSpecification) | **GET** /test/soap-spec/by-id | Get a SOAP specification |
 | [**getSoapSpecificationWithHttpInfo**](SoapSpecificationsApi.md#getSoapSpecificationWithHttpInfo) | **GET** /test/soap-spec/by-id | Get a SOAP specification |
 | [**getSoapSpecificationRun**](SoapSpecificationsApi.md#getSoapSpecificationRun) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence |
 | [**getSoapSpecificationRunWithHttpInfo**](SoapSpecificationsApi.md#getSoapSpecificationRunWithHttpInfo) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence |
+| [**listSoapPreparations**](SoapSpecificationsApi.md#listSoapPreparations) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations |
+| [**listSoapPreparationsWithHttpInfo**](SoapSpecificationsApi.md#listSoapPreparationsWithHttpInfo) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listSoapSpecificationRuns**](SoapSpecificationsApi.md#listSoapSpecificationRuns) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs |
 | [**listSoapSpecificationRunsWithHttpInfo**](SoapSpecificationsApi.md#listSoapSpecificationRunsWithHttpInfo) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs |
 | [**listSoapSpecifications**](SoapSpecificationsApi.md#listSoapSpecifications) | **GET** /test/soap-spec/page | List SOAP specifications |
@@ -529,6 +533,168 @@ ApiResponse<[**Specification**](Specification.md)>
 
 
 
+## getSoapPreparation
+
+> PreparationSummary getSoapPreparation(getSoapPreparationRequest)
+
+Read eligible SOAP Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.SoapSpecificationsApi;
+import software.ste.sdk.generated.api.SoapSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        SoapSpecificationsApi apiInstance = new SoapSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetSoapPreparationRequest request = APIgetSoapPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            PreparationSummary result = apiInstance.getSoapPreparation(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SoapSpecificationsApi#getSoapPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getSoapPreparationRequest | [**APIgetSoapPreparationRequest**](SoapSpecificationsApi.md#APIgetSoapPreparationRequest)|-|-|
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+## getSoapPreparationWithHttpInfo
+
+> ApiResponse<PreparationSummary> getSoapPreparationWithHttpInfo(getSoapPreparationRequest)
+
+Read eligible SOAP Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.SoapSpecificationsApi;
+import software.ste.sdk.generated.api.SoapSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        SoapSpecificationsApi apiInstance = new SoapSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetSoapPreparationRequest request = APIgetSoapPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            ApiResponse<PreparationSummary> response = apiInstance.getSoapPreparationWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SoapSpecificationsApi#getSoapPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getSoapPreparationRequest | [**APIgetSoapPreparationRequest**](SoapSpecificationsApi.md#APIgetSoapPreparationRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationSummary**](PreparationSummary.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIgetSoapPreparationRequest"></a>
+## APIgetSoapPreparationRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **ref** | **String** |  | |
+
+
+
 ## getSoapSpecification
 
 > Specification getSoapSpecification(getSoapSpecificationRequest)
@@ -842,6 +1008,178 @@ ApiResponse<[**SpecificationRun**](SpecificationRun.md)>
 |     Name      |    Type       | Description   |     Notes    |
 | ------------- | ------------- | ------------- | -------------|
 | **runId** | **UUID** | UUIDv7 identifier of the stored run evidence. | |
+
+
+
+## listSoapPreparations
+
+> PreparationPage listSoapPreparations(listSoapPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.SoapSpecificationsApi;
+import software.ste.sdk.generated.api.SoapSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        SoapSpecificationsApi apiInstance = new SoapSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistSoapPreparationsRequest request = APIlistSoapPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            PreparationPage result = apiInstance.listSoapPreparations(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SoapSpecificationsApi#listSoapPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listSoapPreparationsRequest | [**APIlistSoapPreparationsRequest**](SoapSpecificationsApi.md#APIlistSoapPreparationsRequest)|-|-|
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible SOAP preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+## listSoapPreparationsWithHttpInfo
+
+> ApiResponse<PreparationPage> listSoapPreparationsWithHttpInfo(listSoapPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.SoapSpecificationsApi;
+import software.ste.sdk.generated.api.SoapSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        SoapSpecificationsApi apiInstance = new SoapSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistSoapPreparationsRequest request = APIlistSoapPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            ApiResponse<PreparationPage> response = apiInstance.listSoapPreparationsWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling SoapSpecificationsApi#listSoapPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listSoapPreparationsRequest | [**APIlistSoapPreparationsRequest**](SoapSpecificationsApi.md#APIlistSoapPreparationsRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationPage**](PreparationPage.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible SOAP preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIlistSoapPreparationsRequest"></a>
+## APIlistSoapPreparationsRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **Integer** |  | [optional] [default to 20] |
+| **search** | **String** | Case-insensitive server-side search within the active project. | [optional] |
 
 
 

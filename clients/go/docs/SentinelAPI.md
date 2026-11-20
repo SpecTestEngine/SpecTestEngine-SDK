@@ -717,7 +717,7 @@ func main() {
 	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
 	size := int32(56) // int32 | Maximum number of results returned in one page. (optional) (default to 20)
 	checkId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string |  (optional)
-	status := openapiclient.RunStatus("QUEUED") // RunStatus |  (optional)
+	status := openapiclient.RunStatusCode("QUEUED") // RunStatusCode |  (optional)
 	sortBy := "sortBy_example" // string |  (optional) (default to "queuedAt")
 	sortDirection := "sortDirection_example" // string |  (optional) (default to "desc")
 
@@ -748,7 +748,7 @@ Name | Type | Description  | Notes
  **page** | **int32** | Zero-based page index. | [default to 0]
  **size** | **int32** | Maximum number of results returned in one page. | [default to 20]
  **checkId** | **string** |  |
- **status** | [**RunStatus**](RunStatus.md) |  |
+ **status** | [**RunStatusCode**](RunStatusCode.md) |  |
  **sortBy** | **string** |  | [default to &quot;queuedAt&quot;]
  **sortDirection** | **string** |  | [default to &quot;desc&quot;]
 

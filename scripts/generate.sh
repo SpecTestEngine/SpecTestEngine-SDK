@@ -13,6 +13,10 @@ generate_target() {
     -c "/workspace/generator/config/$target.yaml" \
     --skip-validate-spec
   python3 "$ROOT_DIR/scripts/postprocess-generated.py" "$target" "$output"
+  regressions="$ROOT_DIR/generator/regression-tests/$target"
+  if [ -d "$regressions" ]; then
+    cp -R "$regressions/." "$output/"
+  fi
 }
 
 "$ROOT_DIR/scripts/validate.sh"

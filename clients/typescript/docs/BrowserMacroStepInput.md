@@ -9,6 +9,7 @@ Name | Type
 `orderIndex` | number
 `actionType` | [BrowserActionType](BrowserActionType.md)
 `selector` | string
+`targetMatch` | [BrowserTargetMatch](BrowserTargetMatch.md)
 `selectorCandidates` | Array&lt;string&gt;
 `value` | string
 `sensitive` | boolean
@@ -38,6 +39,7 @@ const example = {
   "orderIndex": null,
   "actionType": null,
   "selector": null,
+  "targetMatch": null,
   "selectorCandidates": null,
   "value": null,
   "sensitive": null,

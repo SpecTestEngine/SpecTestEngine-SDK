@@ -380,7 +380,7 @@ List compact Sentinel links for one Automation asset type
 
 <a id="listsentinelruns"></a>
 # **ListSentinelRuns**
-> SentinelRunPage ListSentinelRuns (string environment, int page = null, int size = null, Guid checkId = null, RunStatus status = null, string sortBy = null, string sortDirection = null)
+> SentinelRunPage ListSentinelRuns (string environment, int page = null, int size = null, Guid checkId = null, RunStatusCode status = null, string sortBy = null, string sortDirection = null)
 
 List Sentinel runs
 
@@ -393,7 +393,7 @@ List Sentinel runs
 | **page** | **int** | Zero-based page index. | [optional] [default to 0] |
 | **size** | **int** | Maximum number of results returned in one page. | [optional] [default to 20] |
 | **checkId** | **Guid** |  | [optional]  |
-| **status** | **RunStatus** |  | [optional]  |
+| **status** | **RunStatusCode** |  | [optional]  |
 | **sortBy** | **string** |  | [optional] [default to &quot;queuedAt&quot;] |
 | **sortDirection** | **string** |  | [optional] [default to desc] |
 

@@ -7,8 +7,10 @@ All URIs are relative to *https://app.ste.software*
 | [**captureRestSpecificationAttachmentVisualDiff**](RESTSpecificationsApi.md#capturerestspecificationattachmentvisualdiff) | **POST** /test/rest-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed REST attachment assertion |
 | [**createRestSpecification**](RESTSpecificationsApi.md#createrestspecification) | **POST** /test/rest-spec/create | Create a REST specification |
 | [**deleteRestSpecification**](RESTSpecificationsApi.md#deleterestspecification) | **DELETE** /test/rest-spec/by-id | Delete a REST specification |
+| [**getRestPreparation**](RESTSpecificationsApi.md#getrestpreparation) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key |
 | [**getRestSpecification**](RESTSpecificationsApi.md#getrestspecification) | **GET** /test/rest-spec/by-id | Get a REST specification |
 | [**getRestSpecificationRun**](RESTSpecificationsApi.md#getrestspecificationrun) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence |
+| [**listRestPreparations**](RESTSpecificationsApi.md#listrestpreparations) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listRestSpecificationRuns**](RESTSpecificationsApi.md#listrestspecificationruns) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs |
 | [**listRestSpecifications**](RESTSpecificationsApi.md#listrestspecifications) | **GET** /test/rest-spec/page | List REST specifications |
 | [**previewRestSpecificationRecovery**](RESTSpecificationsApi.md#previewrestspecificationrecovery) | **POST** /test/rest-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a REST specification version |
@@ -243,6 +245,78 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## getRestPreparation
+
+> PreparationSummary getRestPreparation(ref)
+
+Read eligible REST Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  RESTSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { GetRestPreparationRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new RESTSpecificationsApi(config);
+
+  const body = {
+    // string
+    ref: ref_example,
+  } satisfies GetRestPreparationRequest;
+
+  try {
+    const data = await api.getRestPreparation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **ref** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## getRestSpecification
 
 > Specification getRestSpecification(specId)
@@ -378,6 +452,84 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete saved run evidence. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## listRestPreparations
+
+> PreparationPage listRestPreparations(page, size, search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  RESTSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { ListRestPreparationsRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new RESTSpecificationsApi(config);
+
+  const body = {
+    // number | Zero-based page index. (optional)
+    page: 56,
+    // number (optional)
+    size: 56,
+    // string | Case-insensitive server-side search within the active project. (optional)
+    search: search_example,
+  } satisfies ListRestPreparationsRequest;
+
+  try {
+    const data = await api.listRestPreparations(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **page** | `number` | Zero-based page index. | [Optional] [Defaults to `0`] |
+| **size** | `number` |  | [Optional] [Defaults to `20`] |
+| **search** | `string` | Case-insensitive server-side search within the active project. | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible REST preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

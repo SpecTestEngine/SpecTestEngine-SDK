@@ -7,8 +7,10 @@ All URIs are relative to *https://app.ste.software*
 | [**CaptureSoapSpecificationAttachmentVisualDiff**](SOAPSpecificationsApi.md#capturesoapspecificationattachmentvisualdiff) | **POST** /test/soap-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed SOAP attachment assertion |
 | [**CreateSoapSpecification**](SOAPSpecificationsApi.md#createsoapspecification) | **POST** /test/soap-spec/create | Create a SOAP specification |
 | [**DeleteSoapSpecification**](SOAPSpecificationsApi.md#deletesoapspecification) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification |
+| [**GetSoapPreparation**](SOAPSpecificationsApi.md#getsoappreparation) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key |
 | [**GetSoapSpecification**](SOAPSpecificationsApi.md#getsoapspecification) | **GET** /test/soap-spec/by-id | Get a SOAP specification |
 | [**GetSoapSpecificationRun**](SOAPSpecificationsApi.md#getsoapspecificationrun) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence |
+| [**ListSoapPreparations**](SOAPSpecificationsApi.md#listsoappreparations) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations |
 | [**ListSoapSpecificationRuns**](SOAPSpecificationsApi.md#listsoapspecificationruns) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs |
 | [**ListSoapSpecifications**](SOAPSpecificationsApi.md#listsoapspecifications) | **GET** /test/soap-spec/page | List SOAP specifications |
 | [**PreviewSoapSpecificationRecovery**](SOAPSpecificationsApi.md#previewsoapspecificationrecovery) | **POST** /test/soap-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a SOAP specification version |
@@ -128,6 +130,43 @@ Delete a SOAP specification
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="getsoappreparation"></a>
+# **GetSoapPreparation**
+> PreparationSummary GetSoapPreparation (string varRef)
+
+Read eligible SOAP Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **varRef** | **string** |  |  |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="getsoapspecification"></a>
 # **GetSoapSpecification**
 > Specification GetSoapSpecification (Guid specId)
@@ -194,6 +233,45 @@ Get saved SOAP run evidence
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete saved run evidence. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="listsoappreparations"></a>
+# **ListSoapPreparations**
+> PreparationPage ListSoapPreparations (int page = null, int size = null, string search = null)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **page** | **int** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **int** |  | [optional] [default to 20] |
+| **search** | **string** | Case-insensitive server-side search within the active project. | [optional]  |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible SOAP preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

@@ -17,6 +17,7 @@ Name | Type
 `uiMacroName` | string
 `browserActionType` | [BrowserActionType](BrowserActionType.md)
 `selector` | string
+`targetMatch` | [BrowserTargetMatch](BrowserTargetMatch.md)
 `selectorCandidates` | Array&lt;string&gt;
 `value` | string
 `variableName` | string
@@ -53,6 +54,7 @@ const example = {
   "uiMacroName": null,
   "browserActionType": null,
   "selector": null,
+  "targetMatch": null,
   "selectorCandidates": null,
   "value": null,
   "variableName": null,

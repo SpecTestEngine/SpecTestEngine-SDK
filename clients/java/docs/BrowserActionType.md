@@ -29,6 +29,8 @@
 
 * `FILL` (value: `"FILL"`)
 
+* `PASTE_ADDRESS_BAR` (value: `"PASTE_ADDRESS_BAR"`)
+
 * `PRESS` (value: `"PRESS"`)
 
 * `SELECT_OPTION` (value: `"SELECT_OPTION"`)

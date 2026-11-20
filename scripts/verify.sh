@@ -4,7 +4,7 @@ set -eu
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 
 "$ROOT_DIR/scripts/validate.sh"
-python3 -m unittest discover -s "$ROOT_DIR/scripts/tests" -p 'test_generated_formatting.py'
+python3 -m unittest discover -s "$ROOT_DIR/scripts/tests" -p 'test_*.py'
 
 if [ -d "$ROOT_DIR/clients/java" ]; then
   (cd "$ROOT_DIR/clients/java" && ./gradlew test)
@@ -18,17 +18,19 @@ fi
 
 if [ -f "$ROOT_DIR/clients/python/pyproject.toml" ]; then
   python3 -m compileall -q "$ROOT_DIR/clients/python/spectestengine_sdk"
+  PYTHONPATH="$ROOT_DIR/clients/python" python3 -m unittest discover -s "$ROOT_DIR/clients/python/test" -p test_preparation_contract.py
 fi
 
 if [ -f "$ROOT_DIR/clients/csharp/SpecTestEngine.Sdk.sln" ]; then
   if command -v dotnet >/dev/null 2>&1; then
     dotnet build "$ROOT_DIR/clients/csharp/SpecTestEngine.Sdk.sln" --configuration Release --warnaserror
+    dotnet run --project "$ROOT_DIR/scripts/tests/preparation-roundtrip/PreparationRoundtrip.csproj" --configuration Release
   else
     docker run --rm \
       -v "$ROOT_DIR:/workspace" \
       -w /workspace \
       mcr.microsoft.com/dotnet/sdk:10.0 \
-      dotnet build clients/csharp/SpecTestEngine.Sdk.sln --configuration Release --warnaserror
+      sh -c 'dotnet build clients/csharp/SpecTestEngine.Sdk.sln --configuration Release --warnaserror && dotnet run --project scripts/tests/preparation-roundtrip/PreparationRoundtrip.csproj --configuration Release'
   fi
 fi
 

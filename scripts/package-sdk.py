@@ -23,6 +23,8 @@ EXCLUDED_PARTS = {
     ".openapi-generator",
     "__pycache__",
     "build",
+    "bin",
+    "obj",
     "coverage",
     "dist",
     "node_modules",

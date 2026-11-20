@@ -819,7 +819,7 @@ List Sentinel runs
 
 ```python
 import spectestengine_sdk
-from spectestengine_sdk.models.run_status import RunStatus
+from spectestengine_sdk.models.run_status_code import RunStatusCode
 from spectestengine_sdk.models.sentinel_run_page import SentinelRunPage
 from spectestengine_sdk.rest import ApiException
 from pprint import pprint
@@ -848,7 +848,7 @@ with spectestengine_sdk.ApiClient(configuration) as api_client:
     page = 0 # int | Zero-based page index. (optional) (default to 0)
     size = 20 # int | Maximum number of results returned in one page. (optional) (default to 20)
     check_id = UUID('38400000-8cf0-11bd-b23e-10b96e4ef00d') # UUID |  (optional)
-    status = spectestengine_sdk.RunStatus() # RunStatus |  (optional)
+    status = spectestengine_sdk.RunStatusCode() # RunStatusCode |  (optional)
     sort_by = 'queuedAt' # str |  (optional) (default to 'queuedAt')
     sort_direction = desc # str |  (optional) (default to desc)
 
@@ -872,7 +872,7 @@ Name | Type | Description  | Notes
  **page** | **int**| Zero-based page index. | [optional] [default to 0]
  **size** | **int**| Maximum number of results returned in one page. | [optional] [default to 20]
  **check_id** | **UUID**|  | [optional]
- **status** | [**RunStatus**](.md)|  | [optional]
+ **status** | [**RunStatusCode**](.md)|  | [optional]
  **sort_by** | **str**|  | [optional] [default to &#39;queuedAt&#39;]
  **sort_direction** | **str**|  | [optional] [default to desc]
 

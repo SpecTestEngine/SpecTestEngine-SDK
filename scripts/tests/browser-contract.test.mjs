@@ -44,13 +44,71 @@ test('Saved Flow read models retain flattened browser fields and typed visual as
 });
 
 test('Run evidence retains immutable comparison lineage, artifact references and exclusion diagnostics', () => {
-  const step = { stepId: '019f9100-0000-7000-8000-000000000002', orderIndex: 0, stepType: 'BROWSER_ACTION', stepStatus: 'FAIL',
+  const step = { stepId: '019f9100-0000-7000-8000-000000000002', orderIndex: 0, stepType: 'BROWSER_ACTION', stepStatus: '----------------FAIL-------------------',
     visualComparison: {
-      comparisonId: '019f9100-0000-7000-8000-000000000003', status: 'FAILED',
+      comparisonId: '019f9100-0000-7000-8000-000000000003', status: '----------------FAIL-------------------',
       baselineArtifactId: '019f9000-2222-7000-8000-000000000222', actualArtifactId: '019f9000-1111-7000-8000-000000000111',
       baselineRevisionId, assertionRevision: 4, generationNumber: 2,
       rootComparisonId: '019f9100-0000-7000-8000-000000000001', sourceComparisonId: '019f9100-0000-7000-8000-000000000001',
       excludedRegions: [exclusion], changedExcludedRegionIndexes: [0], diffPixels: 10, diffPixelRatio: 0.01,
     } };
   assert.deepEqual(wire(sdk.FlowRunStepToJSON(sdk.FlowRunStepFromJSON(step))), step);
+});
+
+
+test('Value transfer, selected occurrences and typed request paths survive generated SDK serialization', () => {
+  const call = { method: 'POST', url: 'https://example.test/orders', occurrence: 2,
+    headers: { authorization: 'Bearer ${runtime.current}' },
+    requestBodyPaths: [
+      { path: 'id', value: '${runtime.id}' },
+      { path: 'optional', value: null },
+      { path: 'active', value: false },
+      { path: 'count', value: 7 },
+      { path: 'opaque', value: '123' },
+    ],
+    runtimeBindings: [{ name: 'current', source: 'RESPONSE_BODY', path: 'access_token', scopeOrigin: 'https://example.test' }],
+    candidateFields: { requestHeaders: ['authorization'], requestBody: [{ path: '$.id', type: 'NUMBER' }],
+      responseBody: [{ path: '$.access_token', type: 'STRING' }], requestHeadersComplete: true, requestBodyComplete: false, responseBodyComplete: true },
+  };
+  assert.deepEqual(wire(sdk.BrowserNetworkExpectationToJSON(sdk.BrowserNetworkExpectationFromJSON(call))), call);
+});
+
+test('Automatic authorization retains metadata and cookie guards without runtime credential values', () => {
+  const call = { method: 'POST', url: 'https://identity.test/refresh', policy: 'IGNORE',
+    authTransfer: { sources: [{ name: 'auth', source: 'RESPONSE_BODY', path: '/accessToken', scopeOrigin: 'https://api.test',
+      updateFrom: { variable: 'auth_input_1', source: 'REQUEST_COOKIE', path: 'refresh_token', prefix: '' } }],
+      candidates: [], optionalRefresh: true },
+  };
+  assert.deepEqual(wire(sdk.BrowserNetworkExpectationToJSON(sdk.BrowserNetworkExpectationFromJSON(call))), call);
+  const page = { items: [{ id: '019f9300-0000-7000-8000-000000000001', stableKey: 'customer-authentication', name: 'Login', protocol: 'REST',
+    outputs: { accessToken: { path: '/accessToken', type: 'string', required: true } } }], page: 0, size: 20, totalElements: 1, totalPages: 1, first: true, last: true };
+  assert.deepEqual(wire(sdk.PreparationPageToJSON(sdk.PreparationPageFromJSON(page))), page);
+});
+
+
+test('Preparation catalogs preserve every native protocol and typed outputs; engine statuses retain exact wire strings',()=>{
+ for(const protocol of ['REST','SOAP','GRAPHQL','STREAMING']){
+  const page={items:[{id:'019f9400-0000-7000-8000-000000000001',stableKey:'customer-authentication',name:'Login',protocol,
+   outputs:{accessToken:{path:'/accessToken',type:'string',required:true},count:{path:'/count',type:'number',required:false}}}],
+   page:0,size:20,totalElements:1,totalPages:1,first:true,last:true};
+  assert.deepEqual(wire(sdk.PreparationPageToJSON(sdk.PreparationPageFromJSON(page))),page);
+ }
+ for(const status of ['----------------PASS-------------------','----------------FAIL-------------------','---------------ERROR-------------------']){
+  assert.equal(sdk.RunStatusToJSON(sdk.RunStatusFromJSON(status)),status);
+ }
+});
+
+
+test('Current Browser authoring fields and focused patterns survive all transport projections', () => {
+  const action = { actionType: 'PASTE_ADDRESS_BAR', textSource: 'LINK_URL', expectedPageUrlPolicy: 'MATCH',
+    expectedPageTitlePolicy: 'MATCH', targetMatch: { role: 'button', name: 'Continue', destination: { role: 'group', name: 'Cart' } },
+    expectedNetworkCalls: [{ expectedHeaderPaths: [{path: 'content-type', pattern: 'application/*'}],
+      expectedBodyPaths: [{path: '/count', value: 3}], stream: {transport: 'SSE', direction: 'INBOUND', eventName: 'update', binary: false, failed: false} }] };
+  assert.deepEqual(wire(sdk.BrowserActionInputToJSON(sdk.BrowserActionInputFromJSON(action))), action);
+});
+
+
+test('Whole Browser body operands preserve null and never introduce absent checks', () => {
+  for (const wire of [{headers:{accept:'application/json'}}, {body:null}, {candidateBody:null}, {expectedBody:null}, {expectedBody:false}, {expectedBody:7}, {expectedBody:'123'}])
+    assert.deepEqual(JSON.parse(JSON.stringify(sdk.BrowserNetworkExpectationToJSON(sdk.BrowserNetworkExpectationFromJSON(wire)))),wire);
 });

@@ -7,13 +7,13 @@
 
 * `RUNNING` (value: `"RUNNING"`)
 
-* `PASS` (value: `"PASS"`)
+* `_______________PASS__________________` (value: `"----------------PASS-------------------"`)
 
 * `RECOVERED` (value: `"RECOVERED"`)
 
-* `FAIL` (value: `"FAIL"`)
+* `_______________FAIL__________________` (value: `"----------------FAIL-------------------"`)
 
-* `ERROR` (value: `"ERROR"`)
+* `______________ERROR__________________` (value: `"---------------ERROR-------------------"`)
 
 * `SKIPPED` (value: `"SKIPPED"`)
 

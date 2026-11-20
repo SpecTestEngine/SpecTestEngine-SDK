@@ -7,8 +7,10 @@ Method | HTTP request | Description
 [**CaptureRestSpecificationAttachmentVisualDiff**](RESTSpecificationsAPI.md#CaptureRestSpecificationAttachmentVisualDiff) | **Post** /test/rest-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed REST attachment assertion
 [**CreateRestSpecification**](RESTSpecificationsAPI.md#CreateRestSpecification) | **Post** /test/rest-spec/create | Create a REST specification
 [**DeleteRestSpecification**](RESTSpecificationsAPI.md#DeleteRestSpecification) | **Delete** /test/rest-spec/by-id | Delete a REST specification
+[**GetRestPreparation**](RESTSpecificationsAPI.md#GetRestPreparation) | **Get** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key
 [**GetRestSpecification**](RESTSpecificationsAPI.md#GetRestSpecification) | **Get** /test/rest-spec/by-id | Get a REST specification
 [**GetRestSpecificationRun**](RESTSpecificationsAPI.md#GetRestSpecificationRun) | **Get** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence
+[**ListRestPreparations**](RESTSpecificationsAPI.md#ListRestPreparations) | **Get** /test/rest-spec/preparations | List eligible Prepare requests and output declarations
 [**ListRestSpecificationRuns**](RESTSpecificationsAPI.md#ListRestSpecificationRuns) | **Get** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs
 [**ListRestSpecifications**](RESTSpecificationsAPI.md#ListRestSpecifications) | **Get** /test/rest-spec/page | List REST specifications
 [**PreviewRestSpecificationRecovery**](RESTSpecificationsAPI.md#PreviewRestSpecificationRecovery) | **Post** /test/rest-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a REST specification version
@@ -225,6 +227,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetRestPreparation
+
+> PreparationSummary GetRestPreparation(ctx, ref).Execute()
+
+Read eligible REST Prepare request metadata by stable key
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	ref := "ref_example" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RESTSpecificationsAPI.GetRestPreparation(context.Background(), ref).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RESTSpecificationsAPI.GetRestPreparation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetRestPreparation`: PreparationSummary
+	fmt.Fprintf(os.Stdout, "Response from `RESTSpecificationsAPI.GetRestPreparation`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ref** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetRestPreparationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetRestSpecification
 
 > Specification GetRestSpecification(ctx).SpecId(specId).Execute()
@@ -342,6 +414,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**SpecificationRun**](SpecificationRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListRestPreparations
+
+> PreparationPage ListRestPreparations(ctx).Page(page).Size(size).Search(search).Execute()
+
+List eligible Prepare requests and output declarations
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 |  (optional) (default to 20)
+	search := "search_example" // string | Case-insensitive server-side search within the active project. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RESTSpecificationsAPI.ListRestPreparations(context.Background()).Page(page).Size(size).Search(search).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RESTSpecificationsAPI.ListRestPreparations``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListRestPreparations`: PreparationPage
+	fmt.Fprintf(os.Stdout, "Response from `RESTSpecificationsAPI.ListRestPreparations`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListRestPreparationsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** |  | [default to 20]
+ **search** | **string** | Case-insensitive server-side search within the active project. |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
 
 ### Authorization
 

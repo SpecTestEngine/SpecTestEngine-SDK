@@ -1300,7 +1300,7 @@ ApiResponse<[**FragmentPage**](FragmentPage.md)>
 | **size** | **Integer** | Maximum number of results returned in one page. | [optional] [default to 20] |
 | **search** | **String** | Case-insensitive server-side search within the active project. | [optional] |
 | **specType** | [**SpecType**](.md) | Filter the library to one API protocol. | [optional] [enum: REST, SOAP, GRAPHQL, STREAMING] |
-| **type** | [**FragmentType**](.md) |  | [optional] [enum: URL_METHOD, HEADER, BODY, REQUEST_ATTACHMENT, HEADER_ASSERTION, BODY_ASSERTION, ATTACHMENT_ASSERTION, SOAP_REQUEST, SOAP_ASSERTION, GRAPHQL_OPERATION, GRAPHQL_ASSERTION, STREAM_REQUEST, STREAM_SCHEMA, STREAM_SEND, STREAM_EXPECT, STREAM_CONTROL, STREAM_ASSERTION] |
+| **type** | [**FragmentType**](.md) |  | [optional] [enum: URL_METHOD, HEADER, BODY, REQUEST_ATTACHMENT, HEADER_ASSERTION, BODY_ASSERTION, ATTACHMENT_ASSERTION, JWT_ASSERTION, SOAP_REQUEST, SOAP_ASSERTION, GRAPHQL_OPERATION, GRAPHQL_ASSERTION, STREAM_REQUEST, STREAM_SCHEMA, STREAM_SEND, STREAM_EXPECT, STREAM_CONTROL, STREAM_ASSERTION] |
 
 
 

@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **UiMacroName** | **string** |  | [optional]
 **BrowserActionType** | **BrowserActionType** |  | [optional]
 **Selector** | **string** |  | [optional]
+**TargetMatch** | [**BrowserTargetMatch**](BrowserTargetMatch.md) |  | [optional]
 **SelectorCandidates** | **List&lt;string&gt;** |  | [optional]
 **Value** | **string** |  | [optional]
 **VariableName** | **string** |  | [optional]

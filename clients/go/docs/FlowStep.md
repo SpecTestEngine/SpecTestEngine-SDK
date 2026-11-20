@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **UiMacroName** | Pointer to **NullableString** |  | [optional]
 **BrowserActionType** | Pointer to [**NullableBrowserActionType**](BrowserActionType.md) |  | [optional]
 **Selector** | Pointer to **NullableString** |  | [optional]
+**TargetMatch** | Pointer to [**BrowserTargetMatch**](BrowserTargetMatch.md) |  | [optional]
 **SelectorCandidates** | Pointer to **[]string** |  | [optional]
 **Value** | Pointer to **NullableString** |  | [optional]
 **VariableName** | Pointer to **NullableString** |  | [optional]
@@ -392,6 +393,31 @@ HasSelector returns a boolean if a field has been set.
 `func (o *FlowStep) UnsetSelector()`
 
 UnsetSelector ensures that no value is present for Selector, not even an explicit nil
+### GetTargetMatch
+
+`func (o *FlowStep) GetTargetMatch() BrowserTargetMatch`
+
+GetTargetMatch returns the TargetMatch field if non-nil, zero value otherwise.
+
+### GetTargetMatchOk
+
+`func (o *FlowStep) GetTargetMatchOk() (*BrowserTargetMatch, bool)`
+
+GetTargetMatchOk returns a tuple with the TargetMatch field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetMatch
+
+`func (o *FlowStep) SetTargetMatch(v BrowserTargetMatch)`
+
+SetTargetMatch sets TargetMatch field to given value.
+
+### HasTargetMatch
+
+`func (o *FlowStep) HasTargetMatch() bool`
+
+HasTargetMatch returns a boolean if a field has been set.
+
 ### GetSelectorCandidates
 
 `func (o *FlowStep) GetSelectorCandidates() []string`

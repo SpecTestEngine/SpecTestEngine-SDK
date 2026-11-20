@@ -1,5 +1,5 @@
 {
-  "latest": "1.0.0-alpha.7",
+  "latest": "1.0.0-alpha.10",
   "versions": {
     "1.0.0-alpha.6": {
       "contract": "openapi/versions/1.0.0-alpha.6.yaml",
@@ -14,6 +14,21 @@
     "1.0.0-alpha.7": {
       "contract": "openapi/versions/1.0.0-alpha.7.yaml",
       "sha256": "240434fbea16090ecdefece47f7ab890c65e2459067b36ffc4b6c1195318ebbb",
+      "status": "preview"
+    },
+    "1.0.0-alpha.8": {
+      "contract": "openapi/versions/1.0.0-alpha.8.yaml",
+      "sha256": "972589e2e3b4265f8fb3a6a8d76bafe9fb143bca2036055e6ef91afc674a9097",
+      "status": "preview"
+    },
+    "1.0.0-alpha.9": {
+      "contract": "openapi/versions/1.0.0-alpha.9.yaml",
+      "sha256": "22f14bedf62e4d08e5ca605f925e2fa7403fee26f0c35af5a3619dcb8615c648",
+      "status": "preview"
+    },
+    "1.0.0-alpha.10": {
+      "contract": "openapi/versions/1.0.0-alpha.10.yaml",
+      "sha256": "e6610eb78c634c645a8bd055e5eed503c4994540eed3cdece9bd4422bdfaca52",
       "status": "preview"
     }
   }

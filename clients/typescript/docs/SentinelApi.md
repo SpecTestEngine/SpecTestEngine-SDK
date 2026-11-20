@@ -782,7 +782,7 @@ async function example() {
     size: 56,
     // string (optional)
     checkId: 38400000-8cf0-11bd-b23e-10b96e4ef00d,
-    // RunStatus (optional)
+    // RunStatusCode (optional)
     status: ...,
     // string (optional)
     sortBy: sortBy_example,
@@ -811,7 +811,7 @@ example().catch(console.error);
 | **page** | `number` | Zero-based page index. | [Optional] [Defaults to `0`] |
 | **size** | `number` | Maximum number of results returned in one page. | [Optional] [Defaults to `20`] |
 | **checkId** | `string` |  | [Optional] [Defaults to `undefined`] |
-| **status** | `RunStatus` |  | [Optional] [Defaults to `undefined`] [Enum: QUEUED, RUNNING, PASS, RECOVERED, FAIL, ERROR, SKIPPED] |
+| **status** | `RunStatusCode` |  | [Optional] [Defaults to `undefined`] [Enum: QUEUED, RUNNING, PASS, RECOVERED, FAIL, ERROR, SKIPPED] |
 | **sortBy** | `string` |  | [Optional] [Defaults to `&#39;queuedAt&#39;`] |
 | **sortDirection** | `asc`, `desc` |  | [Optional] [Defaults to `&#39;desc&#39;`] [Enum: asc, desc] |
 

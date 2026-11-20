@@ -33,6 +33,8 @@ jobs:
           go-version: "1.23.x"
       - name: Validate public contract
         run: make validate
+      - name: Verify generator and contract regression tests
+        run: python3 -m unittest discover -s scripts/tests -p 'test_*.py'
       - name: Generate supported SDKs
         run: make generate
       - name: Compile Java SDK
@@ -40,11 +42,19 @@ jobs:
         run: ./gradlew test
       - name: Compile TypeScript SDK
         working-directory: clients/typescript
-        run: npm install --ignore-scripts --package-lock=false && npm run build
+        run: |
+          npm install --ignore-scripts --package-lock=false
+          npm run build
+          node --test ../../scripts/tests/browser-contract.test.mjs ../../scripts/tests/flow-recovery-contract.test.mjs
       - name: Compile Python SDK
-        run: python3 -m compileall -q clients/python/spectestengine_sdk
+        run: |
+          python3 -m pip install -r clients/python/requirements.txt
+          python3 -m compileall -q clients/python/spectestengine_sdk
+          PYTHONPATH=clients/python python3 -m unittest discover -s clients/python/test -p test_preparation_contract.py
       - name: Compile C# SDK
-        run: dotnet build clients/csharp/SpecTestEngine.Sdk.sln --configuration Release --warnaserror
+        run: |
+          dotnet build clients/csharp/SpecTestEngine.Sdk.sln --configuration Release --warnaserror
+          dotnet run --project scripts/tests/preparation-roundtrip/PreparationRoundtrip.csproj --configuration Release
       - name: Compile Go SDK
         working-directory: clients/go
         run: go test ./...

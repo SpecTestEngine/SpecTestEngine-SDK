@@ -2,13 +2,18 @@
 
 SpecTestEngine Public API
 
-- API version: 1.0.0-alpha.7
+- API version: 1.0.0-alpha.10
 
 - Generator version: 7.22.0
 
 The versioned integration contract for creating, running, observing, and exporting
 SpecTestEngine test assets. The API is project-scoped: the bearer token selects the
 company and active project, and clients must not send internal owner identifiers.
+
+Execution and assertion results retain the exact strings `----------------PASS-------------------`,
+`----------------FAIL-------------------`, and `---------------ERROR-------------------` in raw JSON.
+Product UI renders these as Passed, Failed, and Execution error. Target response fields and
+lifecycle states (such as QUEUED, RUNNING, CANCELLED) retain their own values.
 
 Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive
 integrations use Authorization Code with PKCE; CI and server-to-server integrations use
@@ -276,10 +281,14 @@ Class | Method | HTTP request | Description
 *GraphQlSpecificationsApi* | [**createGraphqlSpecificationWithHttpInfo**](docs/GraphQlSpecificationsApi.md#createGraphqlSpecificationWithHttpInfo) | **POST** /test/graphql-spec/create | Create a GraphQL specification
 *GraphQlSpecificationsApi* | [**deleteGraphqlSpecification**](docs/GraphQlSpecificationsApi.md#deleteGraphqlSpecification) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification
 *GraphQlSpecificationsApi* | [**deleteGraphqlSpecificationWithHttpInfo**](docs/GraphQlSpecificationsApi.md#deleteGraphqlSpecificationWithHttpInfo) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification
+*GraphQlSpecificationsApi* | [**getGraphqlPreparation**](docs/GraphQlSpecificationsApi.md#getGraphqlPreparation) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key
+*GraphQlSpecificationsApi* | [**getGraphqlPreparationWithHttpInfo**](docs/GraphQlSpecificationsApi.md#getGraphqlPreparationWithHttpInfo) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key
 *GraphQlSpecificationsApi* | [**getGraphqlSpecification**](docs/GraphQlSpecificationsApi.md#getGraphqlSpecification) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification
 *GraphQlSpecificationsApi* | [**getGraphqlSpecificationWithHttpInfo**](docs/GraphQlSpecificationsApi.md#getGraphqlSpecificationWithHttpInfo) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification
 *GraphQlSpecificationsApi* | [**getGraphqlSpecificationRun**](docs/GraphQlSpecificationsApi.md#getGraphqlSpecificationRun) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence
 *GraphQlSpecificationsApi* | [**getGraphqlSpecificationRunWithHttpInfo**](docs/GraphQlSpecificationsApi.md#getGraphqlSpecificationRunWithHttpInfo) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence
+*GraphQlSpecificationsApi* | [**listGraphqlPreparations**](docs/GraphQlSpecificationsApi.md#listGraphqlPreparations) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations
+*GraphQlSpecificationsApi* | [**listGraphqlPreparationsWithHttpInfo**](docs/GraphQlSpecificationsApi.md#listGraphqlPreparationsWithHttpInfo) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations
 *GraphQlSpecificationsApi* | [**listGraphqlSpecificationRuns**](docs/GraphQlSpecificationsApi.md#listGraphqlSpecificationRuns) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs
 *GraphQlSpecificationsApi* | [**listGraphqlSpecificationRunsWithHttpInfo**](docs/GraphQlSpecificationsApi.md#listGraphqlSpecificationRunsWithHttpInfo) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs
 *GraphQlSpecificationsApi* | [**listGraphqlSpecifications**](docs/GraphQlSpecificationsApi.md#listGraphqlSpecifications) | **GET** /test/graphql-spec/page | List GraphQL specifications
@@ -300,10 +309,14 @@ Class | Method | HTTP request | Description
 *RestSpecificationsApi* | [**createRestSpecificationWithHttpInfo**](docs/RestSpecificationsApi.md#createRestSpecificationWithHttpInfo) | **POST** /test/rest-spec/create | Create a REST specification
 *RestSpecificationsApi* | [**deleteRestSpecification**](docs/RestSpecificationsApi.md#deleteRestSpecification) | **DELETE** /test/rest-spec/by-id | Delete a REST specification
 *RestSpecificationsApi* | [**deleteRestSpecificationWithHttpInfo**](docs/RestSpecificationsApi.md#deleteRestSpecificationWithHttpInfo) | **DELETE** /test/rest-spec/by-id | Delete a REST specification
+*RestSpecificationsApi* | [**getRestPreparation**](docs/RestSpecificationsApi.md#getRestPreparation) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key
+*RestSpecificationsApi* | [**getRestPreparationWithHttpInfo**](docs/RestSpecificationsApi.md#getRestPreparationWithHttpInfo) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key
 *RestSpecificationsApi* | [**getRestSpecification**](docs/RestSpecificationsApi.md#getRestSpecification) | **GET** /test/rest-spec/by-id | Get a REST specification
 *RestSpecificationsApi* | [**getRestSpecificationWithHttpInfo**](docs/RestSpecificationsApi.md#getRestSpecificationWithHttpInfo) | **GET** /test/rest-spec/by-id | Get a REST specification
 *RestSpecificationsApi* | [**getRestSpecificationRun**](docs/RestSpecificationsApi.md#getRestSpecificationRun) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence
 *RestSpecificationsApi* | [**getRestSpecificationRunWithHttpInfo**](docs/RestSpecificationsApi.md#getRestSpecificationRunWithHttpInfo) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence
+*RestSpecificationsApi* | [**listRestPreparations**](docs/RestSpecificationsApi.md#listRestPreparations) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations
+*RestSpecificationsApi* | [**listRestPreparationsWithHttpInfo**](docs/RestSpecificationsApi.md#listRestPreparationsWithHttpInfo) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations
 *RestSpecificationsApi* | [**listRestSpecificationRuns**](docs/RestSpecificationsApi.md#listRestSpecificationRuns) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs
 *RestSpecificationsApi* | [**listRestSpecificationRunsWithHttpInfo**](docs/RestSpecificationsApi.md#listRestSpecificationRunsWithHttpInfo) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs
 *RestSpecificationsApi* | [**listRestSpecifications**](docs/RestSpecificationsApi.md#listRestSpecifications) | **GET** /test/rest-spec/page | List REST specifications
@@ -368,10 +381,14 @@ Class | Method | HTTP request | Description
 *SoapSpecificationsApi* | [**createSoapSpecificationWithHttpInfo**](docs/SoapSpecificationsApi.md#createSoapSpecificationWithHttpInfo) | **POST** /test/soap-spec/create | Create a SOAP specification
 *SoapSpecificationsApi* | [**deleteSoapSpecification**](docs/SoapSpecificationsApi.md#deleteSoapSpecification) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification
 *SoapSpecificationsApi* | [**deleteSoapSpecificationWithHttpInfo**](docs/SoapSpecificationsApi.md#deleteSoapSpecificationWithHttpInfo) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification
+*SoapSpecificationsApi* | [**getSoapPreparation**](docs/SoapSpecificationsApi.md#getSoapPreparation) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key
+*SoapSpecificationsApi* | [**getSoapPreparationWithHttpInfo**](docs/SoapSpecificationsApi.md#getSoapPreparationWithHttpInfo) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key
 *SoapSpecificationsApi* | [**getSoapSpecification**](docs/SoapSpecificationsApi.md#getSoapSpecification) | **GET** /test/soap-spec/by-id | Get a SOAP specification
 *SoapSpecificationsApi* | [**getSoapSpecificationWithHttpInfo**](docs/SoapSpecificationsApi.md#getSoapSpecificationWithHttpInfo) | **GET** /test/soap-spec/by-id | Get a SOAP specification
 *SoapSpecificationsApi* | [**getSoapSpecificationRun**](docs/SoapSpecificationsApi.md#getSoapSpecificationRun) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence
 *SoapSpecificationsApi* | [**getSoapSpecificationRunWithHttpInfo**](docs/SoapSpecificationsApi.md#getSoapSpecificationRunWithHttpInfo) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence
+*SoapSpecificationsApi* | [**listSoapPreparations**](docs/SoapSpecificationsApi.md#listSoapPreparations) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations
+*SoapSpecificationsApi* | [**listSoapPreparationsWithHttpInfo**](docs/SoapSpecificationsApi.md#listSoapPreparationsWithHttpInfo) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations
 *SoapSpecificationsApi* | [**listSoapSpecificationRuns**](docs/SoapSpecificationsApi.md#listSoapSpecificationRuns) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs
 *SoapSpecificationsApi* | [**listSoapSpecificationRunsWithHttpInfo**](docs/SoapSpecificationsApi.md#listSoapSpecificationRunsWithHttpInfo) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs
 *SoapSpecificationsApi* | [**listSoapSpecifications**](docs/SoapSpecificationsApi.md#listSoapSpecifications) | **GET** /test/soap-spec/page | List SOAP specifications
@@ -394,12 +411,16 @@ Class | Method | HTTP request | Description
 *StreamingSpecificationsApi* | [**deleteStreamingSpecificationWithHttpInfo**](docs/StreamingSpecificationsApi.md#deleteStreamingSpecificationWithHttpInfo) | **DELETE** /test/streaming-spec/by-id | Delete a streaming specification
 *StreamingSpecificationsApi* | [**getStreamingCapabilities**](docs/StreamingSpecificationsApi.md#getStreamingCapabilities) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits
 *StreamingSpecificationsApi* | [**getStreamingCapabilitiesWithHttpInfo**](docs/StreamingSpecificationsApi.md#getStreamingCapabilitiesWithHttpInfo) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits
+*StreamingSpecificationsApi* | [**getStreamingPreparation**](docs/StreamingSpecificationsApi.md#getStreamingPreparation) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key
+*StreamingSpecificationsApi* | [**getStreamingPreparationWithHttpInfo**](docs/StreamingSpecificationsApi.md#getStreamingPreparationWithHttpInfo) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key
 *StreamingSpecificationsApi* | [**getStreamingSpecification**](docs/StreamingSpecificationsApi.md#getStreamingSpecification) | **GET** /test/streaming-spec/by-id | Get a streaming specification
 *StreamingSpecificationsApi* | [**getStreamingSpecificationWithHttpInfo**](docs/StreamingSpecificationsApi.md#getStreamingSpecificationWithHttpInfo) | **GET** /test/streaming-spec/by-id | Get a streaming specification
 *StreamingSpecificationsApi* | [**getStreamingSpecificationRun**](docs/StreamingSpecificationsApi.md#getStreamingSpecificationRun) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence
 *StreamingSpecificationsApi* | [**getStreamingSpecificationRunWithHttpInfo**](docs/StreamingSpecificationsApi.md#getStreamingSpecificationRunWithHttpInfo) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence
 *StreamingSpecificationsApi* | [**getStreamingSpecificationRunTranscript**](docs/StreamingSpecificationsApi.md#getStreamingSpecificationRunTranscript) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript
 *StreamingSpecificationsApi* | [**getStreamingSpecificationRunTranscriptWithHttpInfo**](docs/StreamingSpecificationsApi.md#getStreamingSpecificationRunTranscriptWithHttpInfo) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript
+*StreamingSpecificationsApi* | [**listStreamingPreparations**](docs/StreamingSpecificationsApi.md#listStreamingPreparations) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations
+*StreamingSpecificationsApi* | [**listStreamingPreparationsWithHttpInfo**](docs/StreamingSpecificationsApi.md#listStreamingPreparationsWithHttpInfo) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations
 *StreamingSpecificationsApi* | [**listStreamingSpecificationRuns**](docs/StreamingSpecificationsApi.md#listStreamingSpecificationRuns) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification
 *StreamingSpecificationsApi* | [**listStreamingSpecificationRunsWithHttpInfo**](docs/StreamingSpecificationsApi.md#listStreamingSpecificationRunsWithHttpInfo) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification
 *StreamingSpecificationsApi* | [**listStreamingSpecifications**](docs/StreamingSpecificationsApi.md#listStreamingSpecifications) | **GET** /test/streaming-spec/page | List streaming specifications
@@ -438,10 +459,20 @@ Class | Method | HTTP request | Description
  - [AtfValidationStep](docs/AtfValidationStep.md)
  - [BrowserActionInput](docs/BrowserActionInput.md)
  - [BrowserActionType](docs/BrowserActionType.md)
+ - [BrowserAuthGuard](docs/BrowserAuthGuard.md)
+ - [BrowserAuthSource](docs/BrowserAuthSource.md)
+ - [BrowserAuthTransfer](docs/BrowserAuthTransfer.md)
  - [BrowserMacroInput](docs/BrowserMacroInput.md)
  - [BrowserMacroStepInput](docs/BrowserMacroStepInput.md)
  - [BrowserNetworkExpectation](docs/BrowserNetworkExpectation.md)
+ - [BrowserNetworkField](docs/BrowserNetworkField.md)
+ - [BrowserNetworkFieldInventory](docs/BrowserNetworkFieldInventory.md)
+ - [BrowserNetworkRuntimeBinding](docs/BrowserNetworkRuntimeBinding.md)
+ - [BrowserPathExpectation](docs/BrowserPathExpectation.md)
  - [BrowserSessionInput](docs/BrowserSessionInput.md)
+ - [BrowserStreamMessage](docs/BrowserStreamMessage.md)
+ - [BrowserTargetIdentity](docs/BrowserTargetIdentity.md)
+ - [BrowserTargetMatch](docs/BrowserTargetMatch.md)
  - [BrowserVisualAssertion](docs/BrowserVisualAssertion.md)
  - [BrowserVisualAssertionInput](docs/BrowserVisualAssertionInput.md)
  - [BrowserVisualBounds](docs/BrowserVisualBounds.md)
@@ -517,6 +548,9 @@ Class | Method | HTTP request | Description
  - [FragmentType](docs/FragmentType.md)
  - [OpenApiGenerationResult](docs/OpenApiGenerationResult.md)
  - [PageMetadata](docs/PageMetadata.md)
+ - [PreparationOutput](docs/PreparationOutput.md)
+ - [PreparationPage](docs/PreparationPage.md)
+ - [PreparationSummary](docs/PreparationSummary.md)
  - [ProblemDetails](docs/ProblemDetails.md)
  - [RequestChainRun](docs/RequestChainRun.md)
  - [RequestChainRunInput](docs/RequestChainRunInput.md)
@@ -532,6 +566,7 @@ Class | Method | HTTP request | Description
  - [RunEnqueueResponse](docs/RunEnqueueResponse.md)
  - [RunFlowBatchRequest](docs/RunFlowBatchRequest.md)
  - [RunStatus](docs/RunStatus.md)
+ - [RunStatusCode](docs/RunStatusCode.md)
  - [SavedRequestInput](docs/SavedRequestInput.md)
  - [SentinelCheck](docs/SentinelCheck.md)
  - [SentinelCheckInput](docs/SentinelCheckInput.md)
