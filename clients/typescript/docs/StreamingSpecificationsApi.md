@@ -8,9 +8,11 @@ All URIs are relative to *https://app.ste.software*
 | [**createStreamingSpecification**](StreamingSpecificationsApi.md#createstreamingspecification) | **POST** /test/streaming-spec/create | Create a streaming specification |
 | [**deleteStreamingSpecification**](StreamingSpecificationsApi.md#deletestreamingspecification) | **DELETE** /test/streaming-spec/by-id | Delete a streaming specification |
 | [**getStreamingCapabilities**](StreamingSpecificationsApi.md#getstreamingcapabilities) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits |
+| [**getStreamingPreparation**](StreamingSpecificationsApi.md#getstreamingpreparation) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key |
 | [**getStreamingSpecification**](StreamingSpecificationsApi.md#getstreamingspecification) | **GET** /test/streaming-spec/by-id | Get a streaming specification |
 | [**getStreamingSpecificationRun**](StreamingSpecificationsApi.md#getstreamingspecificationrun) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence |
 | [**getStreamingSpecificationRunTranscript**](StreamingSpecificationsApi.md#getstreamingspecificationruntranscript) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript |
+| [**listStreamingPreparations**](StreamingSpecificationsApi.md#liststreamingpreparations) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listStreamingSpecificationRuns**](StreamingSpecificationsApi.md#liststreamingspecificationruns) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification |
 | [**listStreamingSpecifications**](StreamingSpecificationsApi.md#liststreamingspecifications) | **GET** /test/streaming-spec/page | List streaming specifications |
 | [**previewStreamingSpecificationRecovery**](StreamingSpecificationsApi.md#previewstreamingspecificationrecovery) | **POST** /test/streaming-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a Streaming specification version |
@@ -304,6 +306,78 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## getStreamingPreparation
+
+> PreparationSummary getStreamingPreparation(ref)
+
+Read eligible STREAMING Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  StreamingSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { GetStreamingPreparationRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new StreamingSpecificationsApi(config);
+
+  const body = {
+    // string
+    ref: ref_example,
+  } satisfies GetStreamingPreparationRequest;
+
+  try {
+    const data = await api.getStreamingPreparation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **ref** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## getStreamingSpecification
 
 > StreamingSpecification getStreamingSpecification(specId)
@@ -515,6 +589,84 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | One transcript page. Payload exclusions and redactions are already applied. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## listStreamingPreparations
+
+> PreparationPage listStreamingPreparations(page, size, search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  StreamingSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { ListStreamingPreparationsRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new StreamingSpecificationsApi(config);
+
+  const body = {
+    // number | Zero-based page index. (optional)
+    page: 56,
+    // number (optional)
+    size: 56,
+    // string | Case-insensitive server-side search within the active project. (optional)
+    search: search_example,
+  } satisfies ListStreamingPreparationsRequest;
+
+  try {
+    const data = await api.listStreamingPreparations(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **page** | `number` | Zero-based page index. | [Optional] [Defaults to `0`] |
+| **size** | `number` |  | [Optional] [Defaults to `20`] |
+| **search** | `string` | Case-insensitive server-side search within the active project. | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible STREAMING preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

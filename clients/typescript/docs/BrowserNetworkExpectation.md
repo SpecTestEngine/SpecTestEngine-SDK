@@ -1,13 +1,14 @@
 
 # BrowserNetworkExpectation
 
-Approved expectations and recorded candidates are separate. Body/path values remain typed JSON; exclusions affect network validation only.
+Local checks over observed browser traffic, never a second HTTP send. Candidates are not executable checks. Recorded credentials are rejected; current-run bindings are private and optional. Body and headers constrain the request; expectedBody and expectedHeaders constrain the response. Explicit empty response-header objects are checks. Unsupported OpenAPI/schema/attachment assertions are rejected, not processed by Browser.
 
 ## Properties
 
 Name | Type
 ------------ | -------------
 `enabled` | boolean
+`policy` | string
 `recordedCallId` | number
 `recordedUrl` | string
 `method` | string
@@ -22,9 +23,20 @@ Name | Type
 `excludeAllOtherHeaderFields` | boolean
 `body` | any
 `candidateBody` | any
-`expectedBodyPaths` | Array&lt;{ [key: string]: any; }&gt;
+`expectedBodyPaths` | [Array&lt;BrowserPathExpectation&gt;](BrowserPathExpectation.md)
+`expectedHeaderPaths` | [Array&lt;BrowserPathExpectation&gt;](BrowserPathExpectation.md)
+`stream` | [BrowserStreamMessage](BrowserStreamMessage.md)
 `candidateBodyPaths` | { [key: string]: any; }
 `excludedBodyFields` | Array&lt;string&gt;
+`headers` | { [key: string]: string; }
+`expectedBody` | any
+`skipExactBodyCheck` | boolean
+`excludeAllOtherBodyFields` | boolean
+`occurrence` | number
+`requestBodyPaths` | [Array&lt;BrowserPathExpectation&gt;](BrowserPathExpectation.md)
+`candidateFields` | [BrowserNetworkFieldInventory](BrowserNetworkFieldInventory.md)
+`authTransfer` | [BrowserAuthTransfer](BrowserAuthTransfer.md)
+`runtimeBindings` | [Array&lt;BrowserNetworkRuntimeBinding&gt;](BrowserNetworkRuntimeBinding.md)
 
 ## Example
 
@@ -34,6 +46,7 @@ import type { BrowserNetworkExpectation } from '@spectestengine/sdk'
 // TODO: Update the object below with actual values
 const example = {
   "enabled": null,
+  "policy": null,
   "recordedCallId": null,
   "recordedUrl": null,
   "method": null,
@@ -49,8 +62,19 @@ const example = {
   "body": null,
   "candidateBody": null,
   "expectedBodyPaths": null,
+  "expectedHeaderPaths": null,
+  "stream": null,
   "candidateBodyPaths": null,
   "excludedBodyFields": null,
+  "headers": null,
+  "expectedBody": null,
+  "skipExactBodyCheck": null,
+  "excludeAllOtherBodyFields": null,
+  "occurrence": null,
+  "requestBodyPaths": null,
+  "candidateFields": null,
+  "authTransfer": null,
+  "runtimeBindings": null,
 } satisfies BrowserNetworkExpectation
 
 console.log(example)

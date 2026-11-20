@@ -565,7 +565,7 @@ example().catch(console.error);
 | **size** | `number` | Maximum number of results returned in one page. | [Optional] [Defaults to `20`] |
 | **search** | `string` | Case-insensitive server-side search within the active project. | [Optional] [Defaults to `undefined`] |
 | **specType** | `SpecType` | Filter the library to one API protocol. | [Optional] [Defaults to `undefined`] [Enum: REST, SOAP, GRAPHQL, STREAMING] |
-| **type** | `FragmentType` |  | [Optional] [Defaults to `undefined`] [Enum: URL_METHOD, HEADER, BODY, REQUEST_ATTACHMENT, HEADER_ASSERTION, BODY_ASSERTION, ATTACHMENT_ASSERTION, SOAP_REQUEST, SOAP_ASSERTION, GRAPHQL_OPERATION, GRAPHQL_ASSERTION, STREAM_REQUEST, STREAM_SCHEMA, STREAM_SEND, STREAM_EXPECT, STREAM_CONTROL, STREAM_ASSERTION] |
+| **type** | `FragmentType` |  | [Optional] [Defaults to `undefined`] [Enum: URL_METHOD, HEADER, BODY, REQUEST_ATTACHMENT, HEADER_ASSERTION, BODY_ASSERTION, ATTACHMENT_ASSERTION, JWT_ASSERTION, SOAP_REQUEST, SOAP_ASSERTION, GRAPHQL_OPERATION, GRAPHQL_ASSERTION, STREAM_REQUEST, STREAM_SCHEMA, STREAM_SEND, STREAM_EXPECT, STREAM_CONTROL, STREAM_ASSERTION] |
 
 ### Return type
 

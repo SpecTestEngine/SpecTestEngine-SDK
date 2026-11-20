@@ -10,10 +10,14 @@ All URIs are relative to *https://app.ste.software*
 | [**createRestSpecificationWithHttpInfo**](RestSpecificationsApi.md#createRestSpecificationWithHttpInfo) | **POST** /test/rest-spec/create | Create a REST specification |
 | [**deleteRestSpecification**](RestSpecificationsApi.md#deleteRestSpecification) | **DELETE** /test/rest-spec/by-id | Delete a REST specification |
 | [**deleteRestSpecificationWithHttpInfo**](RestSpecificationsApi.md#deleteRestSpecificationWithHttpInfo) | **DELETE** /test/rest-spec/by-id | Delete a REST specification |
+| [**getRestPreparation**](RestSpecificationsApi.md#getRestPreparation) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key |
+| [**getRestPreparationWithHttpInfo**](RestSpecificationsApi.md#getRestPreparationWithHttpInfo) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key |
 | [**getRestSpecification**](RestSpecificationsApi.md#getRestSpecification) | **GET** /test/rest-spec/by-id | Get a REST specification |
 | [**getRestSpecificationWithHttpInfo**](RestSpecificationsApi.md#getRestSpecificationWithHttpInfo) | **GET** /test/rest-spec/by-id | Get a REST specification |
 | [**getRestSpecificationRun**](RestSpecificationsApi.md#getRestSpecificationRun) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence |
 | [**getRestSpecificationRunWithHttpInfo**](RestSpecificationsApi.md#getRestSpecificationRunWithHttpInfo) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence |
+| [**listRestPreparations**](RestSpecificationsApi.md#listRestPreparations) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations |
+| [**listRestPreparationsWithHttpInfo**](RestSpecificationsApi.md#listRestPreparationsWithHttpInfo) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listRestSpecificationRuns**](RestSpecificationsApi.md#listRestSpecificationRuns) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs |
 | [**listRestSpecificationRunsWithHttpInfo**](RestSpecificationsApi.md#listRestSpecificationRunsWithHttpInfo) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs |
 | [**listRestSpecifications**](RestSpecificationsApi.md#listRestSpecifications) | **GET** /test/rest-spec/page | List REST specifications |
@@ -529,6 +533,168 @@ ApiResponse<[**Specification**](Specification.md)>
 
 
 
+## getRestPreparation
+
+> PreparationSummary getRestPreparation(getRestPreparationRequest)
+
+Read eligible REST Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.RestSpecificationsApi;
+import software.ste.sdk.generated.api.RestSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        RestSpecificationsApi apiInstance = new RestSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetRestPreparationRequest request = APIgetRestPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            PreparationSummary result = apiInstance.getRestPreparation(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RestSpecificationsApi#getRestPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getRestPreparationRequest | [**APIgetRestPreparationRequest**](RestSpecificationsApi.md#APIgetRestPreparationRequest)|-|-|
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+## getRestPreparationWithHttpInfo
+
+> ApiResponse<PreparationSummary> getRestPreparationWithHttpInfo(getRestPreparationRequest)
+
+Read eligible REST Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.RestSpecificationsApi;
+import software.ste.sdk.generated.api.RestSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        RestSpecificationsApi apiInstance = new RestSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetRestPreparationRequest request = APIgetRestPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            ApiResponse<PreparationSummary> response = apiInstance.getRestPreparationWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RestSpecificationsApi#getRestPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getRestPreparationRequest | [**APIgetRestPreparationRequest**](RestSpecificationsApi.md#APIgetRestPreparationRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationSummary**](PreparationSummary.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIgetRestPreparationRequest"></a>
+## APIgetRestPreparationRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **ref** | **String** |  | |
+
+
+
 ## getRestSpecification
 
 > Specification getRestSpecification(getRestSpecificationRequest)
@@ -842,6 +1008,178 @@ ApiResponse<[**SpecificationRun**](SpecificationRun.md)>
 |     Name      |    Type       | Description   |     Notes    |
 | ------------- | ------------- | ------------- | -------------|
 | **runId** | **UUID** | UUIDv7 identifier of the stored run evidence. | |
+
+
+
+## listRestPreparations
+
+> PreparationPage listRestPreparations(listRestPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.RestSpecificationsApi;
+import software.ste.sdk.generated.api.RestSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        RestSpecificationsApi apiInstance = new RestSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistRestPreparationsRequest request = APIlistRestPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            PreparationPage result = apiInstance.listRestPreparations(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RestSpecificationsApi#listRestPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listRestPreparationsRequest | [**APIlistRestPreparationsRequest**](RestSpecificationsApi.md#APIlistRestPreparationsRequest)|-|-|
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible REST preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+## listRestPreparationsWithHttpInfo
+
+> ApiResponse<PreparationPage> listRestPreparationsWithHttpInfo(listRestPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.RestSpecificationsApi;
+import software.ste.sdk.generated.api.RestSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        RestSpecificationsApi apiInstance = new RestSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistRestPreparationsRequest request = APIlistRestPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            ApiResponse<PreparationPage> response = apiInstance.listRestPreparationsWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RestSpecificationsApi#listRestPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listRestPreparationsRequest | [**APIlistRestPreparationsRequest**](RestSpecificationsApi.md#APIlistRestPreparationsRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationPage**](PreparationPage.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible REST preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIlistRestPreparationsRequest"></a>
+## APIlistRestPreparationsRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **Integer** |  | [optional] [default to 20] |
+| **search** | **String** | Case-insensitive server-side search within the active project. | [optional] |
 
 
 

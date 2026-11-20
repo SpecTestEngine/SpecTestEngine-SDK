@@ -32,7 +32,7 @@ Typed clients and the canonical public OpenAPI contract for integrating with
 
 ### What You Can Automate
 
-The current public contract covers 143 operations across the core testing workflow:
+The current public contract covers 151 operations across the core testing workflow:
 
 See [Flow recovery](docs/FLOW-RECOVERY.md) for historical review, typed editable drafts, same-ID restore, optional copy and safe retry/readback.
 
@@ -63,6 +63,7 @@ openapi/
 generator/
   version.env                     Pinned OpenAPI Generator version
   config/                         One reviewed config per supported language
+  regression-tests/               Maintained native tests copied into regenerated clients
 scripts/
   validate.sh                     OpenAPI and policy validation
   generate.sh                     Deterministic client generation
@@ -80,7 +81,9 @@ artifacts/                        Local self-service ZIP output (not committed)
 
 The OpenAPI document is the source of truth. Files under `clients/` are reproducible generated
 output. Do not hand-edit generated models or API classes; update the contract or a generator
-configuration and regenerate instead.
+configuration and regenerate instead. Native Java, Python and Go regression tests are maintained
+under `generator/regression-tests/` and copied into `clients/` by `make generate`; edit those sources
+instead of their generated copies. These repository tests are not added to versioned SDK archives.
 
 Fragment models require `specType` and expose SOAP-specific `SOAP_REQUEST`/`SOAP_ASSERTION`,
 GraphQL-specific `GRAPHQL_OPERATION`/`GRAPHQL_ASSERTION`, and granular `STREAM_*` values. Streaming
@@ -472,7 +475,8 @@ make verify
 git diff --exit-code -- clients
 ```
 
-CI runs the same contract and generation checks. A pull request should include the contract
+CI runs the contract, generator regression and native serialization checks, followed by a clean
+generated-output diff and archive determinism. A pull request should include the contract
 change, regenerated clients, and a concise compatibility note.
 
 Public registry publication remains an explicit pre-release task. The checklist is maintained in
@@ -499,3 +503,14 @@ This project is licensed under the [Apache License 2.0](LICENSE). The license co
 OpenAPI contract, generated clients, maintained workflow helpers, documentation, and repository
 tooling included here. SpecTestEngine product names and logos remain subject to the trademark
 provision in Section 6 of the license.
+
+
+### Prepare request and native results (alpha10)
+
+REST, SOAP, GraphQL and Streaming each expose paginated eligible preparation catalogs and exact reads by stable reference. A consumer can select a preparation from any of those protocols. Keep `preparation.protocol` and `preparation.ref` explicit; `storeValues` declares typed JSON Pointer outputs, and `${name}` inserts the current run value. The SDK transports definitions and native results; it does not perform Login, token refresh or assertions itself.
+
+Authored focused checks use `path` with exactly one `value` or string `pattern`. Native report operands keep their producer field names. Engine results use `----------------PASS-------------------`, `----------------FAIL-------------------` and `---------------ERROR-------------------`; lifecycle states and business response values retain their own meaning. Product labels remain Passed, Failed and Execution error.
+
+The preparation contract smoke checks cover every protocol and typed output metadata in the generated clients. TypeScript also checks authorization-transfer metadata; runtime token values never belong in those declarations. Java's `PreparationContractTest`, Go's `TestPreparationProtocolAndOutputRoundTrip`, Python's `clients/python/test/test_preparation_contract.py` and the C# `scripts/tests/preparation-roundtrip` project exercise native serialization without contacting a service.
+
+Browser JSON operands preserve presence as well as type: an omitted `expectedBody` disables that criterion, while `expectedBody: null` checks an explicit JSON null. The same rule applies to focused path `value` operands and outgoing body fields. Generated Java and Go builders support explicit null through their setters/fluent methods; decoded JSON retains null members in nested objects and lists. Optional C# enum fields remain absent until set.

@@ -12,12 +12,16 @@ All URIs are relative to *https://app.ste.software*
 | [**deleteStreamingSpecificationWithHttpInfo**](StreamingSpecificationsApi.md#deleteStreamingSpecificationWithHttpInfo) | **DELETE** /test/streaming-spec/by-id | Delete a streaming specification |
 | [**getStreamingCapabilities**](StreamingSpecificationsApi.md#getStreamingCapabilities) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits |
 | [**getStreamingCapabilitiesWithHttpInfo**](StreamingSpecificationsApi.md#getStreamingCapabilitiesWithHttpInfo) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits |
+| [**getStreamingPreparation**](StreamingSpecificationsApi.md#getStreamingPreparation) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key |
+| [**getStreamingPreparationWithHttpInfo**](StreamingSpecificationsApi.md#getStreamingPreparationWithHttpInfo) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key |
 | [**getStreamingSpecification**](StreamingSpecificationsApi.md#getStreamingSpecification) | **GET** /test/streaming-spec/by-id | Get a streaming specification |
 | [**getStreamingSpecificationWithHttpInfo**](StreamingSpecificationsApi.md#getStreamingSpecificationWithHttpInfo) | **GET** /test/streaming-spec/by-id | Get a streaming specification |
 | [**getStreamingSpecificationRun**](StreamingSpecificationsApi.md#getStreamingSpecificationRun) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence |
 | [**getStreamingSpecificationRunWithHttpInfo**](StreamingSpecificationsApi.md#getStreamingSpecificationRunWithHttpInfo) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence |
 | [**getStreamingSpecificationRunTranscript**](StreamingSpecificationsApi.md#getStreamingSpecificationRunTranscript) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript |
 | [**getStreamingSpecificationRunTranscriptWithHttpInfo**](StreamingSpecificationsApi.md#getStreamingSpecificationRunTranscriptWithHttpInfo) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript |
+| [**listStreamingPreparations**](StreamingSpecificationsApi.md#listStreamingPreparations) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations |
+| [**listStreamingPreparationsWithHttpInfo**](StreamingSpecificationsApi.md#listStreamingPreparationsWithHttpInfo) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listStreamingSpecificationRuns**](StreamingSpecificationsApi.md#listStreamingSpecificationRuns) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification |
 | [**listStreamingSpecificationRunsWithHttpInfo**](StreamingSpecificationsApi.md#listStreamingSpecificationRunsWithHttpInfo) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification |
 | [**listStreamingSpecifications**](StreamingSpecificationsApi.md#listStreamingSpecifications) | **GET** /test/streaming-spec/page | List streaming specifications |
@@ -664,6 +668,168 @@ ApiResponse<[**StreamingCapabilities**](StreamingCapabilities.md)>
 | **0** | The request failed. |  -  |
 
 
+## getStreamingPreparation
+
+> PreparationSummary getStreamingPreparation(getStreamingPreparationRequest)
+
+Read eligible STREAMING Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        StreamingSpecificationsApi apiInstance = new StreamingSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetStreamingPreparationRequest request = APIgetStreamingPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            PreparationSummary result = apiInstance.getStreamingPreparation(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StreamingSpecificationsApi#getStreamingPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getStreamingPreparationRequest | [**APIgetStreamingPreparationRequest**](StreamingSpecificationsApi.md#APIgetStreamingPreparationRequest)|-|-|
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+## getStreamingPreparationWithHttpInfo
+
+> ApiResponse<PreparationSummary> getStreamingPreparationWithHttpInfo(getStreamingPreparationRequest)
+
+Read eligible STREAMING Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        StreamingSpecificationsApi apiInstance = new StreamingSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetStreamingPreparationRequest request = APIgetStreamingPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            ApiResponse<PreparationSummary> response = apiInstance.getStreamingPreparationWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StreamingSpecificationsApi#getStreamingPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getStreamingPreparationRequest | [**APIgetStreamingPreparationRequest**](StreamingSpecificationsApi.md#APIgetStreamingPreparationRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationSummary**](PreparationSummary.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIgetStreamingPreparationRequest"></a>
+## APIgetStreamingPreparationRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **ref** | **String** |  | |
+
+
+
 ## getStreamingSpecification
 
 > StreamingSpecification getStreamingSpecification(getStreamingSpecificationRequest)
@@ -1145,6 +1311,178 @@ ApiResponse<[**StreamingTranscriptPage**](StreamingTranscriptPage.md)>
 | **runId** | **UUID** | UUIDv7 identifier of the stored run evidence. | |
 | **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
 | **size** | **Integer** |  | [optional] [default to 100] |
+
+
+
+## listStreamingPreparations
+
+> PreparationPage listStreamingPreparations(listStreamingPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        StreamingSpecificationsApi apiInstance = new StreamingSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistStreamingPreparationsRequest request = APIlistStreamingPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            PreparationPage result = apiInstance.listStreamingPreparations(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StreamingSpecificationsApi#listStreamingPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listStreamingPreparationsRequest | [**APIlistStreamingPreparationsRequest**](StreamingSpecificationsApi.md#APIlistStreamingPreparationsRequest)|-|-|
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible STREAMING preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+## listStreamingPreparationsWithHttpInfo
+
+> ApiResponse<PreparationPage> listStreamingPreparationsWithHttpInfo(listStreamingPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi;
+import software.ste.sdk.generated.api.StreamingSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        StreamingSpecificationsApi apiInstance = new StreamingSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistStreamingPreparationsRequest request = APIlistStreamingPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            ApiResponse<PreparationPage> response = apiInstance.listStreamingPreparationsWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StreamingSpecificationsApi#listStreamingPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listStreamingPreparationsRequest | [**APIlistStreamingPreparationsRequest**](StreamingSpecificationsApi.md#APIlistStreamingPreparationsRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationPage**](PreparationPage.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible STREAMING preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIlistStreamingPreparationsRequest"></a>
+## APIlistStreamingPreparationsRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **Integer** |  | [optional] [default to 20] |
+| **search** | **String** | Case-insensitive server-side search within the active project. | [optional] |
 
 
 

@@ -8,9 +8,11 @@ Method | HTTP request | Description
 [**CreateStreamingSpecification**](StreamingSpecificationsAPI.md#CreateStreamingSpecification) | **Post** /test/streaming-spec/create | Create a streaming specification
 [**DeleteStreamingSpecification**](StreamingSpecificationsAPI.md#DeleteStreamingSpecification) | **Delete** /test/streaming-spec/by-id | Delete a streaming specification
 [**GetStreamingCapabilities**](StreamingSpecificationsAPI.md#GetStreamingCapabilities) | **Get** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits
+[**GetStreamingPreparation**](StreamingSpecificationsAPI.md#GetStreamingPreparation) | **Get** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key
 [**GetStreamingSpecification**](StreamingSpecificationsAPI.md#GetStreamingSpecification) | **Get** /test/streaming-spec/by-id | Get a streaming specification
 [**GetStreamingSpecificationRun**](StreamingSpecificationsAPI.md#GetStreamingSpecificationRun) | **Get** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence
 [**GetStreamingSpecificationRunTranscript**](StreamingSpecificationsAPI.md#GetStreamingSpecificationRunTranscript) | **Get** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript
+[**ListStreamingPreparations**](StreamingSpecificationsAPI.md#ListStreamingPreparations) | **Get** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations
 [**ListStreamingSpecificationRuns**](StreamingSpecificationsAPI.md#ListStreamingSpecificationRuns) | **Get** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification
 [**ListStreamingSpecifications**](StreamingSpecificationsAPI.md#ListStreamingSpecifications) | **Get** /test/streaming-spec/page | List streaming specifications
 [**PreviewStreamingSpecificationRecovery**](StreamingSpecificationsAPI.md#PreviewStreamingSpecificationRecovery) | **Post** /test/streaming-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a Streaming specification version
@@ -284,6 +286,76 @@ Other parameters are passed through a pointer to a apiGetStreamingCapabilitiesRe
 [[Back to README]](../README.md)
 
 
+## GetStreamingPreparation
+
+> PreparationSummary GetStreamingPreparation(ctx, ref).Execute()
+
+Read eligible STREAMING Prepare request metadata by stable key
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	ref := "ref_example" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.StreamingSpecificationsAPI.GetStreamingPreparation(context.Background(), ref).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `StreamingSpecificationsAPI.GetStreamingPreparation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetStreamingPreparation`: PreparationSummary
+	fmt.Fprintf(os.Stdout, "Response from `StreamingSpecificationsAPI.GetStreamingPreparation`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ref** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetStreamingPreparationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetStreamingSpecification
 
 > StreamingSpecification GetStreamingSpecification(ctx).SpecId(specId).Execute()
@@ -473,6 +545,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**StreamingTranscriptPage**](StreamingTranscriptPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListStreamingPreparations
+
+> PreparationPage ListStreamingPreparations(ctx).Page(page).Size(size).Search(search).Execute()
+
+List eligible Prepare requests and output declarations
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 |  (optional) (default to 20)
+	search := "search_example" // string | Case-insensitive server-side search within the active project. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.StreamingSpecificationsAPI.ListStreamingPreparations(context.Background()).Page(page).Size(size).Search(search).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `StreamingSpecificationsAPI.ListStreamingPreparations``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListStreamingPreparations`: PreparationPage
+	fmt.Fprintf(os.Stdout, "Response from `StreamingSpecificationsAPI.ListStreamingPreparations`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListStreamingPreparationsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** |  | [default to 20]
+ **search** | **string** | Case-insensitive server-side search within the active project. |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
 
 ### Authorization
 

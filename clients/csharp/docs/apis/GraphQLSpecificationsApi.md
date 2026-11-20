@@ -7,8 +7,10 @@ All URIs are relative to *https://app.ste.software*
 | [**CaptureGraphqlSpecificationAttachmentVisualDiff**](GraphQLSpecificationsApi.md#capturegraphqlspecificationattachmentvisualdiff) | **POST** /test/graphql-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed GraphQL attachment assertion |
 | [**CreateGraphqlSpecification**](GraphQLSpecificationsApi.md#creategraphqlspecification) | **POST** /test/graphql-spec/create | Create a GraphQL specification |
 | [**DeleteGraphqlSpecification**](GraphQLSpecificationsApi.md#deletegraphqlspecification) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification |
+| [**GetGraphqlPreparation**](GraphQLSpecificationsApi.md#getgraphqlpreparation) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key |
 | [**GetGraphqlSpecification**](GraphQLSpecificationsApi.md#getgraphqlspecification) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification |
 | [**GetGraphqlSpecificationRun**](GraphQLSpecificationsApi.md#getgraphqlspecificationrun) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence |
+| [**ListGraphqlPreparations**](GraphQLSpecificationsApi.md#listgraphqlpreparations) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations |
 | [**ListGraphqlSpecificationRuns**](GraphQLSpecificationsApi.md#listgraphqlspecificationruns) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs |
 | [**ListGraphqlSpecifications**](GraphQLSpecificationsApi.md#listgraphqlspecifications) | **GET** /test/graphql-spec/page | List GraphQL specifications |
 | [**PreviewGraphqlSpecificationRecovery**](GraphQLSpecificationsApi.md#previewgraphqlspecificationrecovery) | **POST** /test/graphql-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a GraphQL specification version |
@@ -128,6 +130,43 @@ Delete a GraphQL specification
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="getgraphqlpreparation"></a>
+# **GetGraphqlPreparation**
+> PreparationSummary GetGraphqlPreparation (string varRef)
+
+Read eligible GRAPHQL Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **varRef** | **string** |  |  |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="getgraphqlspecification"></a>
 # **GetGraphqlSpecification**
 > Specification GetGraphqlSpecification (Guid specId)
@@ -194,6 +233,45 @@ Get saved GraphQL run evidence
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete saved run evidence. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="listgraphqlpreparations"></a>
+# **ListGraphqlPreparations**
+> PreparationPage ListGraphqlPreparations (int page = null, int size = null, string search = null)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **page** | **int** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **int** |  | [optional] [default to 20] |
+| **search** | **string** | Case-insensitive server-side search within the active project. | [optional]  |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible GRAPHQL preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

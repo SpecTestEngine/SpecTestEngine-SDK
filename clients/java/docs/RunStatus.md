@@ -9,12 +9,12 @@
 
 * `RUNNING` (value: `"RUNNING"`)
 
-* `PASS` (value: `"PASS"`)
+* `_PASS_` (value: `"----------------PASS-------------------"`)
 
 * `RECOVERED` (value: `"RECOVERED"`)
 
-* `FAIL` (value: `"FAIL"`)
+* `_FAIL_` (value: `"----------------FAIL-------------------"`)
 
-* `ERROR` (value: `"ERROR"`)
+* `_ERROR_` (value: `"---------------ERROR-------------------"`)
 
 * `SKIPPED` (value: `"SKIPPED"`)

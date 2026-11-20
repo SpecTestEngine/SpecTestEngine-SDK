@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **ui_macro_name** | **str** |  | [optional]
 **browser_action_type** | [**BrowserActionType**](BrowserActionType.md) |  | [optional]
 **selector** | **str** |  | [optional]
+**target_match** | [**BrowserTargetMatch**](BrowserTargetMatch.md) |  | [optional]
 **selector_candidates** | **List[str]** |  | [optional]
 **value** | **str** |  | [optional]
 **variable_name** | **str** |  | [optional]

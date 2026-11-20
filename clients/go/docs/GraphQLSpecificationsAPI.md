@@ -7,8 +7,10 @@ Method | HTTP request | Description
 [**CaptureGraphqlSpecificationAttachmentVisualDiff**](GraphQLSpecificationsAPI.md#CaptureGraphqlSpecificationAttachmentVisualDiff) | **Post** /test/graphql-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed GraphQL attachment assertion
 [**CreateGraphqlSpecification**](GraphQLSpecificationsAPI.md#CreateGraphqlSpecification) | **Post** /test/graphql-spec/create | Create a GraphQL specification
 [**DeleteGraphqlSpecification**](GraphQLSpecificationsAPI.md#DeleteGraphqlSpecification) | **Delete** /test/graphql-spec/by-id | Delete a GraphQL specification
+[**GetGraphqlPreparation**](GraphQLSpecificationsAPI.md#GetGraphqlPreparation) | **Get** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key
 [**GetGraphqlSpecification**](GraphQLSpecificationsAPI.md#GetGraphqlSpecification) | **Get** /test/graphql-spec/by-id | Get a GraphQL specification
 [**GetGraphqlSpecificationRun**](GraphQLSpecificationsAPI.md#GetGraphqlSpecificationRun) | **Get** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence
+[**ListGraphqlPreparations**](GraphQLSpecificationsAPI.md#ListGraphqlPreparations) | **Get** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations
 [**ListGraphqlSpecificationRuns**](GraphQLSpecificationsAPI.md#ListGraphqlSpecificationRuns) | **Get** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs
 [**ListGraphqlSpecifications**](GraphQLSpecificationsAPI.md#ListGraphqlSpecifications) | **Get** /test/graphql-spec/page | List GraphQL specifications
 [**PreviewGraphqlSpecificationRecovery**](GraphQLSpecificationsAPI.md#PreviewGraphqlSpecificationRecovery) | **Post** /test/graphql-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a GraphQL specification version
@@ -225,6 +227,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetGraphqlPreparation
+
+> PreparationSummary GetGraphqlPreparation(ctx, ref).Execute()
+
+Read eligible GRAPHQL Prepare request metadata by stable key
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	ref := "ref_example" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GraphQLSpecificationsAPI.GetGraphqlPreparation(context.Background(), ref).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GraphQLSpecificationsAPI.GetGraphqlPreparation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetGraphqlPreparation`: PreparationSummary
+	fmt.Fprintf(os.Stdout, "Response from `GraphQLSpecificationsAPI.GetGraphqlPreparation`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ref** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetGraphqlPreparationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetGraphqlSpecification
 
 > Specification GetGraphqlSpecification(ctx).SpecId(specId).Execute()
@@ -342,6 +414,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**SpecificationRun**](SpecificationRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListGraphqlPreparations
+
+> PreparationPage ListGraphqlPreparations(ctx).Page(page).Size(size).Search(search).Execute()
+
+List eligible Prepare requests and output declarations
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 |  (optional) (default to 20)
+	search := "search_example" // string | Case-insensitive server-side search within the active project. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.GraphQLSpecificationsAPI.ListGraphqlPreparations(context.Background()).Page(page).Size(size).Search(search).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `GraphQLSpecificationsAPI.ListGraphqlPreparations``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListGraphqlPreparations`: PreparationPage
+	fmt.Fprintf(os.Stdout, "Response from `GraphQLSpecificationsAPI.ListGraphqlPreparations`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListGraphqlPreparationsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** |  | [default to 20]
+ **search** | **string** | Case-insensitive server-side search within the active project. |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
 
 ### Authorization
 

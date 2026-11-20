@@ -7,8 +7,10 @@ Method | HTTP request | Description
 [**capture_rest_specification_attachment_visual_diff**](RESTSpecificationsApi.md#capture_rest_specification_attachment_visual_diff) | **POST** /test/rest-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed REST attachment assertion
 [**create_rest_specification**](RESTSpecificationsApi.md#create_rest_specification) | **POST** /test/rest-spec/create | Create a REST specification
 [**delete_rest_specification**](RESTSpecificationsApi.md#delete_rest_specification) | **DELETE** /test/rest-spec/by-id | Delete a REST specification
+[**get_rest_preparation**](RESTSpecificationsApi.md#get_rest_preparation) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key
 [**get_rest_specification**](RESTSpecificationsApi.md#get_rest_specification) | **GET** /test/rest-spec/by-id | Get a REST specification
 [**get_rest_specification_run**](RESTSpecificationsApi.md#get_rest_specification_run) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence
+[**list_rest_preparations**](RESTSpecificationsApi.md#list_rest_preparations) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations
 [**list_rest_specification_runs**](RESTSpecificationsApi.md#list_rest_specification_runs) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs
 [**list_rest_specifications**](RESTSpecificationsApi.md#list_rest_specifications) | **GET** /test/rest-spec/page | List REST specifications
 [**preview_rest_specification_recovery**](RESTSpecificationsApi.md#preview_rest_specification_recovery) | **POST** /test/rest-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a REST specification version
@@ -260,6 +262,85 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_rest_preparation**
+> PreparationSummary get_rest_preparation(ref)
+
+Read eligible REST Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.preparation_summary import PreparationSummary
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.RESTSpecificationsApi(api_client)
+    ref = 'ref_example' # str |
+
+    try:
+        # Read eligible REST Prepare request metadata by stable key
+        api_response = api_instance.get_rest_preparation(ref)
+        print("The response of RESTSpecificationsApi->get_rest_preparation:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling RESTSpecificationsApi->get_rest_preparation: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ref** | **str**|  |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | The eligible source and its declared output variables. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_rest_specification**
 > Specification get_rest_specification(spec_id)
 
@@ -410,6 +491,89 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Complete saved run evidence. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **list_rest_preparations**
+> PreparationPage list_rest_preparations(page=page, size=size, search=search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.preparation_page import PreparationPage
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.RESTSpecificationsApi(api_client)
+    page = 0 # int | Zero-based page index. (optional) (default to 0)
+    size = 20 # int |  (optional) (default to 20)
+    search = 'search_example' # str | Case-insensitive server-side search within the active project. (optional)
+
+    try:
+        # List eligible Prepare requests and output declarations
+        api_response = api_instance.list_rest_preparations(page=page, size=size, search=search)
+        print("The response of RESTSpecificationsApi->list_rest_preparations:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling RESTSpecificationsApi->list_rest_preparations: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int**| Zero-based page index. | [optional] [default to 0]
+ **size** | **int**|  | [optional] [default to 20]
+ **search** | **str**| Case-insensitive server-side search within the active project. | [optional]
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A page of eligible REST preparation sources. |  -  |
 **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

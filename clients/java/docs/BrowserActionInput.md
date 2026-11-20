@@ -11,6 +11,7 @@ One persisted semantic Browser action. Replay tries only the saved selector cand
 |**orderIndex** | **Integer** |  |  [optional] |
 |**actionType** | **BrowserActionType** |  |  |
 |**selector** | **String** |  |  [optional] |
+|**targetMatch** | [**BrowserTargetMatch**](BrowserTargetMatch.md) |  |  [optional] |
 |**selectorCandidates** | **List&lt;String&gt;** |  |  [optional] |
 |**value** | **String** | Action value or explicit variable template. EXTRACT_TEXT captures a fresh value on every run; a later FILL uses that variable, never a recorded OTP sample. |  [optional] |
 |**sensitive** | **Boolean** | Explicit sensitive-action marker. Persist variable references, not secret literal values. |  [optional] |
@@ -37,6 +38,8 @@ One persisted semantic Browser action. Replay tries only the saved selector cand
 |---- | -----|
 | ELEMENT_TEXT | &quot;ELEMENT_TEXT&quot; |
 | TEXT_BLOCK | &quot;TEXT_BLOCK&quot; |
+| LINK_URL | &quot;LINK_URL&quot; |
+| HIGHLIGHT_URL | &quot;HIGHLIGHT_URL&quot; |
 
 
 
@@ -45,8 +48,8 @@ One persisted semantic Browser action. Replay tries only the saved selector cand
 | Name | Value |
 |---- | -----|
 | IGNORE | &quot;IGNORE&quot; |
-| CORE | &quot;CORE&quot; |
 | EXACT | &quot;EXACT&quot; |
+| MATCH | &quot;MATCH&quot; |
 
 
 
@@ -56,7 +59,7 @@ One persisted semantic Browser action. Replay tries only the saved selector cand
 |---- | -----|
 | IGNORE | &quot;IGNORE&quot; |
 | EXACT | &quot;EXACT&quot; |
-| CONTAINS | &quot;CONTAINS&quot; |
+| MATCH | &quot;MATCH&quot; |
 
 
 

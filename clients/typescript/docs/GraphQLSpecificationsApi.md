@@ -7,8 +7,10 @@ All URIs are relative to *https://app.ste.software*
 | [**captureGraphqlSpecificationAttachmentVisualDiff**](GraphQLSpecificationsApi.md#capturegraphqlspecificationattachmentvisualdiff) | **POST** /test/graphql-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed GraphQL attachment assertion |
 | [**createGraphqlSpecification**](GraphQLSpecificationsApi.md#creategraphqlspecification) | **POST** /test/graphql-spec/create | Create a GraphQL specification |
 | [**deleteGraphqlSpecification**](GraphQLSpecificationsApi.md#deletegraphqlspecification) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification |
+| [**getGraphqlPreparation**](GraphQLSpecificationsApi.md#getgraphqlpreparation) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key |
 | [**getGraphqlSpecification**](GraphQLSpecificationsApi.md#getgraphqlspecification) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification |
 | [**getGraphqlSpecificationRun**](GraphQLSpecificationsApi.md#getgraphqlspecificationrun) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence |
+| [**listGraphqlPreparations**](GraphQLSpecificationsApi.md#listgraphqlpreparations) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listGraphqlSpecificationRuns**](GraphQLSpecificationsApi.md#listgraphqlspecificationruns) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs |
 | [**listGraphqlSpecifications**](GraphQLSpecificationsApi.md#listgraphqlspecifications) | **GET** /test/graphql-spec/page | List GraphQL specifications |
 | [**previewGraphqlSpecificationRecovery**](GraphQLSpecificationsApi.md#previewgraphqlspecificationrecovery) | **POST** /test/graphql-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a GraphQL specification version |
@@ -243,6 +245,78 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## getGraphqlPreparation
+
+> PreparationSummary getGraphqlPreparation(ref)
+
+Read eligible GRAPHQL Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  GraphQLSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { GetGraphqlPreparationRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new GraphQLSpecificationsApi(config);
+
+  const body = {
+    // string
+    ref: ref_example,
+  } satisfies GetGraphqlPreparationRequest;
+
+  try {
+    const data = await api.getGraphqlPreparation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **ref** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## getGraphqlSpecification
 
 > Specification getGraphqlSpecification(specId)
@@ -378,6 +452,84 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete saved run evidence. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## listGraphqlPreparations
+
+> PreparationPage listGraphqlPreparations(page, size, search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  GraphQLSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { ListGraphqlPreparationsRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new GraphQLSpecificationsApi(config);
+
+  const body = {
+    // number | Zero-based page index. (optional)
+    page: 56,
+    // number (optional)
+    size: 56,
+    // string | Case-insensitive server-side search within the active project. (optional)
+    search: search_example,
+  } satisfies ListGraphqlPreparationsRequest;
+
+  try {
+    const data = await api.listGraphqlPreparations(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **page** | `number` | Zero-based page index. | [Optional] [Defaults to `0`] |
+| **size** | `number` |  | [Optional] [Defaults to `20`] |
+| **search** | `string` | Case-insensitive server-side search within the active project. | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible GRAPHQL preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

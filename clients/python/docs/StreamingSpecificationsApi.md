@@ -8,9 +8,11 @@ Method | HTTP request | Description
 [**create_streaming_specification**](StreamingSpecificationsApi.md#create_streaming_specification) | **POST** /test/streaming-spec/create | Create a streaming specification
 [**delete_streaming_specification**](StreamingSpecificationsApi.md#delete_streaming_specification) | **DELETE** /test/streaming-spec/by-id | Delete a streaming specification
 [**get_streaming_capabilities**](StreamingSpecificationsApi.md#get_streaming_capabilities) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits
+[**get_streaming_preparation**](StreamingSpecificationsApi.md#get_streaming_preparation) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key
 [**get_streaming_specification**](StreamingSpecificationsApi.md#get_streaming_specification) | **GET** /test/streaming-spec/by-id | Get a streaming specification
 [**get_streaming_specification_run**](StreamingSpecificationsApi.md#get_streaming_specification_run) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence
 [**get_streaming_specification_run_transcript**](StreamingSpecificationsApi.md#get_streaming_specification_run_transcript) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript
+[**list_streaming_preparations**](StreamingSpecificationsApi.md#list_streaming_preparations) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations
 [**list_streaming_specification_runs**](StreamingSpecificationsApi.md#list_streaming_specification_runs) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification
 [**list_streaming_specifications**](StreamingSpecificationsApi.md#list_streaming_specifications) | **GET** /test/streaming-spec/page | List streaming specifications
 [**preview_streaming_specification_recovery**](StreamingSpecificationsApi.md#preview_streaming_specification_recovery) | **POST** /test/streaming-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a Streaming specification version
@@ -332,6 +334,85 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_streaming_preparation**
+> PreparationSummary get_streaming_preparation(ref)
+
+Read eligible STREAMING Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.preparation_summary import PreparationSummary
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.StreamingSpecificationsApi(api_client)
+    ref = 'ref_example' # str |
+
+    try:
+        # Read eligible STREAMING Prepare request metadata by stable key
+        api_response = api_instance.get_streaming_preparation(ref)
+        print("The response of StreamingSpecificationsApi->get_streaming_preparation:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling StreamingSpecificationsApi->get_streaming_preparation: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ref** | **str**|  |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | The eligible source and its declared output variables. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_streaming_specification**
 > StreamingSpecification get_streaming_specification(spec_id)
 
@@ -563,6 +644,89 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | One transcript page. Payload exclusions and redactions are already applied. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **list_streaming_preparations**
+> PreparationPage list_streaming_preparations(page=page, size=size, search=search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.preparation_page import PreparationPage
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.StreamingSpecificationsApi(api_client)
+    page = 0 # int | Zero-based page index. (optional) (default to 0)
+    size = 20 # int |  (optional) (default to 20)
+    search = 'search_example' # str | Case-insensitive server-side search within the active project. (optional)
+
+    try:
+        # List eligible Prepare requests and output declarations
+        api_response = api_instance.list_streaming_preparations(page=page, size=size, search=search)
+        print("The response of StreamingSpecificationsApi->list_streaming_preparations:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling StreamingSpecificationsApi->list_streaming_preparations: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int**| Zero-based page index. | [optional] [default to 0]
+ **size** | **int**|  | [optional] [default to 20]
+ **search** | **str**| Case-insensitive server-side search within the active project. | [optional]
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A page of eligible STREAMING preparation sources. |  -  |
 **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

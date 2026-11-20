@@ -8,9 +8,11 @@ All URIs are relative to *https://app.ste.software*
 | [**CreateStreamingSpecification**](StreamingSpecificationsApi.md#createstreamingspecification) | **POST** /test/streaming-spec/create | Create a streaming specification |
 | [**DeleteStreamingSpecification**](StreamingSpecificationsApi.md#deletestreamingspecification) | **DELETE** /test/streaming-spec/by-id | Delete a streaming specification |
 | [**GetStreamingCapabilities**](StreamingSpecificationsApi.md#getstreamingcapabilities) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits |
+| [**GetStreamingPreparation**](StreamingSpecificationsApi.md#getstreamingpreparation) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key |
 | [**GetStreamingSpecification**](StreamingSpecificationsApi.md#getstreamingspecification) | **GET** /test/streaming-spec/by-id | Get a streaming specification |
 | [**GetStreamingSpecificationRun**](StreamingSpecificationsApi.md#getstreamingspecificationrun) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence |
 | [**GetStreamingSpecificationRunTranscript**](StreamingSpecificationsApi.md#getstreamingspecificationruntranscript) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript |
+| [**ListStreamingPreparations**](StreamingSpecificationsApi.md#liststreamingpreparations) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations |
 | [**ListStreamingSpecificationRuns**](StreamingSpecificationsApi.md#liststreamingspecificationruns) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification |
 | [**ListStreamingSpecifications**](StreamingSpecificationsApi.md#liststreamingspecifications) | **GET** /test/streaming-spec/page | List streaming specifications |
 | [**PreviewStreamingSpecificationRecovery**](StreamingSpecificationsApi.md#previewstreamingspecificationrecovery) | **POST** /test/streaming-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a Streaming specification version |
@@ -160,6 +162,43 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+<a id="getstreamingpreparation"></a>
+# **GetStreamingPreparation**
+> PreparationSummary GetStreamingPreparation (string varRef)
+
+Read eligible STREAMING Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **varRef** | **string** |  |  |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 <a id="getstreamingspecification"></a>
 # **GetStreamingSpecification**
 > StreamingSpecification GetStreamingSpecification (Guid specId)
@@ -263,6 +302,45 @@ Page a bounded streaming run transcript
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | One transcript page. Payload exclusions and redactions are already applied. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
+<a id="liststreamingpreparations"></a>
+# **ListStreamingPreparations**
+> PreparationPage ListStreamingPreparations (int page = null, int size = null, string search = null)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+
+### Parameters
+
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| **page** | **int** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **int** |  | [optional] [default to 20] |
+| **search** | **string** | Case-insensitive server-side search within the active project. | [optional]  |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible STREAMING preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)

@@ -7,8 +7,10 @@ Method | HTTP request | Description
 [**CaptureSoapSpecificationAttachmentVisualDiff**](SOAPSpecificationsAPI.md#CaptureSoapSpecificationAttachmentVisualDiff) | **Post** /test/soap-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed SOAP attachment assertion
 [**CreateSoapSpecification**](SOAPSpecificationsAPI.md#CreateSoapSpecification) | **Post** /test/soap-spec/create | Create a SOAP specification
 [**DeleteSoapSpecification**](SOAPSpecificationsAPI.md#DeleteSoapSpecification) | **Delete** /test/soap-spec/by-id | Delete a SOAP specification
+[**GetSoapPreparation**](SOAPSpecificationsAPI.md#GetSoapPreparation) | **Get** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key
 [**GetSoapSpecification**](SOAPSpecificationsAPI.md#GetSoapSpecification) | **Get** /test/soap-spec/by-id | Get a SOAP specification
 [**GetSoapSpecificationRun**](SOAPSpecificationsAPI.md#GetSoapSpecificationRun) | **Get** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence
+[**ListSoapPreparations**](SOAPSpecificationsAPI.md#ListSoapPreparations) | **Get** /test/soap-spec/preparations | List eligible Prepare requests and output declarations
 [**ListSoapSpecificationRuns**](SOAPSpecificationsAPI.md#ListSoapSpecificationRuns) | **Get** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs
 [**ListSoapSpecifications**](SOAPSpecificationsAPI.md#ListSoapSpecifications) | **Get** /test/soap-spec/page | List SOAP specifications
 [**PreviewSoapSpecificationRecovery**](SOAPSpecificationsAPI.md#PreviewSoapSpecificationRecovery) | **Post** /test/soap-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a SOAP specification version
@@ -225,6 +227,76 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## GetSoapPreparation
+
+> PreparationSummary GetSoapPreparation(ctx, ref).Execute()
+
+Read eligible SOAP Prepare request metadata by stable key
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	ref := "ref_example" // string |
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SOAPSpecificationsAPI.GetSoapPreparation(context.Background(), ref).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SOAPSpecificationsAPI.GetSoapPreparation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetSoapPreparation`: PreparationSummary
+	fmt.Fprintf(os.Stdout, "Response from `SOAPSpecificationsAPI.GetSoapPreparation`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ref** | **string** |  |
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetSoapPreparationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## GetSoapSpecification
 
 > Specification GetSoapSpecification(ctx).SpecId(specId).Execute()
@@ -342,6 +414,76 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**SpecificationRun**](SpecificationRun.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListSoapPreparations
+
+> PreparationPage ListSoapPreparations(ctx).Page(page).Size(size).Search(search).Execute()
+
+List eligible Prepare requests and output declarations
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/SpecTestEngine/SpecTestEngine-SDK/clients/go"
+)
+
+func main() {
+	page := int32(56) // int32 | Zero-based page index. (optional) (default to 0)
+	size := int32(56) // int32 |  (optional) (default to 20)
+	search := "search_example" // string | Case-insensitive server-side search within the active project. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.SOAPSpecificationsAPI.ListSoapPreparations(context.Background()).Page(page).Size(size).Search(search).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SOAPSpecificationsAPI.ListSoapPreparations``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListSoapPreparations`: PreparationPage
+	fmt.Fprintf(os.Stdout, "Response from `SOAPSpecificationsAPI.ListSoapPreparations`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListSoapPreparationsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32** | Zero-based page index. | [default to 0]
+ **size** | **int32** |  | [default to 20]
+ **search** | **string** | Case-insensitive server-side search within the active project. |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
 
 ### Authorization
 

@@ -9,6 +9,11 @@ info:
     SpecTestEngine test assets. The API is project-scoped: the bearer token selects the
     company and active project, and clients must not send internal owner identifiers.
 
+    Execution and assertion results retain the exact strings `----------------PASS-------------------`,
+    `----------------FAIL-------------------`, and `---------------ERROR-------------------` in raw JSON.
+    Product UI renders these as Passed, Failed, and Execution error. Target response fields and
+    lifecycle states (such as QUEUED, RUNNING, CANCELLED) retain their own values.
+
     Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive
     integrations use Authorization Code with PKCE; CI and server-to-server integrations use
     Client Credentials. A SpecTestEngine company administrator registers the integration and
@@ -27,7 +32,7 @@ info:
     name: Apache License 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
   title: SpecTestEngine Public API
-  version: 1.0.0-alpha.7
+  version: 1.0.0-alpha.10
 externalDocs:
   description: SpecTestEngine product documentation
   url: https://ste.software/docs/sdk
@@ -515,6 +520,374 @@ paths:
       x-accepts:
       - application/json
       - image/png
+  /test/rest-spec/preparations:
+    get:
+      description: Same-company paginated metadata only. Values and full specification
+        definitions are never included. The selected protocol and stableKey are used
+        as preparation.protocol and preparation.ref in the consumer DSL. Any native
+        protocol can prepare any other protocol.
+      operationId: listRestPreparations
+      parameters:
+      - description: Zero-based page index.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: Case-insensitive server-side search within the active project.
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          maxLength: 512
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationPage"
+          description: A page of eligible REST preparation sources.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: List eligible Prepare requests and output declarations
+      tags:
+      - REST specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/rest-spec/preparations/by-ref/{ref}:
+    get:
+      description: "Same-company current-read metadata only; no definition or runtime\
+        \ values. Missing, unmarked or inaccessible sources cannot be selected."
+      operationId: getRestPreparation
+      parameters:
+      - explode: false
+        in: path
+        name: ref
+        required: true
+        schema:
+          maxLength: 128
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationSummary"
+          description: The eligible source and its declared output variables.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Read eligible REST Prepare request metadata by stable key
+      tags:
+      - REST specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/soap-spec/preparations:
+    get:
+      description: Same-company paginated metadata only. Values and full specification
+        definitions are never included. The selected protocol and stableKey are used
+        as preparation.protocol and preparation.ref in the consumer DSL. Any native
+        protocol can prepare any other protocol.
+      operationId: listSoapPreparations
+      parameters:
+      - description: Zero-based page index.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: Case-insensitive server-side search within the active project.
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          maxLength: 512
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationPage"
+          description: A page of eligible SOAP preparation sources.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: List eligible Prepare requests and output declarations
+      tags:
+      - SOAP specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/soap-spec/preparations/by-ref/{ref}:
+    get:
+      description: "Same-company current-read metadata only; no definition or runtime\
+        \ values. Missing, unmarked or inaccessible sources cannot be selected."
+      operationId: getSoapPreparation
+      parameters:
+      - explode: false
+        in: path
+        name: ref
+        required: true
+        schema:
+          maxLength: 128
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationSummary"
+          description: The eligible source and its declared output variables.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Read eligible SOAP Prepare request metadata by stable key
+      tags:
+      - SOAP specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/graphql-spec/preparations:
+    get:
+      description: Same-company paginated metadata only. Values and full specification
+        definitions are never included. The selected protocol and stableKey are used
+        as preparation.protocol and preparation.ref in the consumer DSL. Any native
+        protocol can prepare any other protocol.
+      operationId: listGraphqlPreparations
+      parameters:
+      - description: Zero-based page index.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: Case-insensitive server-side search within the active project.
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          maxLength: 512
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationPage"
+          description: A page of eligible GRAPHQL preparation sources.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: List eligible Prepare requests and output declarations
+      tags:
+      - GraphQL specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/graphql-spec/preparations/by-ref/{ref}:
+    get:
+      description: "Same-company current-read metadata only; no definition or runtime\
+        \ values. Missing, unmarked or inaccessible sources cannot be selected."
+      operationId: getGraphqlPreparation
+      parameters:
+      - explode: false
+        in: path
+        name: ref
+        required: true
+        schema:
+          maxLength: 128
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationSummary"
+          description: The eligible source and its declared output variables.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Read eligible GRAPHQL Prepare request metadata by stable key
+      tags:
+      - GraphQL specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/streaming-spec/preparations:
+    get:
+      description: Same-company paginated metadata only. Values and full specification
+        definitions are never included. The selected protocol and stableKey are used
+        as preparation.protocol and preparation.ref in the consumer DSL. Any native
+        protocol can prepare any other protocol.
+      operationId: listStreamingPreparations
+      parameters:
+      - description: Zero-based page index.
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: Case-insensitive server-side search within the active project.
+        explode: true
+        in: query
+        name: search
+        required: false
+        schema:
+          maxLength: 512
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationPage"
+          description: A page of eligible STREAMING preparation sources.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: List eligible Prepare requests and output declarations
+      tags:
+      - Streaming specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
+  /test/streaming-spec/preparations/by-ref/{ref}:
+    get:
+      description: "Same-company current-read metadata only; no definition or runtime\
+        \ values. Missing, unmarked or inaccessible sources cannot be selected."
+      operationId: getStreamingPreparation
+      parameters:
+      - explode: false
+        in: path
+        name: ref
+        required: true
+        schema:
+          maxLength: 128
+          minLength: 1
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreparationSummary"
+          description: The eligible source and its declared output variables.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: The request failed.
+      summary: Read eligible STREAMING Prepare request metadata by stable key
+      tags:
+      - Streaming specifications
+      x-sdk-stability: stable
+      x-idempotent: true
+      x-accepts:
+      - application/json
   /test/rest-spec/page:
     get:
       operationId: listRestSpecifications
@@ -5518,7 +5891,7 @@ paths:
         name: status
         required: false
         schema:
-          $ref: "#/components/schemas/RunStatus"
+          $ref: "#/components/schemas/RunStatusCode"
         style: form
       - explode: true
         in: query
@@ -6491,8 +6864,8 @@ components:
       type: string
     BrowserVisualComparisonStatus:
       enum:
-      - PASSED
-      - FAILED
+      - '----------------PASS-------------------'
+      - '----------------FAIL-------------------'
       - BASELINE_MISSING
       - REVIEW_REQUIRED
       type: string
@@ -7051,7 +7424,7 @@ components:
         message: message
         stopPolicy: STOP_RUN
         appliedBaselineRevisionId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        status: PASSED
+        status: '----------------PASS-------------------'
       properties:
         comparisonId:
           format: uuid
@@ -7942,9 +8315,9 @@ components:
       type: string
     StreamingRunOutcome:
       enum:
-      - PASS
-      - FAIL
-      - ERROR
+      - '----------------PASS-------------------'
+      - '----------------FAIL-------------------'
+      - '---------------ERROR-------------------'
       - CANCELLED
       type: string
     StreamingDraftValidation:
@@ -8494,7 +8867,9 @@ components:
       - totalElements
       - totalPages
       type: object
-    RunStatus:
+    RunStatusCode:
+      description: "Query and notification configuration code, independent of an execution\
+        \ result verdict."
       enum:
       - QUEUED
       - RUNNING
@@ -8502,6 +8877,16 @@ components:
       - RECOVERED
       - FAIL
       - ERROR
+      - SKIPPED
+      type: string
+    RunStatus:
+      enum:
+      - QUEUED
+      - RUNNING
+      - '----------------PASS-------------------'
+      - RECOVERED
+      - '----------------FAIL-------------------'
+      - '---------------ERROR-------------------'
       - SKIPPED
       type: string
     ProblemDetails:
@@ -8648,6 +9033,247 @@ components:
         stableKey: stableKey
         id: 0197f0ab-42e7-7a31-8a9c-591a8ee54c12
         updatedAt: 2000-01-23T04:56:07.000+00:00
+    PreparationOutput:
+      example:
+        path: path
+        type: string
+        required: true
+      properties:
+        path:
+          description: "JSON Pointer into the native response surface (REST body,\
+            \ GraphQL envelope, namespace-local SOAP projection, or Streaming events)"
+          maxLength: 2048
+          type: string
+        type:
+          enum:
+          - string
+          - number
+          - boolean
+          - object
+          - array
+          nullable: true
+          type: string
+        required:
+          default: true
+          type: boolean
+      required:
+      - path
+      - required
+      type: object
+    PreparationSummary:
+      example:
+        outputs:
+          key:
+            path: path
+            type: string
+            required: true
+        protocol: REST
+        name: name
+        stableKey: stableKey
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+        stableKey:
+          type: string
+        name:
+          type: string
+        protocol:
+          enum:
+          - REST
+          - SOAP
+          - GRAPHQL
+          - STREAMING
+          type: string
+        outputs:
+          additionalProperties:
+            $ref: "#/components/schemas/PreparationOutput"
+          maxProperties: 64
+          type: object
+      required:
+      - id
+      - name
+      - outputs
+      - protocol
+      - stableKey
+      type: object
+    PreparationPage:
+      example:
+        size: 6
+        last: true
+        totalPages: 5
+        page: 0
+        items:
+        - outputs:
+            key:
+              path: path
+              type: string
+              required: true
+          protocol: REST
+          name: name
+          stableKey: stableKey
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - outputs:
+            key:
+              path: path
+              type: string
+              required: true
+          protocol: REST
+          name: name
+          stableKey: stableKey
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        first: true
+        totalElements: 1
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/PreparationSummary"
+          type: array
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          format: int64
+          type: integer
+        totalPages:
+          type: integer
+        first:
+          type: boolean
+        last:
+          type: boolean
+      required:
+      - first
+      - items
+      - last
+      - page
+      - size
+      - totalElements
+      - totalPages
+      type: object
+    BrowserAuthGuard:
+      additionalProperties: false
+      properties:
+        variable:
+          pattern: "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
+          type: string
+        source:
+          enum:
+          - REQUEST_BODY
+          - REQUEST_HEADER
+          - REQUEST_COOKIE
+          type: string
+        path:
+          maxLength: 256
+          minLength: 1
+          type: string
+        prefix:
+          enum:
+          - ""
+          - 'Bearer '
+          type: string
+      required:
+      - path
+      - prefix
+      - source
+      - variable
+      type: object
+    BrowserAuthSource:
+      additionalProperties: false
+      example:
+        path: path
+        scopeOrigin: https://openapi-generator.tech
+        updateFrom: ""
+        name: name
+        source: RESPONSE_BODY
+      properties:
+        name:
+          pattern: "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
+          type: string
+        source:
+          enum:
+          - RESPONSE_BODY
+          - RESPONSE_HEADER
+          - RESPONSE_COOKIE
+          type: string
+        path:
+          maxLength: 256
+          minLength: 1
+          type: string
+        scopeOrigin:
+          description: "Exact HTTP(S) origin without credentials, path, query or fragment."
+          format: uri
+          type: string
+        updateFrom:
+          allOf:
+          - $ref: "#/components/schemas/BrowserAuthGuard"
+          nullable: true
+      required:
+      - name
+      - path
+      - scopeOrigin
+      - source
+      type: object
+    BrowserAuthTransfer:
+      additionalProperties: false
+      description: Metadata only. Initial sources are Action-bound; renewal sources
+        are run-bound and require an exact current-run private input. No token values
+        or public initial-variable seeds are accepted. Resolve Recorder ambiguity
+        before saving.
+      example:
+        choiceId: choiceId
+        candidates: []
+        sources:
+        - path: path
+          scopeOrigin: https://openapi-generator.tech
+          updateFrom: ""
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: https://openapi-generator.tech
+          updateFrom: ""
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: https://openapi-generator.tech
+          updateFrom: ""
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: https://openapi-generator.tech
+          updateFrom: ""
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: https://openapi-generator.tech
+          updateFrom: ""
+          name: name
+          source: RESPONSE_BODY
+        authorizationVariable: authorizationVariable
+        optionalRefresh: false
+      properties:
+        sources:
+          items:
+            $ref: "#/components/schemas/BrowserAuthSource"
+          maxItems: 32
+          type: array
+        authorizationVariable:
+          nullable: true
+          pattern: "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
+          type: string
+        candidates:
+          items: {}
+          maxItems: 0
+          type: array
+        optionalRefresh:
+          default: false
+          type: boolean
+        choiceId:
+          nullable: true
+          pattern: "^[A-Za-z0-9_]{1,64}$"
+          type: string
+      type: object
     SpecificationPage:
       allOf:
       - $ref: "#/components/schemas/PageMetadata"
@@ -8925,6 +9551,7 @@ components:
       - HEADER_ASSERTION
       - BODY_ASSERTION
       - ATTACHMENT_ASSERTION
+      - JWT_ASSERTION
       - SOAP_REQUEST
       - SOAP_ASSERTION
       - GRAPHQL_OPERATION
@@ -9319,54 +9946,210 @@ components:
       - DRAG
       - SCROLL
       - FILL
+      - PASTE_ADDRESS_BAR
       - PRESS
       - SELECT_OPTION
       - EXTRACT_TEXT
       type: string
     BrowserNetworkExpectation:
-      description: Approved expectations and recorded candidates are separate. Body/path
-        values remain typed JSON; exclusions affect network validation only.
+      additionalProperties: false
+      description: "Local checks over observed browser traffic, never a second HTTP\
+        \ send. Candidates are not executable checks. Recorded credentials are rejected;\
+        \ current-run bindings are private and optional. Body and headers constrain\
+        \ the request; expectedBody and expectedHeaders constrain the response. Explicit\
+        \ empty response-header objects are checks. Unsupported OpenAPI/schema/attachment\
+        \ assertions are rejected, not processed by Browser."
       example:
-        method: method
-        expectedContentType: expectedContentType
-        expectedStatusCode: 5
+        skipExactBodyCheck: true
+        expectedHeaderPaths:
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
         candidateHeaders:
           key: candidateHeaders
-        candidateBodyPaths:
-          key: ""
         excludedBodyFields:
         - excludedBodyFields
         - excludedBodyFields
-        expectedBodyPaths:
-        - key: ""
-        - key: ""
+        occurrence: 212
         recordedCallId: 5
         recordedUrl: recordedUrl
         body: ""
         enabled: true
-        url: url
         expectedHeaders:
           key: expectedHeaders
         candidateBody: ""
+        excludeAllOtherHeaderFields: true
+        candidateFields:
+          responseBodyComplete: true
+          requestHeaders:
+          - requestHeaders
+          - requestHeaders
+          - requestHeaders
+          - requestHeaders
+          - requestHeaders
+          responseBody:
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          requestBody:
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          - path: path
+            type: STRING
+          requestHeadersComplete: true
+          requestBodyComplete: true
+        stream:
+          binary: false
+          eventName: eventName
+          transport: WEBSOCKET
+          failed: false
+          direction: INBOUND
+        runtimeBindings:
+        - path: path
+          scopeOrigin: scopeOrigin
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: scopeOrigin
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: scopeOrigin
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: scopeOrigin
+          name: name
+          source: RESPONSE_BODY
+        - path: path
+          scopeOrigin: scopeOrigin
+          name: name
+          source: RESPONSE_BODY
+        candidateStatusCode: 2
+        policy: IGNORE
+        headers:
+          key: headers
+        method: method
+        expectedContentType: expectedContentType
+        expectedStatusCode: 5
+        excludeAllOtherBodyFields: true
+        candidateBodyPaths:
+          key: ""
+        expectedBodyPaths:
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        url: url
+        authTransfer:
+          choiceId: choiceId
+          candidates: []
+          sources:
+          - path: path
+            scopeOrigin: https://openapi-generator.tech
+            updateFrom: ""
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: https://openapi-generator.tech
+            updateFrom: ""
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: https://openapi-generator.tech
+            updateFrom: ""
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: https://openapi-generator.tech
+            updateFrom: ""
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: https://openapi-generator.tech
+            updateFrom: ""
+            name: name
+            source: RESPONSE_BODY
+          authorizationVariable: authorizationVariable
+          optionalRefresh: false
+        requestBodyPaths:
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
+        - path: path
+          pattern: pattern
+          value: ""
         excludedHeaderFields:
         - excludedHeaderFields
         - excludedHeaderFields
-        excludeAllOtherHeaderFields: true
-        candidateStatusCode: 2
+        expectedBody: ""
         candidateContentType: candidateContentType
       properties:
         enabled:
           type: boolean
+        policy:
+          description: Per-Event policy. IGNORE keeps automatic source capture active
+            without requiring refresh presence.
+          enum:
+          - IGNORE
+          - PRESENCE
+          - STRICT
+          type: string
         recordedCallId:
           type: integer
         recordedUrl:
-          maxLength: 2000
+          maxLength: 32768
           type: string
         method:
           maxLength: 16
           type: string
         url:
-          maxLength: 2000
+          maxLength: 32768
           type: string
         expectedStatusCode:
           type: integer
@@ -9396,9 +10179,16 @@ components:
         candidateBody: {}
         expectedBodyPaths:
           items:
-            additionalProperties: true
-            type: object
+            $ref: "#/components/schemas/BrowserPathExpectation"
+          maxItems: 250
           type: array
+        expectedHeaderPaths:
+          items:
+            $ref: "#/components/schemas/BrowserPathExpectation"
+          maxItems: 250
+          type: array
+        stream:
+          $ref: "#/components/schemas/BrowserStreamMessage"
         candidateBodyPaths:
           additionalProperties: true
           type: object
@@ -9406,6 +10196,302 @@ components:
           items:
             type: string
           type: array
+        headers:
+          additionalProperties:
+            type: string
+          description: "Expected request headers; values may use ${runtime.name} from\
+            \ a prior declared current-run response source."
+          type: object
+        expectedBody:
+          description: "Complete expected response JSON value, including explicit\
+            \ null; absence disables this criterion. Partial or unavailable captured\
+            \ bodies cannot pass."
+        skipExactBodyCheck:
+          type: boolean
+        excludeAllOtherBodyFields:
+          description: Include-only response-object comparison. Array include-only
+            is unsupported in Browser.
+          type: boolean
+        occurrence:
+          description: Select this request-start occurrence within its Action and
+            method/URL matcher. Required by guided value-transfer relations; old recorded
+            call IDs are not replay identity.
+          maximum: 300
+          minimum: 1
+          type: integer
+        requestBodyPaths:
+          description: Focused outgoing Body checks. A complete runtime placeholder
+            preserves the source JSON type; prefix/suffix text requires a string source.
+          items:
+            $ref: "#/components/schemas/BrowserPathExpectation"
+          maxItems: 250
+          type: array
+        candidateFields:
+          $ref: "#/components/schemas/BrowserNetworkFieldInventory"
+        authTransfer:
+          $ref: "#/components/schemas/BrowserAuthTransfer"
+        runtimeBindings:
+          description: "Fresh private response sources, active independently of response\
+            \ assertion policy. Never contains a token value. Resume retains the same\
+            \ execution; full Rerun clears it."
+          items:
+            $ref: "#/components/schemas/BrowserNetworkRuntimeBinding"
+          maxItems: 32
+          type: array
+      type: object
+    BrowserPathExpectation:
+      additionalProperties: false
+      description: "Exactly one of value or pattern is required. Values retain JSON\
+        \ types, including explicit null. Pattern is a whole-string glob with at most\
+        \ 32 stars; only a star or backslash can be escaped. Runtime templates are\
+        \ not accepted in patterns."
+      example:
+        path: path
+        pattern: pattern
+        value: ""
+      properties:
+        path:
+          maxLength: 2048
+          type: string
+        value:
+          description: "Exact JSON value, including null. Absence selects pattern\
+            \ matching instead."
+        pattern:
+          maxLength: 512
+          type: string
+      required:
+      - path
+      type: object
+    BrowserStreamMessage:
+      additionalProperties: false
+      description: Observed stream message metadata. SSE only supports INBOUND. This
+        never sends another request.
+      example:
+        binary: false
+        eventName: eventName
+        transport: WEBSOCKET
+        failed: false
+        direction: INBOUND
+      properties:
+        transport:
+          enum:
+          - WEBSOCKET
+          - SSE
+          type: string
+        direction:
+          enum:
+          - INBOUND
+          - OUTBOUND
+          type: string
+        eventName:
+          maxLength: 128
+          type: string
+        binary:
+          default: false
+          type: boolean
+        failed:
+          default: false
+          type: boolean
+      required:
+      - direction
+      - transport
+      type: object
+    BrowserTargetIdentity:
+      additionalProperties: false
+      example:
+        role: button
+        name: name
+      properties:
+        role:
+          enum:
+          - button
+          - link
+          - textbox
+          - searchbox
+          - combobox
+          - listbox
+          - checkbox
+          - radio
+          - switch
+          - menuitem
+          - menuitemcheckbox
+          - menuitemradio
+          - option
+          - slider
+          - spinbutton
+          - tab
+          - treeitem
+          - listitem
+          - group
+          - img
+          type: string
+        name:
+          maxLength: 160
+          minLength: 1
+          type: string
+      required:
+      - name
+      - role
+      type: object
+    BrowserTargetMatch:
+      additionalProperties: false
+      description: Explicit selector-first role/name policy. Only DRAG accepts a destination
+        identity. Sensitive actions cannot use this policy.
+      example:
+        role: button
+        name: name
+        destination:
+          role: button
+          name: name
+      properties:
+        role:
+          enum:
+          - button
+          - link
+          - textbox
+          - searchbox
+          - combobox
+          - listbox
+          - checkbox
+          - radio
+          - switch
+          - menuitem
+          - menuitemcheckbox
+          - menuitemradio
+          - option
+          - slider
+          - spinbutton
+          - tab
+          - treeitem
+          - listitem
+          - group
+          - img
+          type: string
+        name:
+          maxLength: 160
+          minLength: 1
+          type: string
+        destination:
+          $ref: "#/components/schemas/BrowserTargetIdentity"
+      required:
+      - name
+      - role
+      type: object
+    BrowserNetworkFieldInventory:
+      example:
+        responseBodyComplete: true
+        requestHeaders:
+        - requestHeaders
+        - requestHeaders
+        - requestHeaders
+        - requestHeaders
+        - requestHeaders
+        responseBody:
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        requestBody:
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        - path: path
+          type: STRING
+        requestHeadersComplete: true
+        requestBodyComplete: true
+      properties:
+        requestHeaders:
+          items:
+            maxLength: 256
+            type: string
+          maxItems: 128
+          type: array
+        requestBody:
+          items:
+            $ref: "#/components/schemas/BrowserNetworkField"
+          maxItems: 250
+          type: array
+        responseBody:
+          items:
+            $ref: "#/components/schemas/BrowserNetworkField"
+          maxItems: 250
+          type: array
+        requestHeadersComplete:
+          type: boolean
+        requestBodyComplete:
+          type: boolean
+        responseBodyComplete:
+          type: boolean
+      required:
+      - requestBody
+      - requestBodyComplete
+      - requestHeaders
+      - requestHeadersComplete
+      - responseBody
+      - responseBodyComplete
+      type: object
+    BrowserNetworkField:
+      example:
+        path: path
+        type: STRING
+      properties:
+        path:
+          maxLength: 256
+          type: string
+        type:
+          enum:
+          - STRING
+          - NUMBER
+          - BOOLEAN
+          - "NULL"
+          - OBJECT
+          - ARRAY
+          type: string
+      required:
+      - path
+      - type
+      type: object
+    BrowserNetworkRuntimeBinding:
+      additionalProperties: false
+      example:
+        path: path
+        scopeOrigin: scopeOrigin
+        name: name
+        source: RESPONSE_BODY
+      properties:
+        name:
+          pattern: "^[A-Za-z_][A-Za-z0-9_]{0,63}$"
+          type: string
+        source:
+          enum:
+          - RESPONSE_BODY
+          - RESPONSE_HEADER
+          type: string
+        path:
+          maxLength: 256
+          minLength: 1
+          type: string
+        scopeOrigin:
+          description: "Optional explicit HTTP(S) origin for later matching calls;\
+            \ no credentials, path, query or fragment. Defaults to the source call\
+            \ origin."
+          maxLength: 2048
+          type: string
+      required:
+      - name
+      - path
+      - source
       type: object
     BrowserActionInput:
       description: One persisted semantic Browser action. Replay tries only the saved
@@ -9420,6 +10506,8 @@ components:
         selector:
           maxLength: 1000
           type: string
+        targetMatch:
+          $ref: "#/components/schemas/BrowserTargetMatch"
         selectorCandidates:
           items:
             maxLength: 1000
@@ -9461,6 +10549,8 @@ components:
           enum:
           - ELEMENT_TEXT
           - TEXT_BLOCK
+          - LINK_URL
+          - HIGHLIGHT_URL
           type: string
         expectedPageUrl:
           maxLength: 2000
@@ -9468,8 +10558,8 @@ components:
         expectedPageUrlPolicy:
           enum:
           - IGNORE
-          - CORE
           - EXACT
+          - MATCH
           type: string
         expectedPageTitle:
           maxLength: 1000
@@ -9478,7 +10568,7 @@ components:
           enum:
           - IGNORE
           - EXACT
-          - CONTAINS
+          - MATCH
           type: string
         expectedNetworkPolicy:
           enum:
@@ -9685,6 +10775,12 @@ components:
           stepId: 0197f0ab-42e7-7a31-8a9c-591a8ee54c12
           pattern: pattern
           expectedPageTitle: expectedPageTitle
+          targetMatch:
+            role: button
+            name: name
+            destination:
+              role: button
+              name: name
           selectorCandidates:
           - selectorCandidates
           - selectorCandidates
@@ -9711,59 +10807,343 @@ components:
           expectedPageTitlePolicy: IGNORE
           tabAlias: tabAlias
           expectedNetworkCalls:
-          - method: method
-            expectedContentType: expectedContentType
-            expectedStatusCode: 5
+          - skipExactBodyCheck: true
+            expectedHeaderPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             candidateHeaders:
               key: candidateHeaders
-            candidateBodyPaths:
-              key: ""
             excludedBodyFields:
             - excludedBodyFields
             - excludedBodyFields
-            expectedBodyPaths:
-            - key: ""
-            - key: ""
+            occurrence: 212
             recordedCallId: 5
             recordedUrl: recordedUrl
             body: ""
             enabled: true
-            url: url
             expectedHeaders:
               key: expectedHeaders
             candidateBody: ""
+            excludeAllOtherHeaderFields: true
+            candidateFields:
+              responseBodyComplete: true
+              requestHeaders:
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              responseBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestHeadersComplete: true
+              requestBodyComplete: true
+            stream:
+              binary: false
+              eventName: eventName
+              transport: WEBSOCKET
+              failed: false
+              direction: INBOUND
+            runtimeBindings:
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            candidateStatusCode: 2
+            policy: IGNORE
+            headers:
+              key: headers
+            method: method
+            expectedContentType: expectedContentType
+            expectedStatusCode: 5
+            excludeAllOtherBodyFields: true
+            candidateBodyPaths:
+              key: ""
+            expectedBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            url: url
+            authTransfer:
+              choiceId: choiceId
+              candidates: []
+              sources:
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              authorizationVariable: authorizationVariable
+              optionalRefresh: false
+            requestBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             excludedHeaderFields:
             - excludedHeaderFields
             - excludedHeaderFields
-            excludeAllOtherHeaderFields: true
-            candidateStatusCode: 2
+            expectedBody: ""
             candidateContentType: candidateContentType
-          - method: method
-            expectedContentType: expectedContentType
-            expectedStatusCode: 5
+          - skipExactBodyCheck: true
+            expectedHeaderPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             candidateHeaders:
               key: candidateHeaders
-            candidateBodyPaths:
-              key: ""
             excludedBodyFields:
             - excludedBodyFields
             - excludedBodyFields
-            expectedBodyPaths:
-            - key: ""
-            - key: ""
+            occurrence: 212
             recordedCallId: 5
             recordedUrl: recordedUrl
             body: ""
             enabled: true
-            url: url
             expectedHeaders:
               key: expectedHeaders
             candidateBody: ""
+            excludeAllOtherHeaderFields: true
+            candidateFields:
+              responseBodyComplete: true
+              requestHeaders:
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              responseBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestHeadersComplete: true
+              requestBodyComplete: true
+            stream:
+              binary: false
+              eventName: eventName
+              transport: WEBSOCKET
+              failed: false
+              direction: INBOUND
+            runtimeBindings:
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            candidateStatusCode: 2
+            policy: IGNORE
+            headers:
+              key: headers
+            method: method
+            expectedContentType: expectedContentType
+            expectedStatusCode: 5
+            excludeAllOtherBodyFields: true
+            candidateBodyPaths:
+              key: ""
+            expectedBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            url: url
+            authTransfer:
+              choiceId: choiceId
+              candidates: []
+              sources:
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              authorizationVariable: authorizationVariable
+              optionalRefresh: false
+            requestBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             excludedHeaderFields:
             - excludedHeaderFields
             - excludedHeaderFields
-            excludeAllOtherHeaderFields: true
-            candidateStatusCode: 2
+            expectedBody: ""
             candidateContentType: candidateContentType
         - specType: ""
           stepType: API_SPEC
@@ -9771,6 +11151,12 @@ components:
           stepId: 0197f0ab-42e7-7a31-8a9c-591a8ee54c12
           pattern: pattern
           expectedPageTitle: expectedPageTitle
+          targetMatch:
+            role: button
+            name: name
+            destination:
+              role: button
+              name: name
           selectorCandidates:
           - selectorCandidates
           - selectorCandidates
@@ -9797,59 +11183,343 @@ components:
           expectedPageTitlePolicy: IGNORE
           tabAlias: tabAlias
           expectedNetworkCalls:
-          - method: method
-            expectedContentType: expectedContentType
-            expectedStatusCode: 5
+          - skipExactBodyCheck: true
+            expectedHeaderPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             candidateHeaders:
               key: candidateHeaders
-            candidateBodyPaths:
-              key: ""
             excludedBodyFields:
             - excludedBodyFields
             - excludedBodyFields
-            expectedBodyPaths:
-            - key: ""
-            - key: ""
+            occurrence: 212
             recordedCallId: 5
             recordedUrl: recordedUrl
             body: ""
             enabled: true
-            url: url
             expectedHeaders:
               key: expectedHeaders
             candidateBody: ""
+            excludeAllOtherHeaderFields: true
+            candidateFields:
+              responseBodyComplete: true
+              requestHeaders:
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              responseBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestHeadersComplete: true
+              requestBodyComplete: true
+            stream:
+              binary: false
+              eventName: eventName
+              transport: WEBSOCKET
+              failed: false
+              direction: INBOUND
+            runtimeBindings:
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            candidateStatusCode: 2
+            policy: IGNORE
+            headers:
+              key: headers
+            method: method
+            expectedContentType: expectedContentType
+            expectedStatusCode: 5
+            excludeAllOtherBodyFields: true
+            candidateBodyPaths:
+              key: ""
+            expectedBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            url: url
+            authTransfer:
+              choiceId: choiceId
+              candidates: []
+              sources:
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              authorizationVariable: authorizationVariable
+              optionalRefresh: false
+            requestBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             excludedHeaderFields:
             - excludedHeaderFields
             - excludedHeaderFields
-            excludeAllOtherHeaderFields: true
-            candidateStatusCode: 2
+            expectedBody: ""
             candidateContentType: candidateContentType
-          - method: method
-            expectedContentType: expectedContentType
-            expectedStatusCode: 5
+          - skipExactBodyCheck: true
+            expectedHeaderPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             candidateHeaders:
               key: candidateHeaders
-            candidateBodyPaths:
-              key: ""
             excludedBodyFields:
             - excludedBodyFields
             - excludedBodyFields
-            expectedBodyPaths:
-            - key: ""
-            - key: ""
+            occurrence: 212
             recordedCallId: 5
             recordedUrl: recordedUrl
             body: ""
             enabled: true
-            url: url
             expectedHeaders:
               key: expectedHeaders
             candidateBody: ""
+            excludeAllOtherHeaderFields: true
+            candidateFields:
+              responseBodyComplete: true
+              requestHeaders:
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              - requestHeaders
+              responseBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestBody:
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              - path: path
+                type: STRING
+              requestHeadersComplete: true
+              requestBodyComplete: true
+            stream:
+              binary: false
+              eventName: eventName
+              transport: WEBSOCKET
+              failed: false
+              direction: INBOUND
+            runtimeBindings:
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: scopeOrigin
+              name: name
+              source: RESPONSE_BODY
+            candidateStatusCode: 2
+            policy: IGNORE
+            headers:
+              key: headers
+            method: method
+            expectedContentType: expectedContentType
+            expectedStatusCode: 5
+            excludeAllOtherBodyFields: true
+            candidateBodyPaths:
+              key: ""
+            expectedBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            url: url
+            authTransfer:
+              choiceId: choiceId
+              candidates: []
+              sources:
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              - path: path
+                scopeOrigin: https://openapi-generator.tech
+                updateFrom: ""
+                name: name
+                source: RESPONSE_BODY
+              authorizationVariable: authorizationVariable
+              optionalRefresh: false
+            requestBodyPaths:
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
+            - path: path
+              pattern: pattern
+              value: ""
             excludedHeaderFields:
             - excludedHeaderFields
             - excludedHeaderFields
-            excludeAllOtherHeaderFields: true
-            candidateStatusCode: 2
+            expectedBody: ""
             candidateContentType: candidateContentType
       properties:
         flowId:
@@ -9904,6 +11574,12 @@ components:
         stepId: 0197f0ab-42e7-7a31-8a9c-591a8ee54c12
         pattern: pattern
         expectedPageTitle: expectedPageTitle
+        targetMatch:
+          role: button
+          name: name
+          destination:
+            role: button
+            name: name
         selectorCandidates:
         - selectorCandidates
         - selectorCandidates
@@ -9930,59 +11606,343 @@ components:
         expectedPageTitlePolicy: IGNORE
         tabAlias: tabAlias
         expectedNetworkCalls:
-        - method: method
-          expectedContentType: expectedContentType
-          expectedStatusCode: 5
+        - skipExactBodyCheck: true
+          expectedHeaderPaths:
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
           candidateHeaders:
             key: candidateHeaders
-          candidateBodyPaths:
-            key: ""
           excludedBodyFields:
           - excludedBodyFields
           - excludedBodyFields
-          expectedBodyPaths:
-          - key: ""
-          - key: ""
+          occurrence: 212
           recordedCallId: 5
           recordedUrl: recordedUrl
           body: ""
           enabled: true
-          url: url
           expectedHeaders:
             key: expectedHeaders
           candidateBody: ""
+          excludeAllOtherHeaderFields: true
+          candidateFields:
+            responseBodyComplete: true
+            requestHeaders:
+            - requestHeaders
+            - requestHeaders
+            - requestHeaders
+            - requestHeaders
+            - requestHeaders
+            responseBody:
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            requestBody:
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            requestHeadersComplete: true
+            requestBodyComplete: true
+          stream:
+            binary: false
+            eventName: eventName
+            transport: WEBSOCKET
+            failed: false
+            direction: INBOUND
+          runtimeBindings:
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          candidateStatusCode: 2
+          policy: IGNORE
+          headers:
+            key: headers
+          method: method
+          expectedContentType: expectedContentType
+          expectedStatusCode: 5
+          excludeAllOtherBodyFields: true
+          candidateBodyPaths:
+            key: ""
+          expectedBodyPaths:
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          url: url
+          authTransfer:
+            choiceId: choiceId
+            candidates: []
+            sources:
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            authorizationVariable: authorizationVariable
+            optionalRefresh: false
+          requestBodyPaths:
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
           excludedHeaderFields:
           - excludedHeaderFields
           - excludedHeaderFields
-          excludeAllOtherHeaderFields: true
-          candidateStatusCode: 2
+          expectedBody: ""
           candidateContentType: candidateContentType
-        - method: method
-          expectedContentType: expectedContentType
-          expectedStatusCode: 5
+        - skipExactBodyCheck: true
+          expectedHeaderPaths:
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
           candidateHeaders:
             key: candidateHeaders
-          candidateBodyPaths:
-            key: ""
           excludedBodyFields:
           - excludedBodyFields
           - excludedBodyFields
-          expectedBodyPaths:
-          - key: ""
-          - key: ""
+          occurrence: 212
           recordedCallId: 5
           recordedUrl: recordedUrl
           body: ""
           enabled: true
-          url: url
           expectedHeaders:
             key: expectedHeaders
           candidateBody: ""
+          excludeAllOtherHeaderFields: true
+          candidateFields:
+            responseBodyComplete: true
+            requestHeaders:
+            - requestHeaders
+            - requestHeaders
+            - requestHeaders
+            - requestHeaders
+            - requestHeaders
+            responseBody:
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            requestBody:
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            - path: path
+              type: STRING
+            requestHeadersComplete: true
+            requestBodyComplete: true
+          stream:
+            binary: false
+            eventName: eventName
+            transport: WEBSOCKET
+            failed: false
+            direction: INBOUND
+          runtimeBindings:
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          - path: path
+            scopeOrigin: scopeOrigin
+            name: name
+            source: RESPONSE_BODY
+          candidateStatusCode: 2
+          policy: IGNORE
+          headers:
+            key: headers
+          method: method
+          expectedContentType: expectedContentType
+          expectedStatusCode: 5
+          excludeAllOtherBodyFields: true
+          candidateBodyPaths:
+            key: ""
+          expectedBodyPaths:
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          url: url
+          authTransfer:
+            choiceId: choiceId
+            candidates: []
+            sources:
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            - path: path
+              scopeOrigin: https://openapi-generator.tech
+              updateFrom: ""
+              name: name
+              source: RESPONSE_BODY
+            authorizationVariable: authorizationVariable
+            optionalRefresh: false
+          requestBodyPaths:
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
+          - path: path
+            pattern: pattern
+            value: ""
           excludedHeaderFields:
           - excludedHeaderFields
           - excludedHeaderFields
-          excludeAllOtherHeaderFields: true
-          candidateStatusCode: 2
+          expectedBody: ""
           candidateContentType: candidateContentType
       properties:
         stepId:
@@ -10027,6 +11987,8 @@ components:
         selector:
           nullable: true
           type: string
+        targetMatch:
+          $ref: "#/components/schemas/BrowserTargetMatch"
         selectorCandidates:
           items:
             type: string
@@ -10053,6 +12015,8 @@ components:
           enum:
           - ELEMENT_TEXT
           - TEXT_BLOCK
+          - LINK_URL
+          - HIGHLIGHT_URL
           nullable: true
           type: string
         expectedPageUrl:
@@ -10061,8 +12025,8 @@ components:
         expectedPageUrlPolicy:
           enum:
           - IGNORE
-          - CORE
           - EXACT
+          - MATCH
           nullable: true
           type: string
         expectedPageTitle:
@@ -10072,7 +12036,7 @@ components:
           enum:
           - IGNORE
           - EXACT
-          - CONTAINS
+          - MATCH
           nullable: true
           type: string
         expectedNetworkPolicy:

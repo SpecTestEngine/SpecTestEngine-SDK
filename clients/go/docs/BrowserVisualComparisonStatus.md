@@ -3,9 +3,9 @@
 ## Enum
 
 
-* `PASSED` (value: `"PASSED"`)
+* `_______________PASS__________________` (value: `"----------------PASS-------------------"`)
 
-* `FAILED` (value: `"FAILED"`)
+* `_______________FAIL__________________` (value: `"----------------FAIL-------------------"`)
 
 * `BASELINE_MISSING` (value: `"BASELINE_MISSING"`)
 

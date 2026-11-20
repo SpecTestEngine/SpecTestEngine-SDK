@@ -7,8 +7,10 @@ All URIs are relative to *https://app.ste.software*
 | [**captureSoapSpecificationAttachmentVisualDiff**](SOAPSpecificationsApi.md#capturesoapspecificationattachmentvisualdiff) | **POST** /test/soap-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed SOAP attachment assertion |
 | [**createSoapSpecification**](SOAPSpecificationsApi.md#createsoapspecification) | **POST** /test/soap-spec/create | Create a SOAP specification |
 | [**deleteSoapSpecification**](SOAPSpecificationsApi.md#deletesoapspecification) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification |
+| [**getSoapPreparation**](SOAPSpecificationsApi.md#getsoappreparation) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key |
 | [**getSoapSpecification**](SOAPSpecificationsApi.md#getsoapspecification) | **GET** /test/soap-spec/by-id | Get a SOAP specification |
 | [**getSoapSpecificationRun**](SOAPSpecificationsApi.md#getsoapspecificationrun) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence |
+| [**listSoapPreparations**](SOAPSpecificationsApi.md#listsoappreparations) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listSoapSpecificationRuns**](SOAPSpecificationsApi.md#listsoapspecificationruns) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs |
 | [**listSoapSpecifications**](SOAPSpecificationsApi.md#listsoapspecifications) | **GET** /test/soap-spec/page | List SOAP specifications |
 | [**previewSoapSpecificationRecovery**](SOAPSpecificationsApi.md#previewsoapspecificationrecovery) | **POST** /test/soap-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a SOAP specification version |
@@ -243,6 +245,78 @@ example().catch(console.error);
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 
 
+## getSoapPreparation
+
+> PreparationSummary getSoapPreparation(ref)
+
+Read eligible SOAP Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SOAPSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { GetSoapPreparationRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SOAPSpecificationsApi(config);
+
+  const body = {
+    // string
+    ref: ref_example,
+  } satisfies GetSoapPreparationRequest;
+
+  try {
+    const data = await api.getSoapPreparation(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **ref** | `string` |  | [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
 ## getSoapSpecification
 
 > Specification getSoapSpecification(specId)
@@ -378,6 +452,84 @@ example().catch(console.error);
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Complete saved run evidence. |  -  |
+| **0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## listSoapPreparations
+
+> PreparationPage listSoapPreparations(page, size, search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  SOAPSpecificationsApi,
+} from '@spectestengine/sdk';
+import type { ListSoapPreparationsRequest } from '@spectestengine/sdk';
+
+async function example() {
+  console.log("🚀 Testing @spectestengine/sdk SDK...");
+  const config = new Configuration({
+    // Configure HTTP bearer authorization: BearerAuth
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SOAPSpecificationsApi(config);
+
+  const body = {
+    // number | Zero-based page index. (optional)
+    page: 56,
+    // number (optional)
+    size: 56,
+    // string | Case-insensitive server-side search within the active project. (optional)
+    search: search_example,
+  } satisfies ListSoapPreparationsRequest;
+
+  try {
+    const data = await api.listSoapPreparations(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **page** | `number` | Zero-based page index. | [Optional] [Defaults to `0`] |
+| **size** | `number` |  | [Optional] [Defaults to `20`] |
+| **search** | `string` | Case-insensitive server-side search within the active project. | [Optional] [Defaults to `undefined`] |
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible SOAP preparation sources. |  -  |
 | **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)

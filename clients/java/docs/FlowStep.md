@@ -18,6 +18,7 @@
 |**uiMacroName** | **String** |  |  [optional] |
 |**browserActionType** | **BrowserActionType** |  |  [optional] |
 |**selector** | **String** |  |  [optional] |
+|**targetMatch** | [**BrowserTargetMatch**](BrowserTargetMatch.md) |  |  [optional] |
 |**selectorCandidates** | **List&lt;String&gt;** |  |  [optional] |
 |**value** | **String** |  |  [optional] |
 |**variableName** | **String** |  |  [optional] |
@@ -54,6 +55,8 @@
 |---- | -----|
 | ELEMENT_TEXT | &quot;ELEMENT_TEXT&quot; |
 | TEXT_BLOCK | &quot;TEXT_BLOCK&quot; |
+| LINK_URL | &quot;LINK_URL&quot; |
+| HIGHLIGHT_URL | &quot;HIGHLIGHT_URL&quot; |
 
 
 
@@ -62,8 +65,8 @@
 | Name | Value |
 |---- | -----|
 | IGNORE | &quot;IGNORE&quot; |
-| CORE | &quot;CORE&quot; |
 | EXACT | &quot;EXACT&quot; |
+| MATCH | &quot;MATCH&quot; |
 
 
 
@@ -73,7 +76,7 @@
 |---- | -----|
 | IGNORE | &quot;IGNORE&quot; |
 | EXACT | &quot;EXACT&quot; |
-| CONTAINS | &quot;CONTAINS&quot; |
+| MATCH | &quot;MATCH&quot; |
 
 
 

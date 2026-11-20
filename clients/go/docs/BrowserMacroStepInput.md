@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **OrderIndex** | Pointer to **int32** |  | [optional]
 **ActionType** | [**BrowserActionType**](BrowserActionType.md) |  |
 **Selector** | Pointer to **string** |  | [optional]
+**TargetMatch** | Pointer to [**BrowserTargetMatch**](BrowserTargetMatch.md) |  | [optional]
 **SelectorCandidates** | Pointer to **[]string** |  | [optional]
 **Value** | Pointer to **string** | Action value or explicit variable template. EXTRACT_TEXT captures a fresh value on every run; a later FILL uses that variable, never a recorded OTP sample. | [optional]
 **Sensitive** | Pointer to **bool** | Explicit sensitive-action marker. Persist variable references, not secret literal values. | [optional]
@@ -114,6 +115,31 @@ SetSelector sets Selector field to given value.
 `func (o *BrowserMacroStepInput) HasSelector() bool`
 
 HasSelector returns a boolean if a field has been set.
+
+### GetTargetMatch
+
+`func (o *BrowserMacroStepInput) GetTargetMatch() BrowserTargetMatch`
+
+GetTargetMatch returns the TargetMatch field if non-nil, zero value otherwise.
+
+### GetTargetMatchOk
+
+`func (o *BrowserMacroStepInput) GetTargetMatchOk() (*BrowserTargetMatch, bool)`
+
+GetTargetMatchOk returns a tuple with the TargetMatch field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetMatch
+
+`func (o *BrowserMacroStepInput) SetTargetMatch(v BrowserTargetMatch)`
+
+SetTargetMatch sets TargetMatch field to given value.
+
+### HasTargetMatch
+
+`func (o *BrowserMacroStepInput) HasTargetMatch() bool`
+
+HasTargetMatch returns a boolean if a field has been set.
 
 ### GetSelectorCandidates
 

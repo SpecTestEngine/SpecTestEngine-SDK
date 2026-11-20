@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Enabled** | Pointer to **bool** |  | [optional]
+**Policy** | Pointer to **string** | Per-Event policy. IGNORE keeps automatic source capture active without requiring refresh presence. | [optional]
 **RecordedCallId** | Pointer to **int32** |  | [optional]
 **RecordedUrl** | Pointer to **string** |  | [optional]
 **Method** | Pointer to **string** |  | [optional]
@@ -19,9 +20,20 @@ Name | Type | Description | Notes
 **ExcludeAllOtherHeaderFields** | Pointer to **bool** |  | [optional]
 **Body** | Pointer to **interface{}** |  | [optional]
 **CandidateBody** | Pointer to **interface{}** |  | [optional]
-**ExpectedBodyPaths** | Pointer to **[]map[string]interface{}** |  | [optional]
+**ExpectedBodyPaths** | Pointer to [**[]BrowserPathExpectation**](BrowserPathExpectation.md) |  | [optional]
+**ExpectedHeaderPaths** | Pointer to [**[]BrowserPathExpectation**](BrowserPathExpectation.md) |  | [optional]
+**Stream** | Pointer to [**BrowserStreamMessage**](BrowserStreamMessage.md) |  | [optional]
 **CandidateBodyPaths** | Pointer to **map[string]interface{}** |  | [optional]
 **ExcludedBodyFields** | Pointer to **[]string** |  | [optional]
+**Headers** | Pointer to **map[string]string** | Expected request headers; values may use ${runtime.name} from a prior declared current-run response source. | [optional]
+**ExpectedBody** | Pointer to **interface{}** | Complete expected response JSON value, including explicit null; absence disables this criterion. Partial or unavailable captured bodies cannot pass. | [optional]
+**SkipExactBodyCheck** | Pointer to **bool** |  | [optional]
+**ExcludeAllOtherBodyFields** | Pointer to **bool** | Include-only response-object comparison. Array include-only is unsupported in Browser. | [optional]
+**Occurrence** | Pointer to **int32** | Select this request-start occurrence within its Action and method/URL matcher. Required by guided value-transfer relations; old recorded call IDs are not replay identity. | [optional]
+**RequestBodyPaths** | Pointer to [**[]BrowserPathExpectation**](BrowserPathExpectation.md) | Focused outgoing Body checks. A complete runtime placeholder preserves the source JSON type; prefix/suffix text requires a string source. | [optional]
+**CandidateFields** | Pointer to [**BrowserNetworkFieldInventory**](BrowserNetworkFieldInventory.md) |  | [optional]
+**AuthTransfer** | Pointer to [**BrowserAuthTransfer**](BrowserAuthTransfer.md) |  | [optional]
+**RuntimeBindings** | Pointer to [**[]BrowserNetworkRuntimeBinding**](BrowserNetworkRuntimeBinding.md) | Fresh private response sources, active independently of response assertion policy. Never contains a token value. Resume retains the same execution; full Rerun clears it. | [optional]
 
 ## Methods
 
@@ -66,6 +78,31 @@ SetEnabled sets Enabled field to given value.
 `func (o *BrowserNetworkExpectation) HasEnabled() bool`
 
 HasEnabled returns a boolean if a field has been set.
+
+### GetPolicy
+
+`func (o *BrowserNetworkExpectation) GetPolicy() string`
+
+GetPolicy returns the Policy field if non-nil, zero value otherwise.
+
+### GetPolicyOk
+
+`func (o *BrowserNetworkExpectation) GetPolicyOk() (*string, bool)`
+
+GetPolicyOk returns a tuple with the Policy field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetPolicy
+
+`func (o *BrowserNetworkExpectation) SetPolicy(v string)`
+
+SetPolicy sets Policy field to given value.
+
+### HasPolicy
+
+`func (o *BrowserNetworkExpectation) HasPolicy() bool`
+
+HasPolicy returns a boolean if a field has been set.
 
 ### GetRecordedCallId
 
@@ -439,20 +476,20 @@ HasCandidateBody returns a boolean if a field has been set.
 UnsetCandidateBody ensures that no value is present for CandidateBody, not even an explicit nil
 ### GetExpectedBodyPaths
 
-`func (o *BrowserNetworkExpectation) GetExpectedBodyPaths() []map[string]interface{}`
+`func (o *BrowserNetworkExpectation) GetExpectedBodyPaths() []BrowserPathExpectation`
 
 GetExpectedBodyPaths returns the ExpectedBodyPaths field if non-nil, zero value otherwise.
 
 ### GetExpectedBodyPathsOk
 
-`func (o *BrowserNetworkExpectation) GetExpectedBodyPathsOk() (*[]map[string]interface{}, bool)`
+`func (o *BrowserNetworkExpectation) GetExpectedBodyPathsOk() (*[]BrowserPathExpectation, bool)`
 
 GetExpectedBodyPathsOk returns a tuple with the ExpectedBodyPaths field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetExpectedBodyPaths
 
-`func (o *BrowserNetworkExpectation) SetExpectedBodyPaths(v []map[string]interface{})`
+`func (o *BrowserNetworkExpectation) SetExpectedBodyPaths(v []BrowserPathExpectation)`
 
 SetExpectedBodyPaths sets ExpectedBodyPaths field to given value.
 
@@ -461,6 +498,56 @@ SetExpectedBodyPaths sets ExpectedBodyPaths field to given value.
 `func (o *BrowserNetworkExpectation) HasExpectedBodyPaths() bool`
 
 HasExpectedBodyPaths returns a boolean if a field has been set.
+
+### GetExpectedHeaderPaths
+
+`func (o *BrowserNetworkExpectation) GetExpectedHeaderPaths() []BrowserPathExpectation`
+
+GetExpectedHeaderPaths returns the ExpectedHeaderPaths field if non-nil, zero value otherwise.
+
+### GetExpectedHeaderPathsOk
+
+`func (o *BrowserNetworkExpectation) GetExpectedHeaderPathsOk() (*[]BrowserPathExpectation, bool)`
+
+GetExpectedHeaderPathsOk returns a tuple with the ExpectedHeaderPaths field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExpectedHeaderPaths
+
+`func (o *BrowserNetworkExpectation) SetExpectedHeaderPaths(v []BrowserPathExpectation)`
+
+SetExpectedHeaderPaths sets ExpectedHeaderPaths field to given value.
+
+### HasExpectedHeaderPaths
+
+`func (o *BrowserNetworkExpectation) HasExpectedHeaderPaths() bool`
+
+HasExpectedHeaderPaths returns a boolean if a field has been set.
+
+### GetStream
+
+`func (o *BrowserNetworkExpectation) GetStream() BrowserStreamMessage`
+
+GetStream returns the Stream field if non-nil, zero value otherwise.
+
+### GetStreamOk
+
+`func (o *BrowserNetworkExpectation) GetStreamOk() (*BrowserStreamMessage, bool)`
+
+GetStreamOk returns a tuple with the Stream field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStream
+
+`func (o *BrowserNetworkExpectation) SetStream(v BrowserStreamMessage)`
+
+SetStream sets Stream field to given value.
+
+### HasStream
+
+`func (o *BrowserNetworkExpectation) HasStream() bool`
+
+HasStream returns a boolean if a field has been set.
 
 ### GetCandidateBodyPaths
 
@@ -511,6 +598,241 @@ SetExcludedBodyFields sets ExcludedBodyFields field to given value.
 `func (o *BrowserNetworkExpectation) HasExcludedBodyFields() bool`
 
 HasExcludedBodyFields returns a boolean if a field has been set.
+
+### GetHeaders
+
+`func (o *BrowserNetworkExpectation) GetHeaders() map[string]string`
+
+GetHeaders returns the Headers field if non-nil, zero value otherwise.
+
+### GetHeadersOk
+
+`func (o *BrowserNetworkExpectation) GetHeadersOk() (*map[string]string, bool)`
+
+GetHeadersOk returns a tuple with the Headers field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHeaders
+
+`func (o *BrowserNetworkExpectation) SetHeaders(v map[string]string)`
+
+SetHeaders sets Headers field to given value.
+
+### HasHeaders
+
+`func (o *BrowserNetworkExpectation) HasHeaders() bool`
+
+HasHeaders returns a boolean if a field has been set.
+
+### GetExpectedBody
+
+`func (o *BrowserNetworkExpectation) GetExpectedBody() interface{}`
+
+GetExpectedBody returns the ExpectedBody field if non-nil, zero value otherwise.
+
+### GetExpectedBodyOk
+
+`func (o *BrowserNetworkExpectation) GetExpectedBodyOk() (*interface{}, bool)`
+
+GetExpectedBodyOk returns a tuple with the ExpectedBody field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExpectedBody
+
+`func (o *BrowserNetworkExpectation) SetExpectedBody(v interface{})`
+
+SetExpectedBody sets ExpectedBody field to given value.
+
+### HasExpectedBody
+
+`func (o *BrowserNetworkExpectation) HasExpectedBody() bool`
+
+HasExpectedBody returns a boolean if a field has been set.
+
+### SetExpectedBodyNil
+
+`func (o *BrowserNetworkExpectation) SetExpectedBodyNil(b bool)`
+
+ SetExpectedBodyNil sets the value for ExpectedBody to be an explicit nil
+
+### UnsetExpectedBody
+`func (o *BrowserNetworkExpectation) UnsetExpectedBody()`
+
+UnsetExpectedBody ensures that no value is present for ExpectedBody, not even an explicit nil
+### GetSkipExactBodyCheck
+
+`func (o *BrowserNetworkExpectation) GetSkipExactBodyCheck() bool`
+
+GetSkipExactBodyCheck returns the SkipExactBodyCheck field if non-nil, zero value otherwise.
+
+### GetSkipExactBodyCheckOk
+
+`func (o *BrowserNetworkExpectation) GetSkipExactBodyCheckOk() (*bool, bool)`
+
+GetSkipExactBodyCheckOk returns a tuple with the SkipExactBodyCheck field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSkipExactBodyCheck
+
+`func (o *BrowserNetworkExpectation) SetSkipExactBodyCheck(v bool)`
+
+SetSkipExactBodyCheck sets SkipExactBodyCheck field to given value.
+
+### HasSkipExactBodyCheck
+
+`func (o *BrowserNetworkExpectation) HasSkipExactBodyCheck() bool`
+
+HasSkipExactBodyCheck returns a boolean if a field has been set.
+
+### GetExcludeAllOtherBodyFields
+
+`func (o *BrowserNetworkExpectation) GetExcludeAllOtherBodyFields() bool`
+
+GetExcludeAllOtherBodyFields returns the ExcludeAllOtherBodyFields field if non-nil, zero value otherwise.
+
+### GetExcludeAllOtherBodyFieldsOk
+
+`func (o *BrowserNetworkExpectation) GetExcludeAllOtherBodyFieldsOk() (*bool, bool)`
+
+GetExcludeAllOtherBodyFieldsOk returns a tuple with the ExcludeAllOtherBodyFields field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExcludeAllOtherBodyFields
+
+`func (o *BrowserNetworkExpectation) SetExcludeAllOtherBodyFields(v bool)`
+
+SetExcludeAllOtherBodyFields sets ExcludeAllOtherBodyFields field to given value.
+
+### HasExcludeAllOtherBodyFields
+
+`func (o *BrowserNetworkExpectation) HasExcludeAllOtherBodyFields() bool`
+
+HasExcludeAllOtherBodyFields returns a boolean if a field has been set.
+
+### GetOccurrence
+
+`func (o *BrowserNetworkExpectation) GetOccurrence() int32`
+
+GetOccurrence returns the Occurrence field if non-nil, zero value otherwise.
+
+### GetOccurrenceOk
+
+`func (o *BrowserNetworkExpectation) GetOccurrenceOk() (*int32, bool)`
+
+GetOccurrenceOk returns a tuple with the Occurrence field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOccurrence
+
+`func (o *BrowserNetworkExpectation) SetOccurrence(v int32)`
+
+SetOccurrence sets Occurrence field to given value.
+
+### HasOccurrence
+
+`func (o *BrowserNetworkExpectation) HasOccurrence() bool`
+
+HasOccurrence returns a boolean if a field has been set.
+
+### GetRequestBodyPaths
+
+`func (o *BrowserNetworkExpectation) GetRequestBodyPaths() []BrowserPathExpectation`
+
+GetRequestBodyPaths returns the RequestBodyPaths field if non-nil, zero value otherwise.
+
+### GetRequestBodyPathsOk
+
+`func (o *BrowserNetworkExpectation) GetRequestBodyPathsOk() (*[]BrowserPathExpectation, bool)`
+
+GetRequestBodyPathsOk returns a tuple with the RequestBodyPaths field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRequestBodyPaths
+
+`func (o *BrowserNetworkExpectation) SetRequestBodyPaths(v []BrowserPathExpectation)`
+
+SetRequestBodyPaths sets RequestBodyPaths field to given value.
+
+### HasRequestBodyPaths
+
+`func (o *BrowserNetworkExpectation) HasRequestBodyPaths() bool`
+
+HasRequestBodyPaths returns a boolean if a field has been set.
+
+### GetCandidateFields
+
+`func (o *BrowserNetworkExpectation) GetCandidateFields() BrowserNetworkFieldInventory`
+
+GetCandidateFields returns the CandidateFields field if non-nil, zero value otherwise.
+
+### GetCandidateFieldsOk
+
+`func (o *BrowserNetworkExpectation) GetCandidateFieldsOk() (*BrowserNetworkFieldInventory, bool)`
+
+GetCandidateFieldsOk returns a tuple with the CandidateFields field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCandidateFields
+
+`func (o *BrowserNetworkExpectation) SetCandidateFields(v BrowserNetworkFieldInventory)`
+
+SetCandidateFields sets CandidateFields field to given value.
+
+### HasCandidateFields
+
+`func (o *BrowserNetworkExpectation) HasCandidateFields() bool`
+
+HasCandidateFields returns a boolean if a field has been set.
+
+### GetAuthTransfer
+
+`func (o *BrowserNetworkExpectation) GetAuthTransfer() BrowserAuthTransfer`
+
+GetAuthTransfer returns the AuthTransfer field if non-nil, zero value otherwise.
+
+### GetAuthTransferOk
+
+`func (o *BrowserNetworkExpectation) GetAuthTransferOk() (*BrowserAuthTransfer, bool)`
+
+GetAuthTransferOk returns a tuple with the AuthTransfer field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAuthTransfer
+
+`func (o *BrowserNetworkExpectation) SetAuthTransfer(v BrowserAuthTransfer)`
+
+SetAuthTransfer sets AuthTransfer field to given value.
+
+### HasAuthTransfer
+
+`func (o *BrowserNetworkExpectation) HasAuthTransfer() bool`
+
+HasAuthTransfer returns a boolean if a field has been set.
+
+### GetRuntimeBindings
+
+`func (o *BrowserNetworkExpectation) GetRuntimeBindings() []BrowserNetworkRuntimeBinding`
+
+GetRuntimeBindings returns the RuntimeBindings field if non-nil, zero value otherwise.
+
+### GetRuntimeBindingsOk
+
+`func (o *BrowserNetworkExpectation) GetRuntimeBindingsOk() (*[]BrowserNetworkRuntimeBinding, bool)`
+
+GetRuntimeBindingsOk returns a tuple with the RuntimeBindings field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRuntimeBindings
+
+`func (o *BrowserNetworkExpectation) SetRuntimeBindings(v []BrowserNetworkRuntimeBinding)`
+
+SetRuntimeBindings sets RuntimeBindings field to given value.
+
+### HasRuntimeBindings
+
+`func (o *BrowserNetworkExpectation) HasRuntimeBindings() bool`
+
+HasRuntimeBindings returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

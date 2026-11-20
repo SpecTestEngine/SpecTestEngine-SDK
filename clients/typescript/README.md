@@ -128,8 +128,10 @@ All URIs are relative to *https://app.ste.software*
 *GraphQLSpecificationsApi* | [**captureGraphqlSpecificationAttachmentVisualDiff**](docs/GraphQLSpecificationsApi.md#capturegraphqlspecificationattachmentvisualdiff) | **POST** /test/graphql-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed GraphQL attachment assertion
 *GraphQLSpecificationsApi* | [**createGraphqlSpecification**](docs/GraphQLSpecificationsApi.md#creategraphqlspecification) | **POST** /test/graphql-spec/create | Create a GraphQL specification
 *GraphQLSpecificationsApi* | [**deleteGraphqlSpecification**](docs/GraphQLSpecificationsApi.md#deletegraphqlspecification) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification
+*GraphQLSpecificationsApi* | [**getGraphqlPreparation**](docs/GraphQLSpecificationsApi.md#getgraphqlpreparation) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key
 *GraphQLSpecificationsApi* | [**getGraphqlSpecification**](docs/GraphQLSpecificationsApi.md#getgraphqlspecification) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification
 *GraphQLSpecificationsApi* | [**getGraphqlSpecificationRun**](docs/GraphQLSpecificationsApi.md#getgraphqlspecificationrun) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence
+*GraphQLSpecificationsApi* | [**listGraphqlPreparations**](docs/GraphQLSpecificationsApi.md#listgraphqlpreparations) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations
 *GraphQLSpecificationsApi* | [**listGraphqlSpecificationRuns**](docs/GraphQLSpecificationsApi.md#listgraphqlspecificationruns) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs
 *GraphQLSpecificationsApi* | [**listGraphqlSpecifications**](docs/GraphQLSpecificationsApi.md#listgraphqlspecifications) | **GET** /test/graphql-spec/page | List GraphQL specifications
 *GraphQLSpecificationsApi* | [**previewGraphqlSpecificationRecovery**](docs/GraphQLSpecificationsApi.md#previewgraphqlspecificationrecovery) | **POST** /test/graphql-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a GraphQL specification version
@@ -140,8 +142,10 @@ All URIs are relative to *https://app.ste.software*
 *RESTSpecificationsApi* | [**captureRestSpecificationAttachmentVisualDiff**](docs/RESTSpecificationsApi.md#capturerestspecificationattachmentvisualdiff) | **POST** /test/rest-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed REST attachment assertion
 *RESTSpecificationsApi* | [**createRestSpecification**](docs/RESTSpecificationsApi.md#createrestspecification) | **POST** /test/rest-spec/create | Create a REST specification
 *RESTSpecificationsApi* | [**deleteRestSpecification**](docs/RESTSpecificationsApi.md#deleterestspecification) | **DELETE** /test/rest-spec/by-id | Delete a REST specification
+*RESTSpecificationsApi* | [**getRestPreparation**](docs/RESTSpecificationsApi.md#getrestpreparation) | **GET** /test/rest-spec/preparations/by-ref/{ref} | Read eligible REST Prepare request metadata by stable key
 *RESTSpecificationsApi* | [**getRestSpecification**](docs/RESTSpecificationsApi.md#getrestspecification) | **GET** /test/rest-spec/by-id | Get a REST specification
 *RESTSpecificationsApi* | [**getRestSpecificationRun**](docs/RESTSpecificationsApi.md#getrestspecificationrun) | **GET** /test/rest-spec/run/history/by-run-id/{runId} | Get saved REST run evidence
+*RESTSpecificationsApi* | [**listRestPreparations**](docs/RESTSpecificationsApi.md#listrestpreparations) | **GET** /test/rest-spec/preparations | List eligible Prepare requests and output declarations
 *RESTSpecificationsApi* | [**listRestSpecificationRuns**](docs/RESTSpecificationsApi.md#listrestspecificationruns) | **GET** /test/rest-spec/run/page/by-spec-id/{specId} | List saved REST runs
 *RESTSpecificationsApi* | [**listRestSpecifications**](docs/RESTSpecificationsApi.md#listrestspecifications) | **GET** /test/rest-spec/page | List REST specifications
 *RESTSpecificationsApi* | [**previewRestSpecificationRecovery**](docs/RESTSpecificationsApi.md#previewrestspecificationrecovery) | **POST** /test/rest-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a REST specification version
@@ -155,8 +159,10 @@ All URIs are relative to *https://app.ste.software*
 *SOAPSpecificationsApi* | [**captureSoapSpecificationAttachmentVisualDiff**](docs/SOAPSpecificationsApi.md#capturesoapspecificationattachmentvisualdiff) | **POST** /test/soap-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed SOAP attachment assertion
 *SOAPSpecificationsApi* | [**createSoapSpecification**](docs/SOAPSpecificationsApi.md#createsoapspecification) | **POST** /test/soap-spec/create | Create a SOAP specification
 *SOAPSpecificationsApi* | [**deleteSoapSpecification**](docs/SOAPSpecificationsApi.md#deletesoapspecification) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification
+*SOAPSpecificationsApi* | [**getSoapPreparation**](docs/SOAPSpecificationsApi.md#getsoappreparation) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key
 *SOAPSpecificationsApi* | [**getSoapSpecification**](docs/SOAPSpecificationsApi.md#getsoapspecification) | **GET** /test/soap-spec/by-id | Get a SOAP specification
 *SOAPSpecificationsApi* | [**getSoapSpecificationRun**](docs/SOAPSpecificationsApi.md#getsoapspecificationrun) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence
+*SOAPSpecificationsApi* | [**listSoapPreparations**](docs/SOAPSpecificationsApi.md#listsoappreparations) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations
 *SOAPSpecificationsApi* | [**listSoapSpecificationRuns**](docs/SOAPSpecificationsApi.md#listsoapspecificationruns) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs
 *SOAPSpecificationsApi* | [**listSoapSpecifications**](docs/SOAPSpecificationsApi.md#listsoapspecifications) | **GET** /test/soap-spec/page | List SOAP specifications
 *SOAPSpecificationsApi* | [**previewSoapSpecificationRecovery**](docs/SOAPSpecificationsApi.md#previewsoapspecificationrecovery) | **POST** /test/soap-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a SOAP specification version
@@ -187,9 +193,11 @@ All URIs are relative to *https://app.ste.software*
 *StreamingSpecificationsApi* | [**createStreamingSpecification**](docs/StreamingSpecificationsApi.md#createstreamingspecification) | **POST** /test/streaming-spec/create | Create a streaming specification
 *StreamingSpecificationsApi* | [**deleteStreamingSpecification**](docs/StreamingSpecificationsApi.md#deletestreamingspecification) | **DELETE** /test/streaming-spec/by-id | Delete a streaming specification
 *StreamingSpecificationsApi* | [**getStreamingCapabilities**](docs/StreamingSpecificationsApi.md#getstreamingcapabilities) | **GET** /engine/streaming/capabilities | Get streaming engine capabilities and enforced limits
+*StreamingSpecificationsApi* | [**getStreamingPreparation**](docs/StreamingSpecificationsApi.md#getstreamingpreparation) | **GET** /test/streaming-spec/preparations/by-ref/{ref} | Read eligible STREAMING Prepare request metadata by stable key
 *StreamingSpecificationsApi* | [**getStreamingSpecification**](docs/StreamingSpecificationsApi.md#getstreamingspecification) | **GET** /test/streaming-spec/by-id | Get a streaming specification
 *StreamingSpecificationsApi* | [**getStreamingSpecificationRun**](docs/StreamingSpecificationsApi.md#getstreamingspecificationrun) | **GET** /test/streaming-spec/run/history/by-run-id/{runId} | Get streaming run state and bounded semantic evidence
 *StreamingSpecificationsApi* | [**getStreamingSpecificationRunTranscript**](docs/StreamingSpecificationsApi.md#getstreamingspecificationruntranscript) | **GET** /test/streaming-spec/run/history/by-run-id/{runId}/transcript | Page a bounded streaming run transcript
+*StreamingSpecificationsApi* | [**listStreamingPreparations**](docs/StreamingSpecificationsApi.md#liststreamingpreparations) | **GET** /test/streaming-spec/preparations | List eligible Prepare requests and output declarations
 *StreamingSpecificationsApi* | [**listStreamingSpecificationRuns**](docs/StreamingSpecificationsApi.md#liststreamingspecificationruns) | **GET** /test/streaming-spec/run/page/by-spec-id/{specId} | List runs for a saved streaming specification
 *StreamingSpecificationsApi* | [**listStreamingSpecifications**](docs/StreamingSpecificationsApi.md#liststreamingspecifications) | **GET** /test/streaming-spec/page | List streaming specifications
 *StreamingSpecificationsApi* | [**previewStreamingSpecificationRecovery**](docs/StreamingSpecificationsApi.md#previewstreamingspecificationrecovery) | **POST** /test/streaming-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a Streaming specification version
@@ -219,10 +227,20 @@ All URIs are relative to *https://app.ste.software*
 - [AtfValidationStep](docs/AtfValidationStep.md)
 - [BrowserActionInput](docs/BrowserActionInput.md)
 - [BrowserActionType](docs/BrowserActionType.md)
+- [BrowserAuthGuard](docs/BrowserAuthGuard.md)
+- [BrowserAuthSource](docs/BrowserAuthSource.md)
+- [BrowserAuthTransfer](docs/BrowserAuthTransfer.md)
 - [BrowserMacroInput](docs/BrowserMacroInput.md)
 - [BrowserMacroStepInput](docs/BrowserMacroStepInput.md)
 - [BrowserNetworkExpectation](docs/BrowserNetworkExpectation.md)
+- [BrowserNetworkField](docs/BrowserNetworkField.md)
+- [BrowserNetworkFieldInventory](docs/BrowserNetworkFieldInventory.md)
+- [BrowserNetworkRuntimeBinding](docs/BrowserNetworkRuntimeBinding.md)
+- [BrowserPathExpectation](docs/BrowserPathExpectation.md)
 - [BrowserSessionInput](docs/BrowserSessionInput.md)
+- [BrowserStreamMessage](docs/BrowserStreamMessage.md)
+- [BrowserTargetIdentity](docs/BrowserTargetIdentity.md)
+- [BrowserTargetMatch](docs/BrowserTargetMatch.md)
 - [BrowserVisualAssertion](docs/BrowserVisualAssertion.md)
 - [BrowserVisualAssertionInput](docs/BrowserVisualAssertionInput.md)
 - [BrowserVisualBounds](docs/BrowserVisualBounds.md)
@@ -298,6 +316,9 @@ All URIs are relative to *https://app.ste.software*
 - [FragmentType](docs/FragmentType.md)
 - [OpenApiGenerationResult](docs/OpenApiGenerationResult.md)
 - [PageMetadata](docs/PageMetadata.md)
+- [PreparationOutput](docs/PreparationOutput.md)
+- [PreparationPage](docs/PreparationPage.md)
+- [PreparationSummary](docs/PreparationSummary.md)
 - [ProblemDetails](docs/ProblemDetails.md)
 - [RequestChainRun](docs/RequestChainRun.md)
 - [RequestChainRunInput](docs/RequestChainRunInput.md)
@@ -313,6 +334,7 @@ All URIs are relative to *https://app.ste.software*
 - [RunEnqueueResponse](docs/RunEnqueueResponse.md)
 - [RunFlowBatchRequest](docs/RunFlowBatchRequest.md)
 - [RunStatus](docs/RunStatus.md)
+- [RunStatusCode](docs/RunStatusCode.md)
 - [SavedRequestInput](docs/SavedRequestInput.md)
 - [SentinelCheck](docs/SentinelCheck.md)
 - [SentinelCheckInput](docs/SentinelCheckInput.md)
@@ -384,7 +406,7 @@ This TypeScript SDK client supports the [Fetch API](https://fetch.spec.whatwg.or
 and is automatically generated by the
 [OpenAPI Generator](https://openapi-generator.tech) project:
 
-- API version: `1.0.0-alpha.7`
+- API version: `1.0.0-alpha.10`
 - Package version: `0.1.0`
 - Generator version: `7.22.0`
 - Build package: `org.openapitools.codegen.languages.TypeScriptFetchClientCodegen`

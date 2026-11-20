@@ -13,6 +13,8 @@ facades/typescript/dist/
 facades/typescript/package-lock.json
 facades/csharp/**/bin/
 facades/csharp/**/obj/
+scripts/tests/**/bin/
+scripts/tests/**/obj/
 
 # Generated build output
 clients/java/build/

@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **order_index** | **int** |  | [optional]
 **action_type** | [**BrowserActionType**](BrowserActionType.md) |  |
 **selector** | **str** |  | [optional]
+**target_match** | [**BrowserTargetMatch**](BrowserTargetMatch.md) |  | [optional]
 **selector_candidates** | **List[str]** |  | [optional]
 **value** | **str** | Action value or explicit variable template. EXTRACT_TEXT captures a fresh value on every run; a later FILL uses that variable, never a recorded OTP sample. | [optional]
 **sensitive** | **bool** | Explicit sensitive-action marker. Persist variable references, not secret literal values. | [optional]

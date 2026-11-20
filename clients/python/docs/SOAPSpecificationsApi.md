@@ -7,8 +7,10 @@ Method | HTTP request | Description
 [**capture_soap_specification_attachment_visual_diff**](SOAPSpecificationsApi.md#capture_soap_specification_attachment_visual_diff) | **POST** /test/soap-spec/run/by-id/{specId}/visual-diff-captures | Create a visual diff from a failed SOAP attachment assertion
 [**create_soap_specification**](SOAPSpecificationsApi.md#create_soap_specification) | **POST** /test/soap-spec/create | Create a SOAP specification
 [**delete_soap_specification**](SOAPSpecificationsApi.md#delete_soap_specification) | **DELETE** /test/soap-spec/by-id | Delete a SOAP specification
+[**get_soap_preparation**](SOAPSpecificationsApi.md#get_soap_preparation) | **GET** /test/soap-spec/preparations/by-ref/{ref} | Read eligible SOAP Prepare request metadata by stable key
 [**get_soap_specification**](SOAPSpecificationsApi.md#get_soap_specification) | **GET** /test/soap-spec/by-id | Get a SOAP specification
 [**get_soap_specification_run**](SOAPSpecificationsApi.md#get_soap_specification_run) | **GET** /test/soap-spec/run/history/by-run-id/{runId} | Get saved SOAP run evidence
+[**list_soap_preparations**](SOAPSpecificationsApi.md#list_soap_preparations) | **GET** /test/soap-spec/preparations | List eligible Prepare requests and output declarations
 [**list_soap_specification_runs**](SOAPSpecificationsApi.md#list_soap_specification_runs) | **GET** /test/soap-spec/run/page/by-spec-id/{specId} | List saved SOAP runs
 [**list_soap_specifications**](SOAPSpecificationsApi.md#list_soap_specifications) | **GET** /test/soap-spec/page | List SOAP specifications
 [**preview_soap_specification_recovery**](SOAPSpecificationsApi.md#preview_soap_specification_recovery) | **POST** /test/soap-spec/recovery/{specId}/from-run/{runId}/preview | Preview restoring a SOAP specification version
@@ -260,6 +262,85 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_soap_preparation**
+> PreparationSummary get_soap_preparation(ref)
+
+Read eligible SOAP Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.preparation_summary import PreparationSummary
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.SOAPSpecificationsApi(api_client)
+    ref = 'ref_example' # str |
+
+    try:
+        # Read eligible SOAP Prepare request metadata by stable key
+        api_response = api_instance.get_soap_preparation(ref)
+        print("The response of SOAPSpecificationsApi->get_soap_preparation:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SOAPSpecificationsApi->get_soap_preparation: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ref** | **str**|  |
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | The eligible source and its declared output variables. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_soap_specification**
 > Specification get_soap_specification(spec_id)
 
@@ -410,6 +491,89 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Complete saved run evidence. |  -  |
+**0** | The request failed. |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **list_soap_preparations**
+> PreparationPage list_soap_preparations(page=page, size=size, search=search)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import spectestengine_sdk
+from spectestengine_sdk.models.preparation_page import PreparationPage
+from spectestengine_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://app.ste.software
+# See configuration.py for a list of all supported configuration parameters.
+configuration = spectestengine_sdk.Configuration(
+    host = "https://app.ste.software"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = spectestengine_sdk.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with spectestengine_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = spectestengine_sdk.SOAPSpecificationsApi(api_client)
+    page = 0 # int | Zero-based page index. (optional) (default to 0)
+    size = 20 # int |  (optional) (default to 20)
+    search = 'search_example' # str | Case-insensitive server-side search within the active project. (optional)
+
+    try:
+        # List eligible Prepare requests and output declarations
+        api_response = api_instance.list_soap_preparations(page=page, size=size, search=search)
+        print("The response of SOAPSpecificationsApi->list_soap_preparations:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SOAPSpecificationsApi->list_soap_preparations: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int**| Zero-based page index. | [optional] [default to 0]
+ **size** | **int**|  | [optional] [default to 20]
+ **search** | **str**| Case-insensitive server-side search within the active project. | [optional]
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | A page of eligible SOAP preparation sources. |  -  |
 **0** | The request failed. |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

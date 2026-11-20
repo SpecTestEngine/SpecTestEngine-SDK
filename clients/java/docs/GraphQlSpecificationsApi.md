@@ -10,10 +10,14 @@ All URIs are relative to *https://app.ste.software*
 | [**createGraphqlSpecificationWithHttpInfo**](GraphQlSpecificationsApi.md#createGraphqlSpecificationWithHttpInfo) | **POST** /test/graphql-spec/create | Create a GraphQL specification |
 | [**deleteGraphqlSpecification**](GraphQlSpecificationsApi.md#deleteGraphqlSpecification) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification |
 | [**deleteGraphqlSpecificationWithHttpInfo**](GraphQlSpecificationsApi.md#deleteGraphqlSpecificationWithHttpInfo) | **DELETE** /test/graphql-spec/by-id | Delete a GraphQL specification |
+| [**getGraphqlPreparation**](GraphQlSpecificationsApi.md#getGraphqlPreparation) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key |
+| [**getGraphqlPreparationWithHttpInfo**](GraphQlSpecificationsApi.md#getGraphqlPreparationWithHttpInfo) | **GET** /test/graphql-spec/preparations/by-ref/{ref} | Read eligible GRAPHQL Prepare request metadata by stable key |
 | [**getGraphqlSpecification**](GraphQlSpecificationsApi.md#getGraphqlSpecification) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification |
 | [**getGraphqlSpecificationWithHttpInfo**](GraphQlSpecificationsApi.md#getGraphqlSpecificationWithHttpInfo) | **GET** /test/graphql-spec/by-id | Get a GraphQL specification |
 | [**getGraphqlSpecificationRun**](GraphQlSpecificationsApi.md#getGraphqlSpecificationRun) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence |
 | [**getGraphqlSpecificationRunWithHttpInfo**](GraphQlSpecificationsApi.md#getGraphqlSpecificationRunWithHttpInfo) | **GET** /test/graphql-spec/run/history/by-run-id/{runId} | Get saved GraphQL run evidence |
+| [**listGraphqlPreparations**](GraphQlSpecificationsApi.md#listGraphqlPreparations) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations |
+| [**listGraphqlPreparationsWithHttpInfo**](GraphQlSpecificationsApi.md#listGraphqlPreparationsWithHttpInfo) | **GET** /test/graphql-spec/preparations | List eligible Prepare requests and output declarations |
 | [**listGraphqlSpecificationRuns**](GraphQlSpecificationsApi.md#listGraphqlSpecificationRuns) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs |
 | [**listGraphqlSpecificationRunsWithHttpInfo**](GraphQlSpecificationsApi.md#listGraphqlSpecificationRunsWithHttpInfo) | **GET** /test/graphql-spec/run/page/by-spec-id/{specId} | List saved GraphQL runs |
 | [**listGraphqlSpecifications**](GraphQlSpecificationsApi.md#listGraphqlSpecifications) | **GET** /test/graphql-spec/page | List GraphQL specifications |
@@ -529,6 +533,168 @@ ApiResponse<[**Specification**](Specification.md)>
 
 
 
+## getGraphqlPreparation
+
+> PreparationSummary getGraphqlPreparation(getGraphqlPreparationRequest)
+
+Read eligible GRAPHQL Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        GraphQlSpecificationsApi apiInstance = new GraphQlSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetGraphqlPreparationRequest request = APIgetGraphqlPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            PreparationSummary result = apiInstance.getGraphqlPreparation(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling GraphQlSpecificationsApi#getGraphqlPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getGraphqlPreparationRequest | [**APIgetGraphqlPreparationRequest**](GraphQlSpecificationsApi.md#APIgetGraphqlPreparationRequest)|-|-|
+
+### Return type
+
+[**PreparationSummary**](PreparationSummary.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+## getGraphqlPreparationWithHttpInfo
+
+> ApiResponse<PreparationSummary> getGraphqlPreparationWithHttpInfo(getGraphqlPreparationRequest)
+
+Read eligible GRAPHQL Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        GraphQlSpecificationsApi apiInstance = new GraphQlSpecificationsApi(defaultClient);
+        String ref = "ref_example"; // String |
+        try {
+            APIgetGraphqlPreparationRequest request = APIgetGraphqlPreparationRequest.newBuilder()
+                .ref(ref)
+                .build();
+            ApiResponse<PreparationSummary> response = apiInstance.getGraphqlPreparationWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling GraphQlSpecificationsApi#getGraphqlPreparation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| getGraphqlPreparationRequest | [**APIgetGraphqlPreparationRequest**](GraphQlSpecificationsApi.md#APIgetGraphqlPreparationRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationSummary**](PreparationSummary.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | The eligible source and its declared output variables. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIgetGraphqlPreparationRequest"></a>
+## APIgetGraphqlPreparationRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **ref** | **String** |  | |
+
+
+
 ## getGraphqlSpecification
 
 > Specification getGraphqlSpecification(getGraphqlSpecificationRequest)
@@ -842,6 +1008,178 @@ ApiResponse<[**SpecificationRun**](SpecificationRun.md)>
 |     Name      |    Type       | Description   |     Notes    |
 | ------------- | ------------- | ------------- | -------------|
 | **runId** | **UUID** | UUIDv7 identifier of the stored run evidence. | |
+
+
+
+## listGraphqlPreparations
+
+> PreparationPage listGraphqlPreparations(listGraphqlPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        GraphQlSpecificationsApi apiInstance = new GraphQlSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistGraphqlPreparationsRequest request = APIlistGraphqlPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            PreparationPage result = apiInstance.listGraphqlPreparations(request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling GraphQlSpecificationsApi#listGraphqlPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listGraphqlPreparationsRequest | [**APIlistGraphqlPreparationsRequest**](GraphQlSpecificationsApi.md#APIlistGraphqlPreparationsRequest)|-|-|
+
+### Return type
+
+[**PreparationPage**](PreparationPage.md)
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible GRAPHQL preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+## listGraphqlPreparationsWithHttpInfo
+
+> ApiResponse<PreparationPage> listGraphqlPreparationsWithHttpInfo(listGraphqlPreparationsRequest)
+
+List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+### Example
+
+```java
+// Import classes:
+import software.ste.sdk.generated.ApiClient;
+import software.ste.sdk.generated.ApiException;
+import software.ste.sdk.generated.ApiResponse;
+import software.ste.sdk.generated.Configuration;
+import software.ste.sdk.generated.auth.*;
+import software.ste.sdk.generated.models.*;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi;
+import software.ste.sdk.generated.api.GraphQlSpecificationsApi.*;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://app.ste.software");
+
+        // Configure HTTP bearer authorization: BearerAuth
+        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+        BearerAuth.setBearerToken("BEARER TOKEN");
+
+        GraphQlSpecificationsApi apiInstance = new GraphQlSpecificationsApi(defaultClient);
+        Integer page = 0; // Integer | Zero-based page index.
+        Integer size = 20; // Integer |
+        String search = "search_example"; // String | Case-insensitive server-side search within the active project.
+        try {
+            APIlistGraphqlPreparationsRequest request = APIlistGraphqlPreparationsRequest.newBuilder()
+                .page(page)
+                .size(size)
+                .search(search)
+                .build();
+            ApiResponse<PreparationPage> response = apiInstance.listGraphqlPreparationsWithHttpInfo(request);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling GraphQlSpecificationsApi#listGraphqlPreparations");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+|    Name      |    Type       | Description   |     Notes    |
+|------------- | ------------- | ------------- | -------------|
+| listGraphqlPreparationsRequest | [**APIlistGraphqlPreparationsRequest**](GraphQlSpecificationsApi.md#APIlistGraphqlPreparationsRequest)|-|-|
+
+### Return type
+
+ApiResponse<[**PreparationPage**](PreparationPage.md)>
+
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | A page of eligible GRAPHQL preparation sources. |  -  |
+| **0** | The request failed. |  -  |
+
+
+<a id="APIlistGraphqlPreparationsRequest"></a>
+## APIlistGraphqlPreparationsRequest
+### Properties
+
+|     Name      |    Type       | Description   |     Notes    |
+| ------------- | ------------- | ------------- | -------------|
+| **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
+| **size** | **Integer** |  | [optional] [default to 20] |
+| **search** | **String** | Case-insensitive server-side search within the active project. | [optional] |
 
 
 

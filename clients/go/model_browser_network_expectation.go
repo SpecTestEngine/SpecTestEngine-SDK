@@ -1,9 +1,9 @@
 /*
 SpecTestEngine Public API
 
-The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
+The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Execution and assertion results retain the exact strings `----------------PASS-------------------`, `----------------FAIL-------------------`, and `---------------ERROR-------------------` in raw JSON. Product UI renders these as Passed, Failed, and Execution error. Target response fields and lifecycle states (such as QUEUED, RUNNING, CANCELLED) retain their own values.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
 
-API version: 1.0.0-alpha.7
+API version: 1.0.0-alpha.10
 Contact: support@ste.software
 */
 
@@ -18,9 +18,11 @@ import (
 // checks if the BrowserNetworkExpectation type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &BrowserNetworkExpectation{}
 
-// BrowserNetworkExpectation Approved expectations and recorded candidates are separate. Body/path values remain typed JSON; exclusions affect network validation only.
+// BrowserNetworkExpectation Local checks over observed browser traffic, never a second HTTP send. Candidates are not executable checks. Recorded credentials are rejected; current-run bindings are private and optional. Body and headers constrain the request; expectedBody and expectedHeaders constrain the response. Explicit empty response-header objects are checks. Unsupported OpenAPI/schema/attachment assertions are rejected, not processed by Browser.
 type BrowserNetworkExpectation struct {
 	Enabled *bool `json:"enabled,omitempty"`
+	// Per-Event policy. IGNORE keeps automatic source capture active without requiring refresh presence.
+	Policy *string `json:"policy,omitempty"`
 	RecordedCallId *int32 `json:"recordedCallId,omitempty"`
 	RecordedUrl *string `json:"recordedUrl,omitempty"`
 	Method *string `json:"method,omitempty"`
@@ -34,10 +36,30 @@ type BrowserNetworkExpectation struct {
 	ExcludedHeaderFields []string `json:"excludedHeaderFields,omitempty"`
 	ExcludeAllOtherHeaderFields *bool `json:"excludeAllOtherHeaderFields,omitempty"`
 	Body interface{} `json:"body,omitempty"`
+	bodySet bool
 	CandidateBody interface{} `json:"candidateBody,omitempty"`
-	ExpectedBodyPaths []map[string]interface{} `json:"expectedBodyPaths,omitempty"`
+	candidateBodySet bool
+	ExpectedBodyPaths []BrowserPathExpectation `json:"expectedBodyPaths,omitempty"`
+	ExpectedHeaderPaths []BrowserPathExpectation `json:"expectedHeaderPaths,omitempty"`
+	Stream *BrowserStreamMessage `json:"stream,omitempty"`
 	CandidateBodyPaths map[string]interface{} `json:"candidateBodyPaths,omitempty"`
 	ExcludedBodyFields []string `json:"excludedBodyFields,omitempty"`
+	// Expected request headers; values may use ${runtime.name} from a prior declared current-run response source.
+	Headers *map[string]string `json:"headers,omitempty"`
+	// Complete expected response JSON value, including explicit null; absence disables this criterion. Partial or unavailable captured bodies cannot pass.
+	ExpectedBody interface{} `json:"expectedBody,omitempty"`
+	expectedBodySet bool
+	SkipExactBodyCheck *bool `json:"skipExactBodyCheck,omitempty"`
+	// Include-only response-object comparison. Array include-only is unsupported in Browser.
+	ExcludeAllOtherBodyFields *bool `json:"excludeAllOtherBodyFields,omitempty"`
+	// Select this request-start occurrence within its Action and method/URL matcher. Required by guided value-transfer relations; old recorded call IDs are not replay identity.
+	Occurrence *int32 `json:"occurrence,omitempty"`
+	// Focused outgoing Body checks. A complete runtime placeholder preserves the source JSON type; prefix/suffix text requires a string source.
+	RequestBodyPaths []BrowserPathExpectation `json:"requestBodyPaths,omitempty"`
+	CandidateFields *BrowserNetworkFieldInventory `json:"candidateFields,omitempty"`
+	AuthTransfer *BrowserAuthTransfer `json:"authTransfer,omitempty"`
+	// Fresh private response sources, active independently of response assertion policy. Never contains a token value. Resume retains the same execution; full Rerun clears it.
+	RuntimeBindings []BrowserNetworkRuntimeBinding `json:"runtimeBindings,omitempty"`
 }
 
 // NewBrowserNetworkExpectation instantiates a new BrowserNetworkExpectation object
@@ -87,6 +109,38 @@ func (o *BrowserNetworkExpectation) HasEnabled() bool {
 // SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
 func (o *BrowserNetworkExpectation) SetEnabled(v bool) {
 	o.Enabled = &v
+}
+
+// GetPolicy returns the Policy field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetPolicy() string {
+	if o == nil || IsNil(o.Policy) {
+		var ret string
+		return ret
+	}
+	return *o.Policy
+}
+
+// GetPolicyOk returns a tuple with the Policy field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetPolicyOk() (*string, bool) {
+	if o == nil || IsNil(o.Policy) {
+		return nil, false
+	}
+	return o.Policy, true
+}
+
+// HasPolicy returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasPolicy() bool {
+	if o != nil && !IsNil(o.Policy) {
+		return true
+	}
+
+	return false
+}
+
+// SetPolicy gets a reference to the given string and assigns it to the Policy field.
+func (o *BrowserNetworkExpectation) SetPolicy(v string) {
+	o.Policy = &v
 }
 
 // GetRecordedCallId returns the RecordedCallId field value if set, zero value otherwise.
@@ -486,7 +540,7 @@ func (o *BrowserNetworkExpectation) GetBody() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *BrowserNetworkExpectation) GetBodyOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.Body) {
+	if o == nil || (!o.bodySet && IsNil(o.Body)) {
 		return nil, false
 	}
 	return &o.Body, true
@@ -494,7 +548,7 @@ func (o *BrowserNetworkExpectation) GetBodyOk() (*interface{}, bool) {
 
 // HasBody returns a boolean if a field has been set.
 func (o *BrowserNetworkExpectation) HasBody() bool {
-	if o != nil && !IsNil(o.Body) {
+	if o != nil && (o.bodySet || !IsNil(o.Body)) {
 		return true
 	}
 
@@ -504,6 +558,7 @@ func (o *BrowserNetworkExpectation) HasBody() bool {
 // SetBody gets a reference to the given interface{} and assigns it to the Body field.
 func (o *BrowserNetworkExpectation) SetBody(v interface{}) {
 	o.Body = v
+	o.bodySet = true
 }
 
 // GetCandidateBody returns the CandidateBody field value if set, zero value otherwise (both if not set or set to explicit null).
@@ -519,7 +574,7 @@ func (o *BrowserNetworkExpectation) GetCandidateBody() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *BrowserNetworkExpectation) GetCandidateBodyOk() (*interface{}, bool) {
-	if o == nil || IsNil(o.CandidateBody) {
+	if o == nil || (!o.candidateBodySet && IsNil(o.CandidateBody)) {
 		return nil, false
 	}
 	return &o.CandidateBody, true
@@ -527,7 +582,7 @@ func (o *BrowserNetworkExpectation) GetCandidateBodyOk() (*interface{}, bool) {
 
 // HasCandidateBody returns a boolean if a field has been set.
 func (o *BrowserNetworkExpectation) HasCandidateBody() bool {
-	if o != nil && !IsNil(o.CandidateBody) {
+	if o != nil && (o.candidateBodySet || !IsNil(o.CandidateBody)) {
 		return true
 	}
 
@@ -537,12 +592,13 @@ func (o *BrowserNetworkExpectation) HasCandidateBody() bool {
 // SetCandidateBody gets a reference to the given interface{} and assigns it to the CandidateBody field.
 func (o *BrowserNetworkExpectation) SetCandidateBody(v interface{}) {
 	o.CandidateBody = v
+	o.candidateBodySet = true
 }
 
 // GetExpectedBodyPaths returns the ExpectedBodyPaths field value if set, zero value otherwise.
-func (o *BrowserNetworkExpectation) GetExpectedBodyPaths() []map[string]interface{} {
+func (o *BrowserNetworkExpectation) GetExpectedBodyPaths() []BrowserPathExpectation {
 	if o == nil || IsNil(o.ExpectedBodyPaths) {
-		var ret []map[string]interface{}
+		var ret []BrowserPathExpectation
 		return ret
 	}
 	return o.ExpectedBodyPaths
@@ -550,7 +606,7 @@ func (o *BrowserNetworkExpectation) GetExpectedBodyPaths() []map[string]interfac
 
 // GetExpectedBodyPathsOk returns a tuple with the ExpectedBodyPaths field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *BrowserNetworkExpectation) GetExpectedBodyPathsOk() ([]map[string]interface{}, bool) {
+func (o *BrowserNetworkExpectation) GetExpectedBodyPathsOk() ([]BrowserPathExpectation, bool) {
 	if o == nil || IsNil(o.ExpectedBodyPaths) {
 		return nil, false
 	}
@@ -566,9 +622,73 @@ func (o *BrowserNetworkExpectation) HasExpectedBodyPaths() bool {
 	return false
 }
 
-// SetExpectedBodyPaths gets a reference to the given []map[string]interface{} and assigns it to the ExpectedBodyPaths field.
-func (o *BrowserNetworkExpectation) SetExpectedBodyPaths(v []map[string]interface{}) {
+// SetExpectedBodyPaths gets a reference to the given []BrowserPathExpectation and assigns it to the ExpectedBodyPaths field.
+func (o *BrowserNetworkExpectation) SetExpectedBodyPaths(v []BrowserPathExpectation) {
 	o.ExpectedBodyPaths = v
+}
+
+// GetExpectedHeaderPaths returns the ExpectedHeaderPaths field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetExpectedHeaderPaths() []BrowserPathExpectation {
+	if o == nil || IsNil(o.ExpectedHeaderPaths) {
+		var ret []BrowserPathExpectation
+		return ret
+	}
+	return o.ExpectedHeaderPaths
+}
+
+// GetExpectedHeaderPathsOk returns a tuple with the ExpectedHeaderPaths field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetExpectedHeaderPathsOk() ([]BrowserPathExpectation, bool) {
+	if o == nil || IsNil(o.ExpectedHeaderPaths) {
+		return nil, false
+	}
+	return o.ExpectedHeaderPaths, true
+}
+
+// HasExpectedHeaderPaths returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasExpectedHeaderPaths() bool {
+	if o != nil && !IsNil(o.ExpectedHeaderPaths) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpectedHeaderPaths gets a reference to the given []BrowserPathExpectation and assigns it to the ExpectedHeaderPaths field.
+func (o *BrowserNetworkExpectation) SetExpectedHeaderPaths(v []BrowserPathExpectation) {
+	o.ExpectedHeaderPaths = v
+}
+
+// GetStream returns the Stream field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetStream() BrowserStreamMessage {
+	if o == nil || IsNil(o.Stream) {
+		var ret BrowserStreamMessage
+		return ret
+	}
+	return *o.Stream
+}
+
+// GetStreamOk returns a tuple with the Stream field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetStreamOk() (*BrowserStreamMessage, bool) {
+	if o == nil || IsNil(o.Stream) {
+		return nil, false
+	}
+	return o.Stream, true
+}
+
+// HasStream returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasStream() bool {
+	if o != nil && !IsNil(o.Stream) {
+		return true
+	}
+
+	return false
+}
+
+// SetStream gets a reference to the given BrowserStreamMessage and assigns it to the Stream field.
+func (o *BrowserNetworkExpectation) SetStream(v BrowserStreamMessage) {
+	o.Stream = &v
 }
 
 // GetCandidateBodyPaths returns the CandidateBodyPaths field value if set, zero value otherwise.
@@ -635,6 +755,296 @@ func (o *BrowserNetworkExpectation) SetExcludedBodyFields(v []string) {
 	o.ExcludedBodyFields = v
 }
 
+// GetHeaders returns the Headers field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetHeaders() map[string]string {
+	if o == nil || IsNil(o.Headers) {
+		var ret map[string]string
+		return ret
+	}
+	return *o.Headers
+}
+
+// GetHeadersOk returns a tuple with the Headers field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetHeadersOk() (*map[string]string, bool) {
+	if o == nil || IsNil(o.Headers) {
+		return nil, false
+	}
+	return o.Headers, true
+}
+
+// HasHeaders returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasHeaders() bool {
+	if o != nil && !IsNil(o.Headers) {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaders gets a reference to the given map[string]string and assigns it to the Headers field.
+func (o *BrowserNetworkExpectation) SetHeaders(v map[string]string) {
+	o.Headers = &v
+}
+
+// GetExpectedBody returns the ExpectedBody field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *BrowserNetworkExpectation) GetExpectedBody() interface{} {
+	if o == nil {
+		var ret interface{}
+		return ret
+	}
+	return o.ExpectedBody
+}
+
+// GetExpectedBodyOk returns a tuple with the ExpectedBody field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *BrowserNetworkExpectation) GetExpectedBodyOk() (*interface{}, bool) {
+	if o == nil || (!o.expectedBodySet && IsNil(o.ExpectedBody)) {
+		return nil, false
+	}
+	return &o.ExpectedBody, true
+}
+
+// HasExpectedBody returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasExpectedBody() bool {
+	if o != nil && (o.expectedBodySet || !IsNil(o.ExpectedBody)) {
+		return true
+	}
+
+	return false
+}
+
+// SetExpectedBody gets a reference to the given interface{} and assigns it to the ExpectedBody field.
+func (o *BrowserNetworkExpectation) SetExpectedBody(v interface{}) {
+	o.ExpectedBody = v
+	o.expectedBodySet = true
+}
+
+// GetSkipExactBodyCheck returns the SkipExactBodyCheck field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetSkipExactBodyCheck() bool {
+	if o == nil || IsNil(o.SkipExactBodyCheck) {
+		var ret bool
+		return ret
+	}
+	return *o.SkipExactBodyCheck
+}
+
+// GetSkipExactBodyCheckOk returns a tuple with the SkipExactBodyCheck field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetSkipExactBodyCheckOk() (*bool, bool) {
+	if o == nil || IsNil(o.SkipExactBodyCheck) {
+		return nil, false
+	}
+	return o.SkipExactBodyCheck, true
+}
+
+// HasSkipExactBodyCheck returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasSkipExactBodyCheck() bool {
+	if o != nil && !IsNil(o.SkipExactBodyCheck) {
+		return true
+	}
+
+	return false
+}
+
+// SetSkipExactBodyCheck gets a reference to the given bool and assigns it to the SkipExactBodyCheck field.
+func (o *BrowserNetworkExpectation) SetSkipExactBodyCheck(v bool) {
+	o.SkipExactBodyCheck = &v
+}
+
+// GetExcludeAllOtherBodyFields returns the ExcludeAllOtherBodyFields field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetExcludeAllOtherBodyFields() bool {
+	if o == nil || IsNil(o.ExcludeAllOtherBodyFields) {
+		var ret bool
+		return ret
+	}
+	return *o.ExcludeAllOtherBodyFields
+}
+
+// GetExcludeAllOtherBodyFieldsOk returns a tuple with the ExcludeAllOtherBodyFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetExcludeAllOtherBodyFieldsOk() (*bool, bool) {
+	if o == nil || IsNil(o.ExcludeAllOtherBodyFields) {
+		return nil, false
+	}
+	return o.ExcludeAllOtherBodyFields, true
+}
+
+// HasExcludeAllOtherBodyFields returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasExcludeAllOtherBodyFields() bool {
+	if o != nil && !IsNil(o.ExcludeAllOtherBodyFields) {
+		return true
+	}
+
+	return false
+}
+
+// SetExcludeAllOtherBodyFields gets a reference to the given bool and assigns it to the ExcludeAllOtherBodyFields field.
+func (o *BrowserNetworkExpectation) SetExcludeAllOtherBodyFields(v bool) {
+	o.ExcludeAllOtherBodyFields = &v
+}
+
+// GetOccurrence returns the Occurrence field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetOccurrence() int32 {
+	if o == nil || IsNil(o.Occurrence) {
+		var ret int32
+		return ret
+	}
+	return *o.Occurrence
+}
+
+// GetOccurrenceOk returns a tuple with the Occurrence field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetOccurrenceOk() (*int32, bool) {
+	if o == nil || IsNil(o.Occurrence) {
+		return nil, false
+	}
+	return o.Occurrence, true
+}
+
+// HasOccurrence returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasOccurrence() bool {
+	if o != nil && !IsNil(o.Occurrence) {
+		return true
+	}
+
+	return false
+}
+
+// SetOccurrence gets a reference to the given int32 and assigns it to the Occurrence field.
+func (o *BrowserNetworkExpectation) SetOccurrence(v int32) {
+	o.Occurrence = &v
+}
+
+// GetRequestBodyPaths returns the RequestBodyPaths field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetRequestBodyPaths() []BrowserPathExpectation {
+	if o == nil || IsNil(o.RequestBodyPaths) {
+		var ret []BrowserPathExpectation
+		return ret
+	}
+	return o.RequestBodyPaths
+}
+
+// GetRequestBodyPathsOk returns a tuple with the RequestBodyPaths field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetRequestBodyPathsOk() ([]BrowserPathExpectation, bool) {
+	if o == nil || IsNil(o.RequestBodyPaths) {
+		return nil, false
+	}
+	return o.RequestBodyPaths, true
+}
+
+// HasRequestBodyPaths returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasRequestBodyPaths() bool {
+	if o != nil && !IsNil(o.RequestBodyPaths) {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestBodyPaths gets a reference to the given []BrowserPathExpectation and assigns it to the RequestBodyPaths field.
+func (o *BrowserNetworkExpectation) SetRequestBodyPaths(v []BrowserPathExpectation) {
+	o.RequestBodyPaths = v
+}
+
+// GetCandidateFields returns the CandidateFields field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetCandidateFields() BrowserNetworkFieldInventory {
+	if o == nil || IsNil(o.CandidateFields) {
+		var ret BrowserNetworkFieldInventory
+		return ret
+	}
+	return *o.CandidateFields
+}
+
+// GetCandidateFieldsOk returns a tuple with the CandidateFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetCandidateFieldsOk() (*BrowserNetworkFieldInventory, bool) {
+	if o == nil || IsNil(o.CandidateFields) {
+		return nil, false
+	}
+	return o.CandidateFields, true
+}
+
+// HasCandidateFields returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasCandidateFields() bool {
+	if o != nil && !IsNil(o.CandidateFields) {
+		return true
+	}
+
+	return false
+}
+
+// SetCandidateFields gets a reference to the given BrowserNetworkFieldInventory and assigns it to the CandidateFields field.
+func (o *BrowserNetworkExpectation) SetCandidateFields(v BrowserNetworkFieldInventory) {
+	o.CandidateFields = &v
+}
+
+// GetAuthTransfer returns the AuthTransfer field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetAuthTransfer() BrowserAuthTransfer {
+	if o == nil || IsNil(o.AuthTransfer) {
+		var ret BrowserAuthTransfer
+		return ret
+	}
+	return *o.AuthTransfer
+}
+
+// GetAuthTransferOk returns a tuple with the AuthTransfer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetAuthTransferOk() (*BrowserAuthTransfer, bool) {
+	if o == nil || IsNil(o.AuthTransfer) {
+		return nil, false
+	}
+	return o.AuthTransfer, true
+}
+
+// HasAuthTransfer returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasAuthTransfer() bool {
+	if o != nil && !IsNil(o.AuthTransfer) {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthTransfer gets a reference to the given BrowserAuthTransfer and assigns it to the AuthTransfer field.
+func (o *BrowserNetworkExpectation) SetAuthTransfer(v BrowserAuthTransfer) {
+	o.AuthTransfer = &v
+}
+
+// GetRuntimeBindings returns the RuntimeBindings field value if set, zero value otherwise.
+func (o *BrowserNetworkExpectation) GetRuntimeBindings() []BrowserNetworkRuntimeBinding {
+	if o == nil || IsNil(o.RuntimeBindings) {
+		var ret []BrowserNetworkRuntimeBinding
+		return ret
+	}
+	return o.RuntimeBindings
+}
+
+// GetRuntimeBindingsOk returns a tuple with the RuntimeBindings field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BrowserNetworkExpectation) GetRuntimeBindingsOk() ([]BrowserNetworkRuntimeBinding, bool) {
+	if o == nil || IsNil(o.RuntimeBindings) {
+		return nil, false
+	}
+	return o.RuntimeBindings, true
+}
+
+// HasRuntimeBindings returns a boolean if a field has been set.
+func (o *BrowserNetworkExpectation) HasRuntimeBindings() bool {
+	if o != nil && !IsNil(o.RuntimeBindings) {
+		return true
+	}
+
+	return false
+}
+
+// SetRuntimeBindings gets a reference to the given []BrowserNetworkRuntimeBinding and assigns it to the RuntimeBindings field.
+func (o *BrowserNetworkExpectation) SetRuntimeBindings(v []BrowserNetworkRuntimeBinding) {
+	o.RuntimeBindings = v
+}
+
 func (o BrowserNetworkExpectation) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -647,6 +1057,9 @@ func (o BrowserNetworkExpectation) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.Enabled) {
 		toSerialize["enabled"] = o.Enabled
+	}
+	if !IsNil(o.Policy) {
+		toSerialize["policy"] = o.Policy
 	}
 	if !IsNil(o.RecordedCallId) {
 		toSerialize["recordedCallId"] = o.RecordedCallId
@@ -684,20 +1097,53 @@ func (o BrowserNetworkExpectation) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.ExcludeAllOtherHeaderFields) {
 		toSerialize["excludeAllOtherHeaderFields"] = o.ExcludeAllOtherHeaderFields
 	}
-	if o.Body != nil {
+	if o.bodySet || o.Body != nil {
 		toSerialize["body"] = o.Body
 	}
-	if o.CandidateBody != nil {
+	if o.candidateBodySet || o.CandidateBody != nil {
 		toSerialize["candidateBody"] = o.CandidateBody
 	}
 	if !IsNil(o.ExpectedBodyPaths) {
 		toSerialize["expectedBodyPaths"] = o.ExpectedBodyPaths
+	}
+	if !IsNil(o.ExpectedHeaderPaths) {
+		toSerialize["expectedHeaderPaths"] = o.ExpectedHeaderPaths
+	}
+	if !IsNil(o.Stream) {
+		toSerialize["stream"] = o.Stream
 	}
 	if !IsNil(o.CandidateBodyPaths) {
 		toSerialize["candidateBodyPaths"] = o.CandidateBodyPaths
 	}
 	if !IsNil(o.ExcludedBodyFields) {
 		toSerialize["excludedBodyFields"] = o.ExcludedBodyFields
+	}
+	if !IsNil(o.Headers) {
+		toSerialize["headers"] = o.Headers
+	}
+	if o.expectedBodySet || o.ExpectedBody != nil {
+		toSerialize["expectedBody"] = o.ExpectedBody
+	}
+	if !IsNil(o.SkipExactBodyCheck) {
+		toSerialize["skipExactBodyCheck"] = o.SkipExactBodyCheck
+	}
+	if !IsNil(o.ExcludeAllOtherBodyFields) {
+		toSerialize["excludeAllOtherBodyFields"] = o.ExcludeAllOtherBodyFields
+	}
+	if !IsNil(o.Occurrence) {
+		toSerialize["occurrence"] = o.Occurrence
+	}
+	if !IsNil(o.RequestBodyPaths) {
+		toSerialize["requestBodyPaths"] = o.RequestBodyPaths
+	}
+	if !IsNil(o.CandidateFields) {
+		toSerialize["candidateFields"] = o.CandidateFields
+	}
+	if !IsNil(o.AuthTransfer) {
+		toSerialize["authTransfer"] = o.AuthTransfer
+	}
+	if !IsNil(o.RuntimeBindings) {
+		toSerialize["runtimeBindings"] = o.RuntimeBindings
 	}
 	return toSerialize, nil
 }
@@ -736,4 +1182,19 @@ func (v NullableBrowserNetworkExpectation) MarshalJSON() ([]byte, error) {
 func (v *NullableBrowserNetworkExpectation) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
+}
+
+
+
+func (o *BrowserNetworkExpectation) UnmarshalJSON(data []byte) error {
+	type plain BrowserNetworkExpectation
+	var decoded plain
+	if err := json.Unmarshal(data, &decoded); err != nil { return err }
+	*o = BrowserNetworkExpectation(decoded)
+	var operandPresence map[string]json.RawMessage
+	if err := json.Unmarshal(data, &operandPresence); err != nil { return err }
+	_, o.bodySet = operandPresence["body"]
+	_, o.candidateBodySet = operandPresence["candidateBody"]
+	_, o.expectedBodySet = operandPresence["expectedBody"]
+	return nil
 }

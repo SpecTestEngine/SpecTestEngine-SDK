@@ -1,9 +1,9 @@
 /*
 SpecTestEngine Public API
 
-The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
+The versioned integration contract for creating, running, observing, and exporting SpecTestEngine test assets. The API is project-scoped: the bearer token selects the company and active project, and clients must not send internal owner identifiers.  Execution and assertion results retain the exact strings `----------------PASS-------------------`, `----------------FAIL-------------------`, and `---------------ERROR-------------------` in raw JSON. Product UI renders these as Passed, Failed, and Execution error. Target response fields and lifecycle states (such as QUEUED, RUNNING, CANCELLED) retain their own values.  Every operation requires a short-lived OAuth 2.0 bearer access token. Interactive integrations use Authorization Code with PKCE; CI and server-to-server integrations use Client Credentials. A SpecTestEngine company administrator registers the integration and approves capabilities through the Integration Builder. The builder offers only capabilities included in the company's subscription and maps the selection to token scopes. A valid token cannot enable a capability outside the current subscription. Generate or browse an SDK without credentials, then provide a token only when calling the API. See the SDK authentication guide for the complete public procedure.  This alpha contract covers stable request/response workflows plus the bounded asynchronous lifecycle for WebSocket/WSS, SSE, gRPC Streaming, and MQTT tests. Interactive browser recording, MCP tools, and AI conversations are documented separately. Browser visual comparison review is exposed as a bounded preview workflow; live WebRTC transport and worker coordination remain internal implementation details.
 
-API version: 1.0.0-alpha.7
+API version: 1.0.0-alpha.10
 Contact: support@ste.software
 */
 
@@ -63,6 +63,21 @@ type SOAPSpecificationsAPI interface {
 	DeleteSoapSpecificationExecute(r ApiDeleteSoapSpecificationRequest) (*Specification, *http.Response, error)
 
 	/*
+	GetSoapPreparation Read eligible SOAP Prepare request metadata by stable key
+
+	Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param ref
+	@return ApiGetSoapPreparationRequest
+	*/
+	GetSoapPreparation(ctx context.Context, ref string) ApiGetSoapPreparationRequest
+
+	// GetSoapPreparationExecute executes the request
+	//  @return PreparationSummary
+	GetSoapPreparationExecute(r ApiGetSoapPreparationRequest) (*PreparationSummary, *http.Response, error)
+
+	/*
 	GetSoapSpecification Get a SOAP specification
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -86,6 +101,20 @@ type SOAPSpecificationsAPI interface {
 	// GetSoapSpecificationRunExecute executes the request
 	//  @return SpecificationRun
 	GetSoapSpecificationRunExecute(r ApiGetSoapSpecificationRunRequest) (*SpecificationRun, *http.Response, error)
+
+	/*
+	ListSoapPreparations List eligible Prepare requests and output declarations
+
+	Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiListSoapPreparationsRequest
+	*/
+	ListSoapPreparations(ctx context.Context) ApiListSoapPreparationsRequest
+
+	// ListSoapPreparationsExecute executes the request
+	//  @return PreparationPage
+	ListSoapPreparationsExecute(r ApiListSoapPreparationsRequest) (*PreparationPage, *http.Response, error)
 
 	/*
 	ListSoapSpecificationRuns List saved SOAP runs
@@ -585,6 +614,123 @@ func (a *SOAPSpecificationsAPIService) DeleteSoapSpecificationExecute(r ApiDelet
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiGetSoapPreparationRequest struct {
+	ctx context.Context
+	ApiService SOAPSpecificationsAPI
+	ref string
+}
+
+func (r ApiGetSoapPreparationRequest) Execute() (*PreparationSummary, *http.Response, error) {
+	return r.ApiService.GetSoapPreparationExecute(r)
+}
+
+/*
+GetSoapPreparation Read eligible SOAP Prepare request metadata by stable key
+
+Same-company current-read metadata only; no definition or runtime values. Missing, unmarked or inaccessible sources cannot be selected.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ref
+ @return ApiGetSoapPreparationRequest
+*/
+func (a *SOAPSpecificationsAPIService) GetSoapPreparation(ctx context.Context, ref string) ApiGetSoapPreparationRequest {
+	return ApiGetSoapPreparationRequest{
+		ApiService: a,
+		ctx: ctx,
+		ref: ref,
+	}
+}
+
+// Execute executes the request
+//  @return PreparationSummary
+func (a *SOAPSpecificationsAPIService) GetSoapPreparationExecute(r ApiGetSoapPreparationRequest) (*PreparationSummary, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *PreparationSummary
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SOAPSpecificationsAPIService.GetSoapPreparation")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/test/soap-spec/preparations/by-ref/{ref}"
+	localVarPath = strings.Replace(localVarPath, "{"+"ref"+"}", url.PathEscape(parameterValueToString(r.ref, "ref")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if strlen(r.ref) < 1 {
+		return localVarReturnValue, nil, reportError("ref must have at least 1 elements")
+	}
+	if strlen(r.ref) > 128 {
+		return localVarReturnValue, nil, reportError("ref must have less than 128 elements")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v ProblemDetails
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiGetSoapSpecificationRequest struct {
 	ctx context.Context
 	ApiService SOAPSpecificationsAPI
@@ -748,6 +894,150 @@ func (a *SOAPSpecificationsAPIService) GetSoapSpecificationRunExecute(r ApiGetSo
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v ProblemDetails
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiListSoapPreparationsRequest struct {
+	ctx context.Context
+	ApiService SOAPSpecificationsAPI
+	page *int32
+	size *int32
+	search *string
+}
+
+// Zero-based page index.
+func (r ApiListSoapPreparationsRequest) Page(page int32) ApiListSoapPreparationsRequest {
+	r.page = &page
+	return r
+}
+
+func (r ApiListSoapPreparationsRequest) Size(size int32) ApiListSoapPreparationsRequest {
+	r.size = &size
+	return r
+}
+
+// Case-insensitive server-side search within the active project.
+func (r ApiListSoapPreparationsRequest) Search(search string) ApiListSoapPreparationsRequest {
+	r.search = &search
+	return r
+}
+
+func (r ApiListSoapPreparationsRequest) Execute() (*PreparationPage, *http.Response, error) {
+	return r.ApiService.ListSoapPreparationsExecute(r)
+}
+
+/*
+ListSoapPreparations List eligible Prepare requests and output declarations
+
+Same-company paginated metadata only. Values and full specification definitions are never included. The selected protocol and stableKey are used as preparation.protocol and preparation.ref in the consumer DSL. Any native protocol can prepare any other protocol.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiListSoapPreparationsRequest
+*/
+func (a *SOAPSpecificationsAPIService) ListSoapPreparations(ctx context.Context) ApiListSoapPreparationsRequest {
+	return ApiListSoapPreparationsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return PreparationPage
+func (a *SOAPSpecificationsAPIService) ListSoapPreparationsExecute(r ApiListSoapPreparationsRequest) (*PreparationPage, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *PreparationPage
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SOAPSpecificationsAPIService.ListSoapPreparations")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/test/soap-spec/preparations"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.page != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", r.page, "form", "")
+	} else {
+		var defaultValue int32 = 0
+		parameterAddToHeaderOrQuery(localVarQueryParams, "page", defaultValue, "form", "")
+		r.page = &defaultValue
+	}
+	if r.size != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "size", r.size, "form", "")
+	} else {
+		var defaultValue int32 = 20
+		parameterAddToHeaderOrQuery(localVarQueryParams, "size", defaultValue, "form", "")
+		r.size = &defaultValue
+	}
+	if r.search != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "search", r.search, "form", "")
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

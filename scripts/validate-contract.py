@@ -16,7 +16,8 @@ def main() -> None:
         fail("expected the path to the canonical OpenAPI document")
 
     contract = Path(sys.argv[1]).read_text(encoding="utf-8")
-    operation_ids = re.findall(r"^\s+operationId:\s*([A-Za-z][A-Za-z0-9]*)\s*$", contract, re.MULTILINE)
+    paths = contract.split("\npaths:", 1)[1].split("\ncomponents:", 1)[0]
+    operation_ids = re.findall(r"^ {6}operationId:\s*([A-Za-z][A-Za-z0-9]*)\s*$", paths, re.MULTILINE)
     if not operation_ids:
         fail("no operationId values were found")
     duplicates = sorted({value for value in operation_ids if operation_ids.count(value) > 1})

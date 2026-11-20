@@ -1693,7 +1693,7 @@ public class Example {
         Integer page = 0; // Integer | Zero-based page index.
         Integer size = 20; // Integer | Maximum number of results returned in one page.
         UUID checkId = UUID.randomUUID(); // UUID |
-        RunStatus status = RunStatus.fromValue("QUEUED"); // RunStatus |
+        RunStatusCode status = RunStatusCode.fromValue("QUEUED"); // RunStatusCode |
         String sortBy = "queuedAt"; // String |
         String sortDirection = "asc"; // String |
         try {
@@ -1778,7 +1778,7 @@ public class Example {
         Integer page = 0; // Integer | Zero-based page index.
         Integer size = 20; // Integer | Maximum number of results returned in one page.
         UUID checkId = UUID.randomUUID(); // UUID |
-        RunStatus status = RunStatus.fromValue("QUEUED"); // RunStatus |
+        RunStatusCode status = RunStatusCode.fromValue("QUEUED"); // RunStatusCode |
         String sortBy = "queuedAt"; // String |
         String sortDirection = "asc"; // String |
         try {
@@ -1843,7 +1843,7 @@ ApiResponse<[**SentinelRunPage**](SentinelRunPage.md)>
 | **page** | **Integer** | Zero-based page index. | [optional] [default to 0] |
 | **size** | **Integer** | Maximum number of results returned in one page. | [optional] [default to 20] |
 | **checkId** | **UUID** |  | [optional] |
-| **status** | [**RunStatus**](.md) |  | [optional] [enum: QUEUED, RUNNING, PASS, RECOVERED, FAIL, ERROR, SKIPPED] |
+| **status** | [**RunStatusCode**](.md) |  | [optional] [enum: QUEUED, RUNNING, PASS, RECOVERED, FAIL, ERROR, SKIPPED] |
 | **sortBy** | **String** |  | [optional] [default to queuedAt] |
 | **sortDirection** | **String** |  | [optional] [default to desc] [enum: asc, desc] |
 

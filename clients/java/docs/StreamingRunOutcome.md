@@ -5,10 +5,10 @@
 ## Enum
 
 
-* `PASS` (value: `"PASS"`)
+* `_PASS_` (value: `"----------------PASS-------------------"`)
 
-* `FAIL` (value: `"FAIL"`)
+* `_FAIL_` (value: `"----------------FAIL-------------------"`)
 
-* `ERROR` (value: `"ERROR"`)
+* `_ERROR_` (value: `"---------------ERROR-------------------"`)
 
 * `CANCELLED` (value: `"CANCELLED"`)
